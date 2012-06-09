@@ -47,6 +47,15 @@ public class Route {
     public void setTruck(int truck) {
         this.truck = truck;
     }
+
+    @Override
+    public String toString() {
+        String r = "";
+        for(Integer i: route){
+            r += i + " ";
+        }
+        return r;
+    }
     
     
     

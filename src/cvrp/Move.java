@@ -11,10 +11,10 @@ package cvrp;
 public class Move {
 
     private int customer; // The customer to be moved
-    private int origin_position; // The position in the origin_route from where the customer is going to be removed 
-    private int target_position; // The position in the origin_route from where the customer is going to be inserted
-    private int origin_route; // The route where the customer is before the move
-    private int target_route; // The route where the customer is going to be moved
+    private int originPosition; // The position in the origin_route from where the customer is going to be removed 
+    private int targetPosition; // The position in the origin_route from where the customer is going to be inserted
+    private int originRoute; // The route where the customer is before the move
+    private int targetRout; // The route where the customer is going to be moved
 
     public int getCustomer() {
         return customer;
@@ -24,37 +24,38 @@ public class Move {
         this.customer = customer;
     }
 
-    public int getOrigin_position() {
-        return origin_position;
+    public int getOriginPosition() {
+        return originPosition;
     }
 
-    public void setOrigin_position(int origin_position) {
-        this.origin_position = origin_position;
+    public void setOriginPosition(int originPosition) {
+        this.originPosition = originPosition;
     }
 
-    public int getOrigin_route() {
-        return origin_route;
+    public int getOriginRoute() {
+        return originRoute;
     }
 
-    public void setOrigin_route(int origin_route) {
-        this.origin_route = origin_route;
+    public void setOriginRoute(int originRoute) {
+        this.originRoute = originRoute;
     }
 
-    public int getTarget_position() {
-        return target_position;
+    public int getTargetPosition() {
+        return targetPosition;
     }
 
-    public void setTarget_position(int target_position) {
-        this.target_position = target_position;
+    public void setTargetPosition(int targetPosition) {
+        this.targetPosition = targetPosition;
     }
 
-    public int getTarget_route() {
-        return target_route;
+    public int getTargetRout() {
+        return targetRout;
     }
 
-    public void setTarget_route(int target_route) {
-        this.target_route = target_route;
+    public void setTargetRout(int targetRout) {
+        this.targetRout = targetRout;
     }
+    
     
     
 }

@@ -29,6 +29,16 @@ public class Solution {
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
     }
+
+    @Override
+    public String toString() {
+        String r = this.routes.size() + "\n";
+        for(Route route: this.routes){
+            r += route + "\n";
+        }
+        return r;
+    }
+    
     
     
 }

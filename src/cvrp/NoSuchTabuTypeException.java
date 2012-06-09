@@ -8,9 +8,9 @@ package cvrp;
  *
  * @author tamerdark
  */
-public interface Tabu {
-    
-    
-    
+class NoSuchTabuTypeException extends Exception {
+
+    public NoSuchTabuTypeException() {
+    }
     
 }
