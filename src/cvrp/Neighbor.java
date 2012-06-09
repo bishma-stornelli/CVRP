@@ -12,6 +12,8 @@ public class Neighbor {
     private Solution neighbor;
     private Move move;
     private int cost;
+    public static final char ROUTE_POSITION_TABU = 1;
+    public static final char ROUTE_TABU = 2;
 
     public int getCost() {
         return cost;
@@ -43,7 +45,14 @@ public class Neighbor {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public Tabu getTabu() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Tabu getTabu(char tabuType) throws NoSuchTabuTypeException {
+        switch(tabuType){
+            case ROUTE_POSITION_TABU:
+                return new RoutePositionTabu();
+            case ROUTE_TABU:
+                return new RouteTabu();
+            default:
+                throw new NoSuchTabuTypeException();
+        }
     }
 }
