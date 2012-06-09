@@ -25,12 +25,16 @@ public class CVRP {
     private long starTime;    
     private int maxNumberOfIteration;
     private long maxTime; // in seconds
+    private Instance instance;
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, NoSuchTabuTypeException {
         // TODO code application logic here
+        Instance instance = new Instance(args[0],args[1]);
+        instance.loadInstance();
+        instance.loadSettings();
         CVRP resolver = new CVRP();
         resolver.configure(args);
         resolver.run();
@@ -41,7 +45,7 @@ public class CVRP {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void run() {
+    private void run() throws NoSuchTabuTypeException {
         startTime = System.currentTimeMillis();
         solution = getInitialSolution();
         List<Tabu> tabuList = null;
@@ -52,7 +56,7 @@ public class CVRP {
             if (n.getCost() < solution.getCost()){
                 timeOfTheBestSolution = System.currentTimeMillis();
                 iterationOfTheBestSolution = numberOfIterations;
-                tabuList.add(n.getTabu(instance.getTabuConfiguration()));
+                tabuList.add(n.getTabu(instance.getTABU_RESTRICTION()));
                 solution = n.applyMove();
             }            
             ++numberOfIterations;

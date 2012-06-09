@@ -95,4 +95,133 @@ public class Instance {
       
     }
   }
+
+  public char getMULTI_THREAD() {
+    return MULTI_THREAD;
+  }
+
+  public void setMULTI_THREAD(char MULTI_THREAD) {
+    this.MULTI_THREAD = MULTI_THREAD;
+  }
+
+  public char getSELECT_CLIENT() {
+    return SELECT_CLIENT;
+  }
+
+  public void setSELECT_CLIENT(char SELECT_CLIENT) {
+    this.SELECT_CLIENT = SELECT_CLIENT;
+  }
+
+  public char getSELECT_DESTINATION_ROUTE() {
+    return SELECT_DESTINATION_ROUTE;
+  }
+
+  public void setSELECT_DESTINATION_ROUTE(char SELECT_DESTINATION_ROUTE) {
+    this.SELECT_DESTINATION_ROUTE = SELECT_DESTINATION_ROUTE;
+  }
+
+  public char getSELECT_INSERT_POSITION() {
+    return SELECT_INSERT_POSITION;
+  }
+
+  public void setSELECT_INSERT_POSITION(char SELECT_INSERT_POSITION) {
+    this.SELECT_INSERT_POSITION = SELECT_INSERT_POSITION;
+  }
+
+  public char getSELECT_ORIGIN_ROUTE() {
+    return SELECT_ORIGIN_ROUTE;
+  }
+
+  public void setSELECT_ORIGIN_ROUTE(char SELECT_ORIGIN_ROUTE) {
+    this.SELECT_ORIGIN_ROUTE = SELECT_ORIGIN_ROUTE;
+  }
+
+  public char getTABU_RESTRICTION() {
+    return TABU_RESTRICTION;
+  }
+
+  public void setTABU_RESTRICTION(char TABU_RESTRICTION) {
+    this.TABU_RESTRICTION = TABU_RESTRICTION;
+  }
+
+  public int[][] getCustomersCoordinate() {
+    return customersCoordinate;
+  }
+
+  public void setCustomersCoordinate(int[][] customersCoordinate) {
+    this.customersCoordinate = customersCoordinate;
+  }
+
+  public int getCustomersNumber() {
+    return customersNumber;
+  }
+
+  public void setCustomersNumber(int customersNumber) {
+    this.customersNumber = customersNumber;
+  }
+
+  public int[] getDepotCoordinate() {
+    return depotCoordinate;
+  }
+
+  public void setDepotCoordinate(int[] depotCoordinate) {
+    this.depotCoordinate = depotCoordinate;
+  }
+
+  public int[][] getDistance() {
+    return distance;
+  }
+
+  public void setDistance(int[][] distance) {
+    this.distance = distance;
+  }
+
+  public int getDropTime() {
+    return dropTime;
+  }
+
+  public void setDropTime(int dropTime) {
+    this.dropTime = dropTime;
+  }
+
+  public String getInstanceName() {
+    return instanceName;
+  }
+
+  public void setInstanceName(String instanceName) {
+    this.instanceName = instanceName;
+  }
+
+  public int getMaximumRouteTime() {
+    return maximumRouteTime;
+  }
+
+  public void setMaximumRouteTime(int maximumRouteTime) {
+    this.maximumRouteTime = maximumRouteTime;
+  }
+
+  public int[] getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int[] quantity) {
+    this.quantity = quantity;
+  }
+
+  public String getSettingsName() {
+    return settingsName;
+  }
+
+  public void setSettingsName(String settingsName) {
+    this.settingsName = settingsName;
+  }
+
+  public int getVehicleCapacity() {
+    return vehicleCapacity;
+  }
+
+  public void setVehicleCapacity(int vehicleCapacity) {
+    this.vehicleCapacity = vehicleCapacity;
+  }
+  
 }
