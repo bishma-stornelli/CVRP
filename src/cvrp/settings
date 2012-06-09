@@ -1,0 +1,15 @@
+# Description
+# Parameters: [Y|N]
+MULTI_THREAD=[Y|N]
+# Description
+# Parameters: [R|G]
+SELECT_ORIGIN_ROUTE=[R|G]
+# Description
+# Parameters: [R|G]
+SELECT_CLIENT=[R|G]
+# Description
+# Parameters: [R|G]
+SELECT_DESTINATION_ROUTE=[R|G]
+# Description
+# Parameters: [R|G]
+SELECT_INSERT_POSITION=[R|G]
