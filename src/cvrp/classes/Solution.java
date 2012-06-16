@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
 
+import cvrp.Instance;
+import cvrp.classes.Route;
 import java.util.List;
 
 /**

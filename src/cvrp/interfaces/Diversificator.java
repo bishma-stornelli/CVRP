@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.interfaces;
 
 /** A diverssificator tries to force the search into previously unexplored areas
  * of the search space.

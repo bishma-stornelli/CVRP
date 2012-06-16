@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.interfaces;
+
+import cvrp.classes.Neighbor;
+import java.util.List;
 
 /** Select the neighbor where the metaheuristic should move.
  * 
@@ -14,5 +17,7 @@ package cvrp;
  * @author tamerdark
  */
 public interface NeighborSelector {
+    
+    public Neighbor selectNeighbor(List<Neighbor> neighbors);
     
 }

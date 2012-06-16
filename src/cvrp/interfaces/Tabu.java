@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.interfaces;
 
 /** A tabu is a restriction on a given solution that prohibits to move to a 
  * neighbor to avoid cycling.

@@ -4,6 +4,11 @@
  */
 package cvrp;
 
+import cvrp.classes.Neighbor;
+import cvrp.classes.Solution;
+import cvrp.interfaces.Tabu;
+import cvrp.abstracts.TerminationCriteria;
+import cvrp.exceptions.NoSuchTabuTypeException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

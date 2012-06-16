@@ -2,7 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.abstracts;
+
+import cvrp.classes.Solution;
+import cvrp.exceptions.TerminationCriteriaNotStartedException;
 
 /** A termination criteria specify when to stop the search.
  * 
@@ -17,19 +20,15 @@ package cvrp;
  */
 public abstract class  TerminationCriteria {
     
-    private int currentIteration = 0;
-    private int bestFoundIteration = 0;
+    private int currentIteration;
+    private int bestFoundIteration;
     private long startTime;
-    private long endTime = -1;
+    private long endTime;
     private long bestFoundTime;
     private Solution best;
+    private boolean started = false;
     
-    public TerminationCriteria(){
-        startTime = System.currentTimeMillis();
-        bestFoundTime = startTime;
-    }
-    
-    public void reset(){
+    public void start(){
         currentIteration = 0;
         bestFoundIteration = 0;
         endTime = -1;
@@ -37,11 +36,13 @@ public abstract class  TerminationCriteria {
         bestFoundTime = startTime;
     }
     
-    public void recordBest(Solution s){
+    public void recordBest(Solution s) 
+            throws TerminationCriteriaNotStartedException {
+        if (!started) throw new TerminationCriteriaNotStartedException();
         best = s;
         bestFoundTime = System.currentTimeMillis();
         bestFoundIteration = currentIteration;
     }
     
-    public abstract boolean timeToFinish(Solution s);
+    public abstract boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException;
 }

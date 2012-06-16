@@ -4,6 +4,11 @@
  */
 package cvrp;
 
+import cvrp.classes.Neighbor;
+import cvrp.classes.Solution;
+import cvrp.interfaces.Tabu;
+import cvrp.interfaces.NeighborhoodStructure;
+import cvrp.interfaces.NeighborhoodGenerator;
 import java.util.List;
 
 /**

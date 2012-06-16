@@ -2,8 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
 
+import cvrp.Instance;
+import cvrp.classes.SingleMove;
+import cvrp.classes.Solution;
+import cvrp.classes.Route;
+import cvrp.abstracts.Move;
+import cvrp.interfaces.Tabu;
+import cvrp.interfaces.NeighborhoodStructure;
 import java.util.ArrayList;
 import java.util.List;
 

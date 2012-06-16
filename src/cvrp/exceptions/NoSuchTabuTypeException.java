@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.exceptions;
 
 /**
  *
  * @author tamerdark
  */
-class SingleMove extends Move {
+class NoSuchTabuTypeException extends Exception {
 
-    public SingleMove() {
+    public NoSuchTabuTypeException() {
     }
     
 }

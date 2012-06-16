@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.interfaces;
 
 /** An intensificator try to improve a solution by exploring portions of the
  * solution that seem promising to make a better solution.

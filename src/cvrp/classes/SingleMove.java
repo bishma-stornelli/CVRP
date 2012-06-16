@@ -2,15 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
+
+import cvrp.abstracts.Move;
 
 /**
  *
  * @author tamerdark
  */
-class NoSuchTabuTypeException extends Exception {
+class SingleMove extends Move {
 
-    public NoSuchTabuTypeException() {
+    public SingleMove() {
     }
     
 }
