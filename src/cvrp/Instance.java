@@ -224,4 +224,8 @@ public class Instance {
     this.vehicleCapacity = vehicleCapacity;
   }
   
+  public int getDistance(int customerA, int customerB){
+      return this.distances[customerA][customerB];
+  }
+  
 }

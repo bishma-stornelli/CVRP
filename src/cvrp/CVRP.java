@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,17 +16,6 @@ import java.util.List;
  * @author tamerdark
  */
 public class CVRP {
-    
-    private Solution solution;
-    private int numberOfIterations;
-    private int iterationOfTheBestSolution;
-    private long startTime = 0;
-    private long endTime = 0;
-    private long timeOfTheBestSolution = 0;
-    private long starTime;    
-    private int maxNumberOfIteration;
-    private long maxTime; // in seconds
-    private Instance instance;
 
     /**
      * @param args the command line arguments
@@ -35,36 +25,28 @@ public class CVRP {
         Instance instance = new Instance(args[0],args[1]);
         instance.loadInstance();
         instance.loadSettings();
-        CVRP resolver = new CVRP();
-        resolver.configure(args);
-        resolver.run();
-        resolver.printSolution();
+        run(instance);
     }
 
-    private void configure(String[] args) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    private void run() throws NoSuchTabuTypeException {
-        startTime = System.currentTimeMillis();
-        solution = getInitialSolution();
-        List<Tabu> tabuList = null;
-        numberOfIterations = 0;
-        while(numberOfIterations < maxNumberOfIteration && 
-                (System.currentTimeMillis() - starTime)/1000 < maxTime ){
-            Neighbor n = selectNeighbor(solution, tabuList);
-            if (n.getCost() < solution.getCost()){
-                timeOfTheBestSolution = System.currentTimeMillis();
-                iterationOfTheBestSolution = numberOfIterations;
-                tabuList.add(n.getTabu(instance.getTABU_RESTRICTION()));
-                solution = n.applyMove();
-            }            
-            ++numberOfIterations;
+    private static void run(Instance i) throws NoSuchTabuTypeException {
+        List<Tabu> tabuList = new ArrayList<Tabu>();
+        Solution current = generateFirstSolution();
+        Solution best = current;
+        TerminationCriteria tc = i.getTerminationCriteria();
+        while(tc.timeToFinish(current)){
+            List<Neighbor> neighbors = i.getNeighborhoodGenerator().generateNeighborhood(current, i, tabuList);
+            Neighbor neighbor = i.getNeighborSelector().selectNeighbor(current, neighbors);
+            tabuList.addAll(neighbor.getTabus());
+            current = neighbor.applyMoves();
+            if( current.getCost() < best.getCost() ){
+                best = current;
+                tc.recordBest(best);                
+            }
         }
-        endTime = System.currentTimeMillis();
+        printSolution(best, tc);
     }
 
-    private void printSolution() throws IOException {
+    private static void printSolution(Solution solution, TerminationCriteria tc) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(new File("stat.")));
         out.write(solution.getCost() + "");
         out.newLine();
@@ -78,7 +60,7 @@ public class CVRP {
         out.write(solution.toString());
     }
 
-    private Solution getInitialSolution() {
+    private static Solution generateFirstSolution() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
