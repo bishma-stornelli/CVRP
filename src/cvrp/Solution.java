@@ -12,8 +12,21 @@ import java.util.List;
  */
 public class Solution {
     private List<Route> routes;
+    private Instance instance;
+    private int customerRoute[];
+    private int customerPosition[];
     private int cost;
 
+    public Instance getInstance() {
+        return instance;
+    }
+
+    public void setInstance(Instance instance) {
+        this.instance = instance;
+    }
+
+    
+    
     public int getCost() {
         return cost;
     }
@@ -37,6 +50,18 @@ public class Solution {
             r += route + "\n";
         }
         return r;
+    }
+
+    /** Returns the route where the customer belongs.
+     * 
+     * @param customer 
+     */
+    public Route getRoute(int customer) {
+        return routes.get(customerRoute[customer]);
+    }
+
+    public int getPositionOf(int customer) {
+        return customerPosition[customer];
     }
     
     

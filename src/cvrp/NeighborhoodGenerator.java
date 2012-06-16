@@ -4,6 +4,8 @@
  */
 package cvrp;
 
+import java.util.List;
+
 /** A neighborhood generator determines how many neighbors and how they are going to be selected
  * in order to make a neighborhood from a given solution.
  * 
@@ -11,10 +13,19 @@ package cvrp;
  * 
  * FullNeighborhoodGenerator generate all the neighborhoods in the search space
  * RandomNeighborhoodGenerator generate a random subset of the neighborhoods in the search space
- * GranularNeighborhoodGenerator only short arcs are considered to generate neighborhoods.
+ * GranularNeighborhoodGenerator only short arcs are considered to generate neighborhoods. *
  *
  * @author tamerdark
  */
 public interface NeighborhoodGenerator {
     
+    /** Generate the whole neighborhood and then apply a filter to return a subset
+     * of them.
+     * 
+     * @param s 
+     * @param i
+     * @param tabuList
+     * @return 
+     */
+    public List<Neighbor> generateNeighborhood(Solution s , Instance i, List<Tabu> tabuList);
 }
