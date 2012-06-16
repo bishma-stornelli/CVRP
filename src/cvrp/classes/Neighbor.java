@@ -4,7 +4,6 @@
  */
 package cvrp.classes;
 
-import cvrp.Instance;
 import cvrp.classes.RoutePositionTabu;
 import cvrp.classes.RouteTabu;
 import cvrp.classes.Solution;

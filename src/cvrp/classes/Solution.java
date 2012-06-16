@@ -4,7 +4,6 @@
  */
 package cvrp.classes;
 
-import cvrp.Instance;
 import cvrp.classes.Route;
 import java.util.List;
 

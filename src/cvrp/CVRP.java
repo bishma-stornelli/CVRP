@@ -4,6 +4,7 @@
  */
 package cvrp;
 
+import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
 import cvrp.interfaces.Tabu;

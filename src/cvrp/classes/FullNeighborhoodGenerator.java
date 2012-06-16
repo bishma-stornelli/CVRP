@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
 
+import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
 import cvrp.interfaces.Tabu;

@@ -4,7 +4,6 @@
  */
 package cvrp.classes;
 
-import cvrp.Instance;
 import cvrp.classes.SingleMove;
 import cvrp.classes.Solution;
 import cvrp.classes.Route;
