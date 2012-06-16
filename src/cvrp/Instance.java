@@ -16,25 +16,23 @@ public class Instance {
   
   private String instanceName;
   private String settingsName;
-  private char MULTI_THREAD;
-  private char TABU_RESTRICTION;
-  private char SELECT_ORIGIN_ROUTE;
-  private char SELECT_CLIENT;
-  private char SELECT_DESTINATION_ROUTE;
-  private char SELECT_INSERT_POSITION;
+  private String MULTI_THREAD;
+  private String TABU_RESTRICTION;
+  private String SELECT_ORIGIN_ROUTE;
+  private String SELECT_CLIENT;
+  private String SELECT_DESTINATION_ROUTE;
+  private String SELECT_INSERT_POSITION;
   private int customersNumber;
   private int vehicleCapacity;
   private int maximumRouteTime;
   private int dropTime;
   private int [] quantity;
-  private int [][] distance;
-  private int [] depotCoordinate;
-  private int [][] customersCoordinate;
+  private int [][] distances;
+  private int [][] coordinates;
   
   public Instance (String instanceName, String settingsName) {
     this.instanceName = instanceName;
-    this.settingsName = settingsName;
-    this.depotCoordinate = new int [2];
+    this.settingsName = settingsName;    
   }
   
   public void loadInstance() throws FileNotFoundException {
@@ -49,16 +47,17 @@ public class Instance {
       this.vehicleCapacity = scanner.nextInt();
       this.maximumRouteTime = scanner.nextInt();
       this.dropTime = scanner.nextInt();
-      this.depotCoordinate[0] = scanner.nextInt();
-      this.depotCoordinate[1] = scanner.nextInt();
-      this.quantity = new int [customersNumber];
-      this.customersCoordinate = new int [customersNumber][2];
-      int c = 0;
+      this.coordinates = new int [this.customersNumber+1][2];
+      this.quantity = new int [this.customersNumber+1];
+      this.coordinates[0][0] = scanner.nextInt();
+      this.coordinates[0][1] = scanner.nextInt();
+      this.quantity[0] = 0;
+      int c = 1;
       
       while(scanner.hasNextInt()) {
         
-        this.customersCoordinate[c][0] = scanner.nextInt();
-        this.customersCoordinate[c][1] = scanner.nextInt();
+        this.coordinates[c][0] = scanner.nextInt();
+        this.coordinates[c][1] = scanner.nextInt();
         this.quantity[c] = scanner.nextInt();
         c++;
       }
@@ -67,89 +66,134 @@ public class Instance {
     }
   }
   
-  public void loadSettings() throws FileNotFoundException {
+  public void loadDistance() {
     
+    this.distances = new int [this.customersNumber+1][this.customersNumber+1];
+    int distance = 0;
+    for(int i = 0; i <= this.customersNumber; i++) {
+      for(int j = i; j <= this.customersNumber; j++) {
+        if(i == j)
+          this.distances[i][j] = 0;
+        else {
+          distance = (int) Math.round(Math.sqrt(
+                  Math.pow(this.coordinates[j][0] - this.coordinates[i][0],2) + 
+                  Math.pow(this.coordinates[j][1] - this.coordinates[i][1],2)));
+          
+          this.distances[i][j] = distance;
+          this.distances[j][i] = distance; 
+        }          
+      }
+    }
+  }
+  
+  public void loadSettings() throws FileNotFoundException {
+    System.out.println(new File(".").getAbsolutePath());
     File file = new File(this.settingsName);
     
     try {
       
       Scanner scanner = new Scanner(file);
+      String option = "";
       
       while(scanner.hasNext()) {
-        
-        if("MULTI_THREAD".equals(scanner.next()))
-          this.MULTI_THREAD = scanner.next().charAt(0);
-        else if("TABU_RESTRICTION".equals(scanner.next()))
-          this.TABU_RESTRICTION = scanner.next().charAt(0);
-        else if("SELECT_ORIGIN_ROUTE".equals(scanner.next()))
-          this.SELECT_ORIGIN_ROUTE = scanner.next().charAt(0);
-        else if("SELECT_CLIENT".equals(scanner.next()))
-          this.SELECT_CLIENT = scanner.next().charAt(0);
-        else if("SELECT_DESTINATION_ROUTE".equals(scanner.next()))
-          this.SELECT_DESTINATION_ROUTE = scanner.next().charAt(0);
-        else if("SELECT_INSERT_POSITION".equals(scanner.next()))
-          this.SELECT_INSERT_POSITION = scanner.next().charAt(0);
+        option = scanner.next();
+        if("MULTI_THREAD".equals(option))
+          this.MULTI_THREAD = scanner.next();
+        else if("TABU_RESTRICTION".equals(option))
+          this.TABU_RESTRICTION = scanner.next();
+        else if("SELECT_ORIGIN_ROUTE".equals(option))
+          this.SELECT_ORIGIN_ROUTE = scanner.next();
+        else if("SELECT_CLIENT".equals(option))
+          this.SELECT_CLIENT = scanner.next();
+        else if("SELECT_DESTINATION_ROUTE".equals(option))
+          this.SELECT_DESTINATION_ROUTE = scanner.next();
+        else if("SELECT_INSERT_POSITION".equals(option))
+          this.SELECT_INSERT_POSITION = scanner.next();
       }
         
     } catch(FileNotFoundException e) {
-      
+      System.out.println("FileNotFoundException");
     }
   }
 
-  public char getMULTI_THREAD() {
+  
+  public void printDistances() {
+    for(int i = 0; i <= this.customersNumber; i++) {
+      for(int j = 0; j <= this.customersNumber; j++)
+        System.out.print(this.distances[i][j]+" ");
+      System.out.println("\n");  
+    } 
+  }
+  
+  public void printCoordinates() {
+    for(int i = 0; i <= this.customersNumber; i++)
+      System.out.println(this.coordinates[i][0] + " " + this.coordinates[i][1] 
+                         + " " + this.quantity[i]);
+  }
+  
+  public void printSettings() {
+    System.out.println("MULTI_THREAD: " + MULTI_THREAD);
+    System.out.println("TABU_RESTRICTION: " + TABU_RESTRICTION);
+    System.out.println("SELECT_ORIGIN_ROUTE: " + SELECT_ORIGIN_ROUTE);
+    System.out.println("SELECT_CLIENT: " + SELECT_CLIENT);
+    System.out.println("SELECT_DESTINATION_ROUTE: " + SELECT_DESTINATION_ROUTE);
+    System.out.println("SELECT_INSERT_POSITION: " + SELECT_INSERT_POSITION);    
+  }
+  
+  public String getMULTI_THREAD() {
     return MULTI_THREAD;
   }
 
-  public void setMULTI_THREAD(char MULTI_THREAD) {
+  public void setMULTI_THREAD(String MULTI_THREAD) {
     this.MULTI_THREAD = MULTI_THREAD;
   }
 
-  public char getSELECT_CLIENT() {
+  public String getSELECT_CLIENT() {
     return SELECT_CLIENT;
   }
 
-  public void setSELECT_CLIENT(char SELECT_CLIENT) {
+  public void setSELECT_CLIENT(String SELECT_CLIENT) {
     this.SELECT_CLIENT = SELECT_CLIENT;
   }
 
-  public char getSELECT_DESTINATION_ROUTE() {
+  public String getSELECT_DESTINATION_ROUTE() {
     return SELECT_DESTINATION_ROUTE;
   }
 
-  public void setSELECT_DESTINATION_ROUTE(char SELECT_DESTINATION_ROUTE) {
+  public void setSELECT_DESTINATION_ROUTE(String SELECT_DESTINATION_ROUTE) {
     this.SELECT_DESTINATION_ROUTE = SELECT_DESTINATION_ROUTE;
   }
 
-  public char getSELECT_INSERT_POSITION() {
+  public String getSELECT_INSERT_POSITION() {
     return SELECT_INSERT_POSITION;
   }
 
-  public void setSELECT_INSERT_POSITION(char SELECT_INSERT_POSITION) {
+  public void setSELECT_INSERT_POSITION(String SELECT_INSERT_POSITION) {
     this.SELECT_INSERT_POSITION = SELECT_INSERT_POSITION;
   }
 
-  public char getSELECT_ORIGIN_ROUTE() {
+  public String getSELECT_ORIGIN_ROUTE() {
     return SELECT_ORIGIN_ROUTE;
   }
 
-  public void setSELECT_ORIGIN_ROUTE(char SELECT_ORIGIN_ROUTE) {
+  public void setSELECT_ORIGIN_ROUTE(String SELECT_ORIGIN_ROUTE) {
     this.SELECT_ORIGIN_ROUTE = SELECT_ORIGIN_ROUTE;
   }
 
-  public char getTABU_RESTRICTION() {
+  public String getTABU_RESTRICTION() {
     return TABU_RESTRICTION;
   }
 
-  public void setTABU_RESTRICTION(char TABU_RESTRICTION) {
+  public void setTABU_RESTRICTION(String TABU_RESTRICTION) {
     this.TABU_RESTRICTION = TABU_RESTRICTION;
   }
 
-  public int[][] getCustomersCoordinate() {
-    return customersCoordinate;
+  public int[][] getcoordinates() {
+    return coordinates;
   }
 
-  public void setCustomersCoordinate(int[][] customersCoordinate) {
-    this.customersCoordinate = customersCoordinate;
+  public void setcoordinates(int[][] customersCoordinate) {
+    this.coordinates = customersCoordinate;
   }
 
   public int getCustomersNumber() {
@@ -160,20 +204,12 @@ public class Instance {
     this.customersNumber = customersNumber;
   }
 
-  public int[] getDepotCoordinate() {
-    return depotCoordinate;
+  public int[][] getDistances() {
+    return distances;
   }
 
-  public void setDepotCoordinate(int[] depotCoordinate) {
-    this.depotCoordinate = depotCoordinate;
-  }
-
-  public int[][] getDistance() {
-    return distance;
-  }
-
-  public void setDistance(int[][] distance) {
-    this.distance = distance;
+  public void setDistances(int[][] distances) {
+    this.distances = distances;
   }
 
   public int getDropTime() {

@@ -32,19 +32,27 @@ public class CVRP {
      */
     public static void main(String[] args) throws IOException, NoSuchTabuTypeException {
         // TODO code application logic here
-        Instance instance = new Instance(args[0],args[1]);
-        instance.loadInstance();
+        // Instance instance = new Instance(args[0],args[1]);
+        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings");  
         instance.loadSettings();
+        instance.printSettings();
+        instance.loadInstance();
+        instance.printCoordinates();
+        instance.loadDistance();
+        instance.printDistances();
+        //System.out.println(instance.distancetoString());
+        /*
         CVRP resolver = new CVRP();
         resolver.configure(args);
         resolver.run();
         resolver.printSolution();
+        */
     }
 
     private void configure(String[] args) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-
+/*
     private void run() throws NoSuchTabuTypeException {
         startTime = System.currentTimeMillis();
         solution = getInitialSolution();
@@ -63,7 +71,7 @@ public class CVRP {
         }
         endTime = System.currentTimeMillis();
     }
-
+*/
     private void printSolution() throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(new File("stat.")));
         out.write(solution.getCost() + "");
