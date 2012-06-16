@@ -29,7 +29,7 @@ import java.util.List;
  */
 public interface NeighborhoodStructure {
     
-    /** Generate a neighborhood by applitying different movements to solution s,
+    /** Generate a neighborhood by appliying different movements to solution s,
      * using the information in instance i.
      * 
      * @param s the solution from which the neighborhood is going to be generated
