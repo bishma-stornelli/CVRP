@@ -12,9 +12,15 @@ import cvrp.classes.Route;
  */
 public abstract class Move {
 
-    private int customer; // The customer to be moved
-    private int targetPosition; // The position in the origin_route from where the customer is going to be inserted
-    private Route targetRoute; // The route where the customer is going to be moved
+    protected int customer; // The customer to be moved
+    protected int targetPosition; // The position in the origin_route from where the customer is going to be inserted
+    protected Route targetRoute; // The route where the customer is going to be moved
+
+    public Move(int customer, Route targetRoute, int targetPosition) {
+        this.customer = customer;
+        this.targetPosition = targetPosition;
+        this.targetRoute = targetRoute;
+    }    
 
     public int getCustomer() {
         return customer;

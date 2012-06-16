@@ -6,6 +6,7 @@ package cvrp.interfaces;
 
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
+import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import java.util.List;
 
 /** A neighborhood structure is the set of neighbors that can be obtained by
@@ -34,5 +35,6 @@ public interface NeighborhoodStructure {
     
     public int getNumberOfCustomerRequired();
 
-    public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers);
+    public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) throws
+            UnexpectedAmountOfCustomersException;
 }

@@ -4,14 +4,16 @@
  */
 package cvrp.classes;
 
-import cvrp.classes.SingleMove;
-import cvrp.classes.Solution;
-import cvrp.classes.Route;
+import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.abstracts.Move;
+import cvrp.exceptions.MaxCapacityExceededException;
+import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Tabu;
 import cvrp.interfaces.NeighborhoodStructure;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** Itera entre todos los vecinos y para cada uno les selecciona una ruta y 
  * posicion dentro de la ruta aleatoria.
@@ -24,23 +26,32 @@ import java.util.List;
 public class NeighborhoodStructure1 implements NeighborhoodStructure {
 
     @Override
-    public List<Neighbor> generateNeighborhood(Solution s, Instance i, List<Tabu> tabuList) {
-        int customersSize = i.getCustomersNumber();
-        List<Neighbor> neighborhood = new ArrayList<Neighbor>(customersSize);
-        for(int customer = 1 ; customer <= customersSize ; ++customer){
-            int routeNumber = (int)(Math.random()*customersSize) + 1;
-            Route r = s.getRoutes().get(routeNumber);
-            int positionInsideRoute = (int)(Math.random()*r.getRoute().size());
-            Move m = new SingleMove();
-            m.setCustomer(customer);
-            m.setTargetPosition(positionInsideRoute);
-            m.setTargetRoute(r);
-            Neighbor nb = new Neighbor();
-            nb.setNeighbor(s);
-            nb.setMove(m);
-            neighborhood.add(nb);
+    public int getNumberOfCustomerRequired() {
+        return 1;
+    }
+
+    @Override
+    public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
+            throws UnexpectedAmountOfCustomersException {
+        if( customers.size() != 1 ){
+            throw new UnexpectedAmountOfCustomersException();
         }
-        return neighborhood;
+        int customer = customers.get(0);
+        int customersSize = s.getInstance().getCustomersNumber();
+        while( true ) {
+            int targetRoute = (int)(Math.random()*customersSize) + 1;
+            Route r = s.getRoute(targetRoute);
+            int positionInsideRoute = (int)(Math.random()*r.size());
+            Move m = new SingleMove(customer, r, positionInsideRoute);
+            try {
+                return new Neighbor(s, m);
+            } catch (MaxCapacityExceededException ex) {
+                Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MaxDurationExceededException ex) {
+                Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+           
     }
     
 }

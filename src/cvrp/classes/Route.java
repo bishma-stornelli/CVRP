@@ -4,6 +4,9 @@
  */
 package cvrp.classes;
 
+import cvrp.exceptions.MaxDurationExceededException;
+import cvrp.exceptions.MaxCapacityExceededException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,42 +15,25 @@ import java.util.List;
  */
 public class Route {
     private List<Integer> route;
-    private int truck;
-    private int cost;
+    private int capacity;
     private int duration;
 
-    public int getCost() {
-        return cost;
+    public Route() {
+        this.route = new ArrayList<Integer>();
+        this.route.add(0);
+        this.route.add(0);
+        this.capacity = 0;
+        this.duration = 0;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public int getCapacity() {
+        return capacity;
     }
 
     public int getDuration() {
         return duration;
     }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public List<Integer> getRoute() {
-        return route;
-    }
-
-    public void setRoute(List<Integer> route) {
-        this.route = route;
-    }
-
-    public int getTruck() {
-        return truck;
-    }
-
-    public void setTruck(int truck) {
-        this.truck = truck;
-    }
-
+    
     @Override
     public String toString() {
         String r = "";
@@ -55,6 +41,54 @@ public class Route {
             r += i + " ";
         }
         return r;
+    }
+
+    public void push(int customer, Instance instance) throws 
+            MaxCapacityExceededException, MaxDurationExceededException {
+        this.add(customer, this.size() - 1, instance, true);        
+    }
+    
+    public int remove(int customerPos, Instance instance, boolean commit){
+        Integer previous = this.route.get(customerPos - 1),
+                customer = this.route.get(customerPos),
+                next = this.route.get(customerPos + 1);
+        int changeOnDuration = instance.getDistance(previous, next) 
+                - instance.getDistance(previous, customer) 
+                - instance.getDistance(customer, next) -
+                instance.getDropTime();
+        if( commit ){
+            this.route.remove(customerPos);
+            this.duration -= changeOnDuration;
+            this.capacity -= instance.getDemand(customer);
+        }
+        return changeOnDuration;
+    }
+    
+    public int add(int customer, int index, Instance instance, boolean commit) 
+            throws MaxCapacityExceededException, MaxDurationExceededException {
+        int demand = instance.getDemand(customer);
+        if( demand + this.capacity > instance.getVehicleCapacity() ){
+            throw new MaxCapacityExceededException();
+        }
+        Integer previous = this.route.get(index - 1), 
+                next = this.route.get(index);
+        int changeOnDuration = instance.getDistance(previous, customer) +
+                instance.getDistance(customer, next) +
+                instance.getDropTime() -
+                instance.getDistance(previous, next);
+        if( this.duration + changeOnDuration > instance.getMaximumRouteTime() ){
+            throw new MaxDurationExceededException();            
+        }
+        if ( commit ){
+            this.route.add(customer, next);
+            this.capacity += demand;
+            this.duration += changeOnDuration; 
+        }
+        return changeOnDuration;
+    }
+
+    public int size() {
+        return route.size();
     }
     
     

@@ -4,6 +4,7 @@
  */
 package cvrp.classes;
 
+import cvrp.abstracts.TerminationCriteria;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -263,5 +264,9 @@ public class Instance {
   public int getDistance(int customerA, int customerB){
       return this.distances[customerA][customerB];
   }
+
+    public TerminationCriteria getTerminationCriteria() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
   
 }
