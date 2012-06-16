@@ -4,10 +4,13 @@
  */
 package cvrp.classes;
 
+import cvrp.abstracts.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,7 +35,7 @@ public class Solution {
         this.customerPosition = new int[i.getCustomersNumber() + 1];
         this.duration = 0;
         for(int customer = 1 ; 
-                customer < this.instance.getCustomersNumber() ; 
+                customer <= this.instance.getCustomersNumber() ; 
                 ++customer){
             Route r = new Route();
             r.push(customer, instance);
@@ -82,6 +85,29 @@ public class Solution {
 
     public Route getRoute(int targetRoute) {
         return this.routes.get(targetRoute);
+    }
+
+    public void applyMoves(Move move) {
+        try {
+            int customer = move.getCustomer(),
+                    customerPos = this.getCustomerPosition(move.getCustomer());
+            Route originRoute = this.getRoute(this.getRouteNumber(customer));
+            Route targetRoute = this.getRoute(move.getTargetRoute());
+            this.duration += originRoute.remove(customerPos, this.getInstance(), true);
+            this.duration += targetRoute.add(customer, move.getTargetPosition(), this.getInstance(), true);
+            customerPosition[customer] = move.getTargetPosition();
+            customerRoute[customer] = move.getTargetRoute();
+            for (int index = customerPos ; index < originRoute.size() - 1 ; ++index){
+                customerPosition[originRoute.getCustomerAt(index)] = index;
+            }
+            for (int index = move.getTargetPosition() + 1 ; index < targetRoute.size() - 1 ; ++index){
+                customerPosition[targetRoute.getCustomerAt(index)] = index;
+            }
+        } catch (MaxCapacityExceededException ex) {
+            Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MaxDurationExceededException ex) {
+            Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

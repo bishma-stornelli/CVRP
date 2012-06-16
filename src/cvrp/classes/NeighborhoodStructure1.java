@@ -4,6 +4,7 @@
  */
 package cvrp.classes;
 
+import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.abstracts.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -32,17 +33,28 @@ public class NeighborhoodStructure1 implements NeighborhoodStructure {
 
     @Override
     public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
-            throws UnexpectedAmountOfCustomersException {
+            throws UnexpectedAmountOfCustomersException , TabuListFullException {
         if( customers.size() != 1 ){
             throw new UnexpectedAmountOfCustomersException();
         }
         int customer = customers.get(0);
         int customersSize = s.getInstance().getCustomersNumber();
+        int iterationsWithoutMove = 0;
         while( true ) {
-            int targetRoute = (int)(Math.random()*customersSize) + 1;
+            int targetRoute = (int)(Math.random()*customersSize);
             Route r = s.getRoute(targetRoute);
-            int positionInsideRoute = (int)(Math.random()*r.size());
-            Move m = new SingleMove(customer, r, positionInsideRoute);
+            int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
+            if( targetRoute == s.getRouteNumber(customer) ){
+                if( iterationsWithoutMove > 2*tabuList.size()){
+                    throw new TabuListFullException();
+                }
+                ++iterationsWithoutMove;
+                continue;
+            }
+                
+            Move m = new SingleMove(customer, targetRoute, positionInsideRoute);
+            if ( tabuList.contains(m.generateTabu()) )
+                continue;
             try {
                 return new Neighbor(s, m);
             } catch (MaxCapacityExceededException ex) {

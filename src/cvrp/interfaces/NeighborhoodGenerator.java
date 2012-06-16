@@ -6,6 +6,7 @@ package cvrp.interfaces;
 
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
+import cvrp.exceptions.TabuListFullException;
 import java.util.List;
 
 /** A neighborhood generator determines how many neighbors and how they are going to be selected
@@ -28,5 +29,6 @@ public interface NeighborhoodGenerator {
      * @param tabuList
      * @return 
      */
-    public List<Neighbor> generateNeighborhood(Solution s , List<Tabu> tabuList);
+    public List<Neighbor> generateNeighborhood(Solution s , List<Tabu> tabuList)
+            throws TabuListFullException;
 }

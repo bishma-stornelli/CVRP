@@ -6,6 +6,7 @@ package cvrp.interfaces;
 
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
+import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import java.util.List;
 
@@ -40,5 +41,5 @@ public interface NeighborhoodStructure {
     public int getNumberOfCustomerRequired();
 
     public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) throws
-            UnexpectedAmountOfCustomersException;
+            UnexpectedAmountOfCustomersException, TabuListFullException;
 }

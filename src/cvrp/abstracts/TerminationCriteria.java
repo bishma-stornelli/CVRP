@@ -34,6 +34,7 @@ public abstract class TerminationCriteria {
         endTime = -1;
         startTime = System.currentTimeMillis();
         bestFoundTime = startTime;
+        started = true;
     }
     
     public void recordBest(Solution s) 
@@ -48,5 +49,20 @@ public abstract class TerminationCriteria {
     
     public void finish(){
         endTime = System.currentTimeMillis();
+    }
+
+    public int getBestFoundIteration() {
+        return bestFoundIteration;
+    }
+
+    public int getCurrentIteration() {
+        return currentIteration;
+    }
+    
+    public long getTimeToBest(){
+        return (bestFoundTime - startTime)/1000;
+    }
+    public long getTotalTime(){
+        return (endTime - startTime)/1000;
     }
 }
