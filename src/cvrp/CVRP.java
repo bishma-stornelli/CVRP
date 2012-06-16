@@ -43,14 +43,14 @@ public class CVRP {
      * @param i
      * @throws NoSuchTabuTypeException 
      */
-    private static void run(Instance i) throws NoSuchTabuTypeException {
+    private static void run(Instance i) throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException {
         List<Tabu> tabuList = new ArrayList<Tabu>();
         Solution current = generateFirstSolution(i);
         Solution best = current;
         TerminationCriteria tc = i.getTerminationCriteria();
         tc.start();
         while(!tc.timeToFinish(current)){
-            List<Neighbor> neighbors = i.getNeighborhoodGenerator().generateNeighborhood(current, tabuList);
+            List<Neighbor> neighbors = i.getNeighborgoodGenerator().generateNeighborhood(current, tabuList);
             Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
             tabuList.addAll(neighbor.getTabus());
             current = neighbor.applyMoves();

@@ -5,6 +5,8 @@
 package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
+import cvrp.interfaces.NeighborSelector;
+import cvrp.interfaces.NeighborhoodGenerator;
 import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +28,8 @@ public class Instance {
   private String SELECT_INSERT_POSITION;
   private String TERMINATION_CRITERIA;
   private String NEIGHBORHOOD_STRUCTURE;
+  private String NEIGHBORHOOD_GENERATOR;
+  private String NEIGHBOR_SELECTOR;
   private int customersNumber;
   private int vehicleCapacity;
   private int maximumRouteTime;
@@ -35,12 +39,16 @@ public class Instance {
   private int [][] coordinates;
   private TerminationCriteria terminationCriteria;
   private NeighborhoodStructure neighborhoodStructure;
+  private NeighborhoodGenerator neighborgoodGenerator;
+  private NeighborSelector neighborSelector; 
   
   public Instance (String instanceName, String settingsName) {
     this.instanceName = instanceName;
     this.settingsName = settingsName;    
     this.terminationCriteria = null;
     this.neighborhoodStructure = null;
+    this.neighborgoodGenerator = null;
+    this.neighborSelector = null;
   }
   
   public void loadInstance() throws FileNotFoundException {
@@ -121,6 +129,10 @@ public class Instance {
           this.TERMINATION_CRITERIA = scanner.next();
         else if("NEIGHBORHOOD_STRUCTURE".equals(option))
           this.NEIGHBORHOOD_STRUCTURE = scanner.next();
+        else if("NEIGHBORHOOD_GENERATOR".equals(option))
+          this.NEIGHBORHOOD_GENERATOR = scanner.next();
+        else if("NEIGHBOR_SELECTOR".equals(option))
+          this.NEIGHBOR_SELECTOR = scanner.next();
       }
         
     } catch(FileNotFoundException e) {
@@ -138,6 +150,19 @@ public class Instance {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
       this.neighborhoodStructure = new NeighborhoodStructure1();
     // Colocar las demas opciones aqui
+  }
+  
+  private void assignNeighborhoodGenerator() {
+    if(this.NEIGHBORHOOD_GENERATOR.equals("F"))
+      this.neighborgoodGenerator = new FullNeighborhoodGenerator();
+    // Colocar las demas opciones aqui
+  }
+  
+  private void assignNeighborSelector() {
+    if(this.NEIGHBOR_SELECTOR.equals("F"))
+      this.neighborSelector = new FirstNeighborSelector();
+    else if(this.NEIGHBOR_SELECTOR.equals("B"))
+      this.neighborSelector = new BestNeighborSelector();
   }
   
   public void printDistances() {
@@ -233,6 +258,14 @@ public class Instance {
     this.TERMINATION_CRITERIA = TERMINATION_CRITERIA;
   }
 
+  public String getNEIGHBORHOOD_GENERATOR() {
+    return NEIGHBORHOOD_GENERATOR;
+  }
+
+  public void setNEIGHBORHOOD_GENERATOR(String NEIGHBORHOOD_GENERATOR) {
+    this.NEIGHBORHOOD_GENERATOR = NEIGHBORHOOD_GENERATOR;
+  }
+
   public int getCustomersNumber() {
     return customersNumber;
   }
@@ -324,7 +357,13 @@ public class Instance {
   public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
     this.neighborhoodStructure = neighborhoodStructure;
   }
-  
-  
+
+  public NeighborhoodGenerator getNeighborgoodGenerator() {
+    return neighborgoodGenerator;
+  }
+
+  public void setNeighborgoodGenerator(NeighborhoodGenerator neighborgoodGenerator) {
+    this.neighborgoodGenerator = neighborgoodGenerator;
+  }
    
 }
