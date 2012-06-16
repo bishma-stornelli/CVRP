@@ -11,24 +11,24 @@ import cvrp.exceptions.TerminationCriteriaNotStartedException;
  * 
  * Usually, the termination criterias used are:
  * 
- * After a fixed number of iterations
- * After a fixed number of iterations without improvement
- * When an specific threshold value is reached.
- * After a fixed time.
+ * After a fixed number of iterations. Option T
+ * After a fixed number of iterations without improvement. Option I
+ * When an specific threshold value is reached. Option V
+ * After a fixed time. Option T
  *
  * @author tamerdark
  */
-public abstract class  TerminationCriteria {
+public abstract class TerminationCriteria {
     
-    private int currentIteration;
-    private int bestFoundIteration;
-    private long startTime;
-    private long endTime;
-    private long bestFoundTime;
-    private Solution best;
-    private boolean started = false;
+    protected int currentIteration;
+    protected int bestFoundIteration;
+    protected long startTime;
+    protected long endTime;
+    protected long bestFoundTime;
+    protected Solution best;
+    protected boolean started = false;
     
-    public void start(){
+    public void start() {
         currentIteration = 0;
         bestFoundIteration = 0;
         endTime = -1;

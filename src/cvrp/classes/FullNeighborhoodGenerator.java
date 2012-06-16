@@ -4,12 +4,10 @@
  */
 package cvrp.classes;
 
-import cvrp.classes.Instance;
-import cvrp.classes.Neighbor;
-import cvrp.classes.Solution;
-import cvrp.interfaces.Tabu;
-import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.NeighborhoodGenerator;
+import cvrp.interfaces.NeighborhoodStructure;
+import cvrp.interfaces.Tabu;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +16,20 @@ import java.util.List;
  */
 public class FullNeighborhoodGenerator implements NeighborhoodGenerator {
 
-    @Override
-    public List<Neighbor> generateNeighborhood(Solution s, Instance i, List<Tabu> tabuList) {
-        NeighborhoodStructure ns = i.getNeighborhoodStructure();
-        return ns.generateNeighborhood(s, i, tabuList);
+  @Override
+  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) {
+    Instance instance = s.getInstance();
+    NeighborhoodStructure ns = instance.getNeighborhoodStructure();
+    int customersNumber = ns.getNumberOfCustomerRequired();
+    List<Neighbor> neighbors = new ArrayList<Neighbor>();
+    List<Integer> customer = new ArrayList<Integer>();
+    
+    for(int i = 1; i < customersNumber; i++) {
+      customer.add(i);
+      neighbors.add(ns.generateNeighbor(s, tabuList, customer));
+      customer.clear();
     }
+    return neighbors;
+  }
     
 }

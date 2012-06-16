@@ -4,12 +4,13 @@
  */
 package cvrp;
 
+import cvrp.abstracts.TerminationCriteria;
 import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
-import cvrp.interfaces.Tabu;
-import cvrp.abstracts.TerminationCriteria;
 import cvrp.exceptions.NoSuchTabuTypeException;
+import cvrp.exceptions.TerminationCriteriaNotStartedException;
+import cvrp.interfaces.Tabu;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -26,7 +27,8 @@ public class CVRP {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException, NoSuchTabuTypeException {
+    public static void main(String[] args) throws IOException, NoSuchTabuTypeException, 
+            TerminationCriteriaNotStartedException {
         // TODO code application logic here
         // Instance instance = new Instance(args[0],args[1]);
         Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings");  

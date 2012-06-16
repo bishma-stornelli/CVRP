@@ -8,7 +8,7 @@ package cvrp.exceptions;
  *
  * @author tamerdark
  */
-class NoSuchTabuTypeException extends Exception {
+public class NoSuchTabuTypeException extends Exception {
 
     public NoSuchTabuTypeException() {
     }

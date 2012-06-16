@@ -15,12 +15,16 @@ import java.util.List;
  * The neighborhood structure can be:
  * 
  * Those neighbors obtained by moving a single customer from its current route,
- *  inserting it in the same route or in another route with sufficient residual capacity.
+ * inserting it in the same route or in another route with sufficient residual capacity.
+ * Option: M
  * Those obtained by applying λ-interchanges where a customer can be moved from 
- *  its current route or can be swapped with another customer. *
+ * its current route or can be swapped with another customer. *
+ * Option: L
  * Those obtained by ejection chains that are sequences of coordinated movements
- *  of customer from one route to another.
+ * of customer from one route to another.
+ * Option: C
  * Swapping of sequences of several customers between routes, as in the cross-exchange.
+ * Option: S
  * 
  * When a customer is inserted in a route there are many places where you can put it:
  * 
