@@ -27,9 +27,11 @@ public class CVRP {
      */
     public static void main(String[] args) throws IOException, NoSuchTabuTypeException {
         // TODO code application logic here
-        Instance instance = new Instance(args[0],args[1]);
-        instance.loadInstance();
+        // Instance instance = new Instance(args[0],args[1]);
+        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings");  
         instance.loadSettings();
+        instance.loadInstance();
+        instance.loadDistance();
         run(instance);
     }
 
