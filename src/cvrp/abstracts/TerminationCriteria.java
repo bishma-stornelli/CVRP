@@ -45,4 +45,8 @@ public abstract class TerminationCriteria {
     }
     
     public abstract boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException;
+    
+    public void finish(){
+        endTime = System.currentTimeMillis();
+    }
 }

@@ -38,15 +38,20 @@ public class CVRP {
         run(instance);
     }
 
-    private static void run(Instance i) throws NoSuchTabuTypeException, 
-            TerminationCriteriaNotStartedException, IOException {
+    /** The TabuSearch Metaheuristic. Implemented.
+     * 
+     * @param i
+     * @throws NoSuchTabuTypeException 
+     */
+    private static void run(Instance i) throws NoSuchTabuTypeException {
         List<Tabu> tabuList = new ArrayList<Tabu>();
-        Solution current = generateFirstSolution();
+        Solution current = generateFirstSolution(i);
         Solution best = current;
         TerminationCriteria tc = i.getTerminationCriteria();
-        while(tc.timeToFinish(current)){
-            List<Neighbor> neighbors = i.getNeighborhoodGenerator().generateNeighborhood(current, i, tabuList);
-            Neighbor neighbor = i.getNeighborSelector().selectNeighbor(current, neighbors);
+        tc.start();
+        while(!tc.timeToFinish(current)){
+            List<Neighbor> neighbors = i.getNeighborhoodGenerator().generateNeighborhood(current, tabuList);
+            Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
             tabuList.addAll(neighbor.getTabus());
             current = neighbor.applyMoves();
             if( current.getCost() < best.getCost() ){
@@ -71,8 +76,9 @@ public class CVRP {
         out.write(solution.toString());
     }
 
-    private static Solution generateFirstSolution() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private static Solution generateFirstSolution(Instance i) {
+        Solution s = new Solution(i);
+        return s;
     }
 
     private Neighbor selectNeighbor(Solution solution, List<Tabu> tabu_list) {

@@ -300,6 +300,14 @@ public class Instance {
   public int getDistance(int customerA, int customerB){
       return this.distances[customerA][customerB];
   }
+
+  public TerminationCriteria getTerminationCriteria() {
+    return terminationCriteria;
+  }
+
+  public void setTerminationCriteria(TerminationCriteria terminationCriteria) {
+    this.terminationCriteria = terminationCriteria;
+  }
   
   public int[][] getCoordinates() {
     return coordinates;
@@ -309,14 +317,6 @@ public class Instance {
     this.coordinates = coordinates;
   }
 
-  public TerminationCriteria getTerminationCriteria() {
-    return terminationCriteria;
-  }
-
-  public void setTerminationCriteria(TerminationCriteria terminationCriteria) {
-    this.terminationCriteria = terminationCriteria;
-  }
-
   public NeighborhoodStructure getNeighborhoodStructure() {
     return neighborhoodStructure;
   }
@@ -324,5 +324,7 @@ public class Instance {
   public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
     this.neighborhoodStructure = neighborhoodStructure;
   }
+  
+  
    
 }

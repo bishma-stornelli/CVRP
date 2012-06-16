@@ -5,6 +5,7 @@
 package cvrp.interfaces;
 
 import cvrp.classes.Neighbor;
+import cvrp.classes.Solution;
 import java.util.List;
 
 /** Select the neighbor where the metaheuristic should move.
@@ -18,6 +19,6 @@ import java.util.List;
  */
 public interface NeighborSelector {
     
-    public Neighbor selectNeighbor(List<Neighbor> neighbors);
+    public Neighbor selectNeighbor(List<Neighbor> neighbors, Solution bestFound);
     
 }
