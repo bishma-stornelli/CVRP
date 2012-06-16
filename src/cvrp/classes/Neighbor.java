@@ -2,7 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
+
+import cvrp.classes.RoutePositionTabu;
+import cvrp.classes.RouteTabu;
+import cvrp.classes.Solution;
+import cvrp.classes.Route;
+import cvrp.abstracts.Move;
+import cvrp.interfaces.Tabu;
+import cvrp.exceptions.NoSuchTabuTypeException;
 
 /**
  *

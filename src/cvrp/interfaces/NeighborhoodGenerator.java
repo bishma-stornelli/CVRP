@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.interfaces;
 
+import cvrp.classes.Neighbor;
+import cvrp.classes.Solution;
 import java.util.List;
 
 /** A neighborhood generator determines how many neighbors and how they are going to be selected
@@ -23,9 +25,8 @@ public interface NeighborhoodGenerator {
      * of them.
      * 
      * @param s 
-     * @param i
      * @param tabuList
      * @return 
      */
-    public List<Neighbor> generateNeighborhood(Solution s , Instance i, List<Tabu> tabuList);
+    public List<Neighbor> generateNeighborhood(Solution s , List<Tabu> tabuList);
 }

@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp;
+package cvrp.classes;
 
+import cvrp.abstracts.TerminationCriteria;
+import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -22,6 +24,8 @@ public class Instance {
   private String SELECT_CLIENT;
   private String SELECT_DESTINATION_ROUTE;
   private String SELECT_INSERT_POSITION;
+  private String TERMINATION_CRITERIA;
+  private String NEIGHBORHOOD_STRUCTURE;
   private int customersNumber;
   private int vehicleCapacity;
   private int maximumRouteTime;
@@ -29,10 +33,14 @@ public class Instance {
   private int [] quantity;
   private int [][] distances;
   private int [][] coordinates;
+  private TerminationCriteria terminationCriteria;
+  private NeighborhoodStructure neighborhoodStructure;
   
   public Instance (String instanceName, String settingsName) {
     this.instanceName = instanceName;
     this.settingsName = settingsName;    
+    this.terminationCriteria = null;
+    this.neighborhoodStructure = null;
   }
   
   public void loadInstance() throws FileNotFoundException {
@@ -109,13 +117,28 @@ public class Instance {
           this.SELECT_DESTINATION_ROUTE = scanner.next();
         else if("SELECT_INSERT_POSITION".equals(option))
           this.SELECT_INSERT_POSITION = scanner.next();
+        else if("TERMINATION_CRITERIA".equals(option))
+          this.TERMINATION_CRITERIA = scanner.next();
+        else if("NEIGHBORHOOD_STRUCTURE".equals(option))
+          this.NEIGHBORHOOD_STRUCTURE = scanner.next();
       }
         
     } catch(FileNotFoundException e) {
       System.out.println("FileNotFoundException");
     }
   }
+  
+  private void assignTerminationCriteria() {
+    if(this.TERMINATION_CRITERIA.equals("I"))
+      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*50);
+    // Colocar las demas opciones aqui
+  }
 
+  private void assignNeighborhoodStructure() {
+    if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
+      this.neighborhoodStructure = new NeighborhoodStructure1();
+    // Colocar las demas opciones aqui
+  }
   
   public void printDistances() {
     for(int i = 0; i <= this.customersNumber; i++) {
@@ -138,6 +161,12 @@ public class Instance {
     System.out.println("SELECT_CLIENT: " + SELECT_CLIENT);
     System.out.println("SELECT_DESTINATION_ROUTE: " + SELECT_DESTINATION_ROUTE);
     System.out.println("SELECT_INSERT_POSITION: " + SELECT_INSERT_POSITION);    
+  }
+  
+  public int getDemand(int customer) {
+    if(0 <= customer && customer < quantity.length)
+      return quantity[customer];
+    return 0;
   }
   
   public String getMULTI_THREAD() {
@@ -187,13 +216,21 @@ public class Instance {
   public void setTABU_RESTRICTION(String TABU_RESTRICTION) {
     this.TABU_RESTRICTION = TABU_RESTRICTION;
   }
-
-  public int[][] getcoordinates() {
-    return coordinates;
+  
+    public String getNEIGHBORHOOD_STRUCTURE() {
+    return NEIGHBORHOOD_STRUCTURE;
   }
 
-  public void setcoordinates(int[][] customersCoordinate) {
-    this.coordinates = customersCoordinate;
+  public void setNEIGHBORHOOD_STRUCTURE(String NEIGHBORHOOD_STRUCTURE) {
+    this.NEIGHBORHOOD_STRUCTURE = NEIGHBORHOOD_STRUCTURE;
+  }
+
+  public String getTERMINATION_CRITERIA() {
+    return TERMINATION_CRITERIA;
+  }
+
+  public void setTERMINATION_CRITERIA(String TERMINATION_CRITERIA) {
+    this.TERMINATION_CRITERIA = TERMINATION_CRITERIA;
   }
 
   public int getCustomersNumber() {
@@ -264,4 +301,28 @@ public class Instance {
       return this.distances[customerA][customerB];
   }
   
+  public int[][] getCoordinates() {
+    return coordinates;
+  }
+
+  public void setCoordinates(int[][] coordinates) {
+    this.coordinates = coordinates;
+  }
+
+  public TerminationCriteria getTerminationCriteria() {
+    return terminationCriteria;
+  }
+
+  public void setTerminationCriteria(TerminationCriteria terminationCriteria) {
+    this.terminationCriteria = terminationCriteria;
+  }
+
+  public NeighborhoodStructure getNeighborhoodStructure() {
+    return neighborhoodStructure;
+  }
+
+  public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
+    this.neighborhoodStructure = neighborhoodStructure;
+  }
+   
 }
