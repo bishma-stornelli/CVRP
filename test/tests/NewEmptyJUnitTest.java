@@ -33,7 +33,6 @@ public class NewEmptyJUnitTest {
   @org.junit.After
   public void tearDown() throws Exception {
   }
-  
   // TODO add test methods here.
   // The methods must be annotated with annotation @Test. For example:
   //
