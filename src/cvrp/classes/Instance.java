@@ -365,5 +365,21 @@ public class Instance {
   public void setNeighborgoodGenerator(NeighborhoodGenerator neighborgoodGenerator) {
     this.neighborgoodGenerator = neighborgoodGenerator;
   }
+
+  public String getNEIGHBOR_SELECTOR() {
+    return NEIGHBOR_SELECTOR;
+  }
+
+  public void setNEIGHBOR_SELECTOR(String NEIGHBOR_SELECTOR) {
+    this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
+  }
+
+  public NeighborSelector getNeighborSelector() {
+    return neighborSelector;
+  }
+
+  public void setNeighborSelector(NeighborSelector neighborSelector) {
+    this.neighborSelector = neighborSelector;
+  }
    
 }
