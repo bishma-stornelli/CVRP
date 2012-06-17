@@ -64,11 +64,15 @@ public class Solution {
 
     @Override
     public String toString() {
-        String r = this.routes.size() + "\n";
+        String r = "";
+        int totalRoutes = 0;
         for(Route route: this.routes){
-            r += route + "\n";
+            if(route.size() != 2){                    
+                r +=  route + "\n";
+                ++totalRoutes;
+            }
         }
-        return r;
+        return totalRoutes + "\n" + r;
     }
 
     /** Returns the route where the customer belongs.
@@ -94,6 +98,12 @@ public class Solution {
             Route originRoute = this.getRoute(this.getRouteNumber(customer));
             Route targetRoute = this.getRoute(move.getTargetRoute());
             this.duration += originRoute.remove(customerPos, this.getInstance(), true);
+            // Si la ruta donde lo voy a meter es la misma de donde lo saque
+            // y la posicion donde lo iba a meter es superior a donde estaba,
+            // debo restarle uno a la posicion de destino para que se actualice.
+            if ( originRoute.equals(targetRoute) && move.getTargetPosition() > customerPos ){
+                move.setTargetPosition(move.getTargetPosition() - 1);
+            }
             this.duration += targetRoute.add(customer, move.getTargetPosition(), this.getInstance(), true);
             customerPosition[customer] = move.getTargetPosition();
             customerRoute[customer] = move.getTargetRoute();
@@ -109,6 +119,11 @@ public class Solution {
             Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public PrintableSolution getPrintableSolution() {
+        return new PrintableSolution(this);
+    }
+    
     
     
     

@@ -148,7 +148,7 @@ public class Instance {
   
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*50);
+      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*2000);
     // Colocar las demas opciones aqui
   }
 

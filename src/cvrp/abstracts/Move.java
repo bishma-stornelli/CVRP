@@ -4,7 +4,7 @@
  */
 package cvrp.abstracts;
 
-import cvrp.classes.RouteTabu;
+import cvrp.classes.CustomerRouteTabu;
 import cvrp.interfaces.Tabu;
 
 /**
@@ -47,7 +47,7 @@ public abstract class Move {
     }
 
     public Tabu generateTabu() {
-        return new RouteTabu(customer, targetRoute);
+        return new CustomerRouteTabu(customer, targetRoute);
     }
     
     

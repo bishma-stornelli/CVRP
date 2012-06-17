@@ -34,7 +34,7 @@ public class Neighbor {
         Route targetRoute = neighbor.getRoute(move.getTargetRoute());
         Instance i = neighbor.getInstance();
         this.duration += originRoute.remove(customerPos, s.getInstance(), false);
-        this.duration += targetRoute.add(customer, customerPos, s.getInstance(), false);
+        this.duration += targetRoute.add(customer, move.getTargetPosition(), s.getInstance(), false);
           
         
     }
