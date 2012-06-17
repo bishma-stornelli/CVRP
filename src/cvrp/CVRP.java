@@ -8,8 +8,7 @@ import cvrp.abstracts.TerminationCriteria;
 import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
-import cvrp.exceptions.NoSuchTabuTypeException;
-import cvrp.exceptions.TerminationCriteriaNotStartedException;
+import cvrp.exceptions.*;
 import cvrp.interfaces.Tabu;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +16,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,10 +32,8 @@ public class CVRP {
             TerminationCriteriaNotStartedException {
         // TODO code application logic here
         // Instance instance = new Instance(args[0],args[1]);
-        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings");  
-        instance.loadSettings();
-        instance.loadInstance();
-        instance.loadDistance();
+        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
+        instance.loadEverything();
         run(instance);
     }
 
@@ -50,34 +49,65 @@ public class CVRP {
         TerminationCriteria tc = i.getTerminationCriteria();
         tc.start();
         while(!tc.timeToFinish(current)){
-            List<Neighbor> neighbors = i.getNeighborgoodGenerator().generateNeighborhood(current, tabuList);
-            Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
-            tabuList.addAll(neighbor.getTabus());
-            current = neighbor.applyMoves();
-            if( current.getCost() < best.getCost() ){
-                best = current;
-                tc.recordBest(best);                
+            try {
+                List<Neighbor> neighbors = i.getNeighborgoodGenerator().generateNeighborhood(current, tabuList);
+                Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
+                tabuList.addAll(neighbor.getTabus());
+                current.applyMoves(neighbor.getMove());
+                if( current.getDuration() < best.getDuration() ){
+                    best = current;
+                    tc.recordBest(best);                
+                }
+            }
+            catch (TabuListFullException ex) {
+                try{
+                    tabuList.remove(tabuList.size() - 1);
+                } catch (ArrayIndexOutOfBoundsException a ) {
+                    break;
+                }
             }
         }
+        tc.finish();
         printSolution(best, tc);
     }
 
-    private static void printSolution(Solution solution, TerminationCriteria tc) throws IOException {
-        BufferedWriter out = new BufferedWriter(new FileWriter(new File("stat.")));
-        out.write(solution.getCost() + "");
-        out.newLine();
-        out.write(iterationOfTheBestSolution + "");
-        out.newLine();
-        out.write(numberOfIterations + "");
-        out.newLine();
-        out.write((timeOfTheBestSolution - startTime)/1000 + "");
-        out.newLine();
-        out.write((endTime - startTime)/1000 + "");
-        out.write(solution.toString());
+    private static void printSolution(Solution solution, TerminationCriteria tc) {
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(new FileWriter(new File("stat.")));
+            out.write(solution.getDuration() + "");
+            out.newLine();
+            out.write(tc.getBestFoundIteration() + "");
+            out.newLine();
+            out.write(tc.getCurrentIteration() + "");
+            out.newLine();
+            out.write(tc.getTimeToBest() + "");
+            out.newLine();
+            out.write(tc.getTotalTime() + "");
+            out.newLine();
+            out.write(solution.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private static Solution generateFirstSolution(Instance i) {
-        Solution s = new Solution(i);
+        Solution s = null;
+        try {
+            s = new Solution(i);
+        } catch (MaxCapacityExceededException ex) {
+            System.err.println("La instancia no tiene solución factible.");
+            System.exit(1);
+        } catch (MaxDurationExceededException ex) {
+            System.err.println("La instancia no tiene solución factible.");
+            System.exit(1);
+        }
         return s;
     }
 

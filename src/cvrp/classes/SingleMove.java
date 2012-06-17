@@ -12,7 +12,7 @@ import cvrp.abstracts.Move;
  */
 public class SingleMove extends Move {
 
-    public SingleMove(int customer, Route targetRoute, int targetPosition) {
+    public SingleMove(int customer, int targetRoute, int targetPosition) {
         super(customer, targetRoute, targetPosition);
     }
 

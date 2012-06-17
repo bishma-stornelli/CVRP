@@ -4,7 +4,8 @@
  */
 package cvrp.abstracts;
 
-import cvrp.classes.Route;
+import cvrp.classes.RouteTabu;
+import cvrp.interfaces.Tabu;
 
 /**
  * 
@@ -14,9 +15,9 @@ public abstract class Move {
 
     protected int customer; // The customer to be moved
     protected int targetPosition; // The position in the origin_route from where the customer is going to be inserted
-    protected Route targetRoute; // The route where the customer is going to be moved
+    protected int targetRoute; // The route where the customer is going to be moved
 
-    public Move(int customer, Route targetRoute, int targetPosition) {
+    public Move(int customer, int targetRoute, int targetPosition) {
         this.customer = customer;
         this.targetPosition = targetPosition;
         this.targetRoute = targetRoute;
@@ -38,11 +39,15 @@ public abstract class Move {
         this.targetPosition = targetPosition;
     }
 
-    public void setTargetRoute(Route r) {
+    public void setTargetRoute(int r) {
         this.targetRoute = r;
     }
-    public Route getTargetRoute(){
+    public int getTargetRoute(){
         return this.targetRoute;
+    }
+
+    public Tabu generateTabu() {
+        return new RouteTabu(customer, targetRoute);
     }
     
     

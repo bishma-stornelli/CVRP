@@ -16,12 +16,13 @@ public class IterationTerminationCriteria extends TerminationCriteria {
   private int endIteration;
   
   public IterationTerminationCriteria(int endIteration) {
-    this.endIteration = endIteration;
+        super();
+        this.endIteration = endIteration;
   }
   
   @Override
   public boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException {   
-    this.currentIteration++;
+    ++this.currentIteration;
     return (this.currentIteration == this.endIteration);
   }
   

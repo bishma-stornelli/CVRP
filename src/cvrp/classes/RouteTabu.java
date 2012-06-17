@@ -14,6 +14,11 @@ public class RouteTabu implements Tabu{
     private int customer;
     private int route;
 
+    public RouteTabu(int customer, int route) {
+        this.customer = customer;
+        this.route = route;
+    }    
+
     public int getCustomer() {
         return customer;
     }
@@ -29,4 +34,23 @@ public class RouteTabu implements Tabu{
     public void setRoute(int route) {
         this.route = route;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RouteTabu other = (RouteTabu) obj;
+        if (this.customer != other.customer) {
+            return false;
+        }
+        if (this.route != other.route) {
+            return false;
+        }
+        return true;
+    }    
+    
 }

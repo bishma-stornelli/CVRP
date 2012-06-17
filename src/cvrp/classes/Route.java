@@ -48,17 +48,17 @@ public class Route {
         this.add(customer, this.size() - 1, instance, true);        
     }
     
-    public int remove(int customerPos, Instance instance, boolean commit){
-        Integer previous = this.route.get(customerPos - 1),
-                customer = this.route.get(customerPos),
-                next = this.route.get(customerPos + 1);
+    public int remove(int index, Instance instance, boolean commit){
+        Integer previous = this.route.get(index - 1),
+                customer = this.route.get(index),
+                next = this.route.get(index + 1);
         int changeOnDuration = instance.getDistance(previous, next) 
                 - instance.getDistance(previous, customer) 
-                - instance.getDistance(customer, next) -
-                instance.getDropTime();
+                - instance.getDistance(customer, next) 
+                - instance.getDropTime();
         if( commit ){
-            this.route.remove(customerPos);
-            this.duration -= changeOnDuration;
+            this.route.remove(index);
+            this.duration += changeOnDuration;
             this.capacity -= instance.getDemand(customer);
         }
         return changeOnDuration;
@@ -80,7 +80,7 @@ public class Route {
             throw new MaxDurationExceededException();            
         }
         if ( commit ){
-            this.route.add(customer, next);
+            this.route.add(index, customer);
             this.capacity += demand;
             this.duration += changeOnDuration; 
         }
@@ -89,6 +89,10 @@ public class Route {
 
     public int size() {
         return route.size();
+    }
+
+    public int getCustomerAt(int index) {
+        return this.route.get(index);
     }
     
     

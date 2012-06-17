@@ -4,15 +4,15 @@
  */
 package cvrp.classes;
 
-import cvrp.classes.RoutePositionTabu;
-import cvrp.classes.RouteTabu;
-import cvrp.classes.Solution;
-import cvrp.classes.Route;
 import cvrp.abstracts.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Tabu;
 import cvrp.exceptions.NoSuchTabuTypeException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +31,7 @@ public class Neighbor {
         int customerPos = neighbor.getCustomerPosition(customer);
         this.duration = neighbor.getDuration();
         Route originRoute = neighbor.getRoute(neighbor.getRouteNumber(customer));
-        Route targetRoute = move.getTargetRoute();
+        Route targetRoute = neighbor.getRoute(move.getTargetRoute());
         Instance i = neighbor.getInstance();
         this.duration += originRoute.remove(customerPos, s.getInstance(), false);
         this.duration += targetRoute.add(customer, customerPos, s.getInstance(), false);
@@ -57,13 +57,22 @@ public class Neighbor {
     }
 
     public Tabu getTabu(char tabuType) throws NoSuchTabuTypeException {
-        switch(tabuType){
+        /*switch(tabuType){
             case ROUTE_POSITION_TABU:
                 return new RoutePositionTabu();
             case ROUTE_TABU:
                 return new RouteTabu();
             default:
                 throw new NoSuchTabuTypeException();
-        }
+        }*/
+        return null;
     }
+
+    public List<Tabu> getTabus() {
+        List<Tabu> l = new ArrayList<Tabu>(1);
+        l.add(move.generateTabu());
+        return l;
+    }
+
+    
 }

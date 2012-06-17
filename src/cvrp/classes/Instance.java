@@ -11,6 +11,8 @@ import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -138,6 +140,10 @@ public class Instance {
     } catch(FileNotFoundException e) {
       System.out.println("FileNotFoundException");
     }
+    this.assignNeighborSelector();
+    this.assignNeighborhoodGenerator();
+    this.assignNeighborhoodStructure();
+    this.assignTerminationCriteria();
   }
   
   private void assignTerminationCriteria() {
@@ -366,20 +372,31 @@ public class Instance {
     this.neighborgoodGenerator = neighborgoodGenerator;
   }
 
-  public String getNEIGHBOR_SELECTOR() {
-    return NEIGHBOR_SELECTOR;
-  }
+    public String getNEIGHBOR_SELECTOR() {
+        return NEIGHBOR_SELECTOR;
+    }
 
-  public void setNEIGHBOR_SELECTOR(String NEIGHBOR_SELECTOR) {
-    this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
-  }
+    public void setNEIGHBOR_SELECTOR(String NEIGHBOR_SELECTOR) {
+        this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
+    }
 
-  public NeighborSelector getNeighborSelector() {
-    return neighborSelector;
-  }
+    public NeighborSelector getNeighborSelector() {
+        return neighborSelector;
+    }
 
-  public void setNeighborSelector(NeighborSelector neighborSelector) {
-    this.neighborSelector = neighborSelector;
-  }
+    public void setNeighborSelector(NeighborSelector neighborSelector) {
+        this.neighborSelector = neighborSelector;
+    }
+
+    public void loadEverything() {     
+        try {
+            this.loadInstance();
+            this.loadDistance();   
+            this.loadSettings();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
    
+  
 }
