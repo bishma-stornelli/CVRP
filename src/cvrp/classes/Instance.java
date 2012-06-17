@@ -6,7 +6,7 @@ package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.interfaces.NeighborSelector;
-import cvrp.interfaces.NeighborhoodGenerator;
+import cvrp.abstracts.NeighborhoodGenerator;
 import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
