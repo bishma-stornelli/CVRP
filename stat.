@@ -1,15 +1,14 @@
-Cost: 710
-Iteration until best found: 2806
+Cost: 689
+Iteration until best found: 2953
 Total iterations: 100000
-Time until best found: 1
-Total time elapsed: 28
-710
-0 12 17 47 0 
-0 7 26 31 8 22 1 0 
-0 6 27 28 3 36 35 20 29 21 16 11 0 
-0 32 2 33 45 15 10 39 49 0 
-0 46 0 
-0 14 25 13 18 0 
-0 4 41 40 19 42 44 37 5 0 
-0 24 43 23 48 0 
-0 9 30 34 50 38 0 
+Time until best found: 0
+Total time elapsed: 14
+689
+0 12 0 
+0 17 45 33 39 10 30 49 5 46 0 
+0 27 26 31 28 8 0 
+0 32 36 3 35 20 2 0 
+0 47 4 13 41 19 40 42 44 15 37 0 
+0 48 23 24 14 0 
+0 18 25 43 7 6 0 
+0 9 50 34 21 29 16 38 11 22 1 0 

@@ -33,7 +33,7 @@ public class CVRP {
             TerminationCriteriaNotStartedException {
         // TODO code application logic here
         // Instance instance = new Instance(args[0],args[1]);
-        Instance instance = new Instance("instanciasCVRP/minimo.txt","settings"); 
+        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
         instance.loadEverything();
         run(instance);
     }
