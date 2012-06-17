@@ -44,23 +44,28 @@ public class NeighborhoodStructure1 implements NeighborhoodStructure {
             int targetRoute = (int)(Math.random()*customersSize);
             Route r = s.getRoute(targetRoute);
             int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
-            if( targetRoute == s.getRouteNumber(customer) ){
+            Move m = new SingleMove(customer, targetRoute, positionInsideRoute);
+            // If the route is the same, try to generate another number until
+            // it has tried 2* tabulist.size() times.
+            if( ( 
+                    targetRoute == s.getRouteNumber(customer) 
+                    && ( positionInsideRoute == s.getCustomerPosition(customer) 
+                        || positionInsideRoute == s.getCustomerPosition(customer) + 1 )
+                    
+                )   || tabuList.contains(m.generateTabu())){
                 if( iterationsWithoutMove > 2*tabuList.size()){
                     throw new TabuListFullException();
                 }
                 ++iterationsWithoutMove;
                 continue;
             }
-                
-            Move m = new SingleMove(customer, targetRoute, positionInsideRoute);
-            if ( tabuList.contains(m.generateTabu()) )
-                continue;
             try {
-                return new Neighbor(s, m);
+                Neighbor n = new Neighbor(s, m);
+                return n;
             } catch (MaxCapacityExceededException ex) {
-                Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MaxDurationExceededException ex) {
-                Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(NeighborhoodStructure1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
            

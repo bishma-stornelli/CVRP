@@ -4,6 +4,7 @@
  */
 package cvrp;
 
+import cvrp.classes.PrintableSolution;
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
@@ -45,7 +46,7 @@ public class CVRP {
     private static void run(Instance i) throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException {
         List<Tabu> tabuList = new ArrayList<Tabu>();
         Solution current = generateFirstSolution(i);
-        Solution best = current;
+        PrintableSolution best = current.getPrintableSolution();
         TerminationCriteria tc = i.getTerminationCriteria();
         tc.start();
         while(!tc.timeToFinish(current)){
@@ -55,8 +56,8 @@ public class CVRP {
                 tabuList.addAll(neighbor.getTabus());
                 current.applyMoves(neighbor.getMove());
                 if( current.getDuration() < best.getDuration() ){
-                    best = current;
-                    tc.recordBest(best);                
+                    best = current.getPrintableSolution();
+                    tc.recordBest(current);                
                 }
             }
             catch (TabuListFullException ex) {
@@ -71,19 +72,19 @@ public class CVRP {
         printSolution(best, tc);
     }
 
-    private static void printSolution(Solution solution, TerminationCriteria tc) {
+    private static void printSolution(PrintableSolution solution, TerminationCriteria tc) {
         BufferedWriter out = null;
         try {
             out = new BufferedWriter(new FileWriter(new File("stat.")));
-            out.write(solution.getDuration() + "");
+            out.write("Cost: " + solution.getDuration());
             out.newLine();
-            out.write(tc.getBestFoundIteration() + "");
+            out.write("Iteration until best found: " + tc.getBestFoundIteration());
             out.newLine();
-            out.write(tc.getCurrentIteration() + "");
+            out.write("Total iterations: " + tc.getCurrentIteration());
             out.newLine();
-            out.write(tc.getTimeToBest() + "");
+            out.write("Time until best found: " + tc.getTimeToBest());
             out.newLine();
-            out.write(tc.getTotalTime() + "");
+            out.write("Total time elapsed: " + tc.getTotalTime());
             out.newLine();
             out.write(solution.toString());
         } catch (IOException ex) {
