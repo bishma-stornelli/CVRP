@@ -148,8 +148,9 @@ public class Instance {
   
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*2000);
-    // Colocar las demas opciones aqui
+      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*1000);
+    else if(this.TERMINATION_CRITERIA.equals("B"))
+        this.terminationCriteria = new ImprovingTerminationCriteria(this.customersNumber*100);
   }
 
   private void assignNeighborhoodStructure() {
