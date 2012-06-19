@@ -59,10 +59,10 @@ public abstract class TerminationCriteria {
         return currentIteration;
     }
     
-    public long getTimeToBest(){
+    public long getTimeToBest() {
         return (bestFoundTime - startTime)/1000;
     }
-    public long getTotalTime(){
+    public long getTotalTime() {
         return (endTime - startTime)/1000;
     }
 }

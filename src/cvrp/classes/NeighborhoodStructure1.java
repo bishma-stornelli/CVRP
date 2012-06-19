@@ -44,7 +44,7 @@ public class NeighborhoodStructure1 implements NeighborhoodStructure {
             int targetRoute = (int)(Math.random()*customersSize);
             Route r = s.getRoute(targetRoute);
             int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
-            Move m = new SingleMove(customer, targetRoute, positionInsideRoute);
+            SingleMove m = new SingleMove(customer, targetRoute, positionInsideRoute);
             // If the route is the same, try to generate another number until
             // it has tried 2* tabulist.size() times.
             if( ( 

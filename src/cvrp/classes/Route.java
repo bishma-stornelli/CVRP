@@ -84,7 +84,7 @@ public class Route {
         if (this.duration + changeOnDuration > instance.getMaximumRouteTime()) {
             throw new MaxDurationExceededException();
         }
-        if (commit) {
+        if(commit) {
             this.route.add(index, customer);
             this.capacity += demand;
             this.duration += changeOnDuration;

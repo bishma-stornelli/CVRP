@@ -4,7 +4,7 @@
  */
 package cvrp.classes;
 
-import cvrp.abstracts.Move;
+import cvrp.interfaces.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import java.util.ArrayList;
@@ -58,6 +58,26 @@ public class Solution {
         return duration;
     }
 
+    public void setDuration(int duration) {
+      this.duration = duration;
+    }
+
+  public int[] getCustomerPosition() {
+    return customerPosition;
+  }
+
+  public void setCustomerPosition(int[] customerPosition) {
+    this.customerPosition = customerPosition;
+  }
+
+  public int[] getCustomerRoute() {
+    return customerRoute;
+  }
+
+  public void setCustomerRoute(int[] customerRoute) {
+    this.customerRoute = customerRoute;
+  }
+
     public List<Route> getRoutes() {
         return routes;
     }
@@ -66,8 +86,8 @@ public class Solution {
     public String toString() {
         String r = "";
         int totalRoutes = 0;
-        for(Route route: this.routes){
-            if(route.size() != 2){                    
+        for(Route route: this.routes) {
+            if(route.size() != 2) {                    
                 r +=  route + "\n";
                 ++totalRoutes;
             }
@@ -91,40 +111,8 @@ public class Solution {
         return this.routes.get(targetRoute);
     }
 
-    public void applyMoves(Move move) {
-        try {
-            int customer = move.getCustomer(),
-                    customerPos = this.getCustomerPosition(move.getCustomer());
-            Route originRoute = this.getRoute(this.getRouteNumber(customer));
-            Route targetRoute = this.getRoute(move.getTargetRoute());
-            this.duration += originRoute.remove(customerPos, this.getInstance(), true);
-            // Si la ruta donde lo voy a meter es la misma de donde lo saque
-            // y la posicion donde lo iba a meter es superior a donde estaba,
-            // debo restarle uno a la posicion de destino para que se actualice.
-            if ( originRoute.equals(targetRoute) && move.getTargetPosition() > customerPos ){
-                move.setTargetPosition(move.getTargetPosition() - 1);
-            }
-            this.duration += targetRoute.add(customer, move.getTargetPosition(), this.getInstance(), true);
-            customerPosition[customer] = move.getTargetPosition();
-            customerRoute[customer] = move.getTargetRoute();
-            for (int index = customerPos ; index < originRoute.size() - 1 ; ++index){
-                customerPosition[originRoute.getCustomerAt(index)] = index;
-            }
-            for (int index = move.getTargetPosition() + 1 ; index < targetRoute.size() - 1 ; ++index){
-                customerPosition[targetRoute.getCustomerAt(index)] = index;
-            }
-        } catch (MaxCapacityExceededException ex) {
-            Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MaxDurationExceededException ex) {
-            Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public PrintableSolution getPrintableSolution() {
         return new PrintableSolution(this);
-    }
-    
-    
-    
+    }    
     
 }

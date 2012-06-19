@@ -18,10 +18,10 @@ public class PrintableSolution {
 
     public PrintableSolution(Solution s) {
         routes = new ArrayList< List<Integer> >();
-        for(Route r : s.getRoutes()){
-            if(r.size() > 2){
+        for(Route r : s.getRoutes()) {
+            if(r.size() > 2) {
                 List<Integer> l = new ArrayList<Integer>(r.size());
-                for(int i = 0 ; i < r.size() ; ++i){
+                for(int i = 0 ; i < r.size() ; ++i) {
                     l.add(r.getCustomerAt(i));
                 }
                 routes.add(l);
@@ -34,7 +34,7 @@ public class PrintableSolution {
     public String toString() {
         String s = duration + "\n";
         for(List<Integer> l : routes){
-            for(Integer i : l){
+            for(Integer i : l) {
                 s += i + " ";
             }
             s += "\n";
@@ -45,8 +45,4 @@ public class PrintableSolution {
     public int getDuration() {
         return duration;
     }
-    
-    
-    
-    
 }

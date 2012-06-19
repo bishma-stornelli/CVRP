@@ -43,10 +43,8 @@ public abstract class NeighborhoodGenerator {
       
       for(int i = 1; i <= customersNumber; i++) {
         
-        if(requiredCustomers == 1) {
-          customers[k] = i;
-          k++;
-        }
+        if(requiredCustomers == 1)
+          customers[i-1] = i;
         else if(requiredCustomers == 2) {
           for(int j = i+1; j <= customersNumber; j++) {
             customers[k] = i;
