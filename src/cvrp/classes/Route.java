@@ -99,4 +99,8 @@ public class Route {
     public int getCustomerAt(int index) {
         return this.route.get(index);
     }
+
+    public List<Integer> getRoute() {
+        return this.route;
+    }
 }

@@ -33,7 +33,7 @@ public class CVRP {
             TerminationCriteriaNotStartedException {
         // TODO code application logic here
         // Instance instance = new Instance(args[0],args[1]);
-        Instance instance = new Instance("instanciasCVRP/vrpnc3.txt","settings"); 
+        Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
         instance.loadEverything();
         run(instance);
     }
@@ -51,7 +51,7 @@ public class CVRP {
         tc.start();
         while(!tc.timeToFinish(current)){
             try {
-                List<Neighbor> neighbors = i.getNeighborgoodGenerator().generateNeighborhood(current, tabuList);
+                List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
                 Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
                 tabuList.addAll(neighbor.getTabus());
                 current.applyMoves(neighbor.getMove());
@@ -59,8 +59,7 @@ public class CVRP {
                     best = current.getPrintableSolution();
                     tc.recordBest(current);                
                 }
-            }
-            catch (TabuListFullException ex) {
+            } catch (TabuListFullException ex) {
                 try{
                     tabuList.remove(tabuList.size() - 1);
                 } catch (ArrayIndexOutOfBoundsException a ) {

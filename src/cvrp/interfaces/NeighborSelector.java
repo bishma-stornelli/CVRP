@@ -19,6 +19,7 @@ import java.util.List;
  */
 public interface NeighborSelector {
     
-    public Neighbor selectNeighbor(List<Neighbor> neighbors, Solution bestFound);
+    public Neighbor selectNeighbor(List<Neighbor> neighbors, Solution bestFound)
+            throws IndexOutOfBoundsException;
     
 }

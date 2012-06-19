@@ -6,7 +6,6 @@ package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.interfaces.NeighborSelector;
-import cvrp.abstracts.NeighborhoodGenerator;
 import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,7 +40,6 @@ public class Instance {
   private int [][] coordinates;
   private TerminationCriteria terminationCriteria;
   private NeighborhoodStructure neighborhoodStructure;
-  private NeighborhoodGenerator neighborgoodGenerator;
   private NeighborSelector neighborSelector; 
   
   public Instance (String instanceName, String settingsName) {
@@ -49,7 +47,6 @@ public class Instance {
     this.settingsName = settingsName;    
     this.terminationCriteria = null;
     this.neighborhoodStructure = null;
-    this.neighborgoodGenerator = null;
     this.neighborSelector = null;
   }
   
@@ -131,8 +128,6 @@ public class Instance {
           this.TERMINATION_CRITERIA = scanner.next();
         else if("NEIGHBORHOOD_STRUCTURE".equals(option))
           this.NEIGHBORHOOD_STRUCTURE = scanner.next();
-        else if("NEIGHBORHOOD_GENERATOR".equals(option))
-          this.NEIGHBORHOOD_GENERATOR = scanner.next();
         else if("NEIGHBOR_SELECTOR".equals(option))
           this.NEIGHBOR_SELECTOR = scanner.next();
       }
@@ -141,7 +136,6 @@ public class Instance {
       System.out.println("FileNotFoundException");
     }
     this.assignNeighborSelector();
-    this.assignNeighborhoodGenerator();
     this.assignNeighborhoodStructure();
     this.assignTerminationCriteria();
   }
@@ -156,12 +150,6 @@ public class Instance {
   private void assignNeighborhoodStructure() {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
       this.neighborhoodStructure = new NeighborhoodStructure1();
-    // Colocar las demas opciones aqui
-  }
-  
-  private void assignNeighborhoodGenerator() {
-    if(this.NEIGHBORHOOD_GENERATOR.equals("F"))
-      this.neighborgoodGenerator = new FullNeighborhoodGenerator();
     // Colocar las demas opciones aqui
   }
   
@@ -365,13 +353,6 @@ public class Instance {
     this.neighborhoodStructure = neighborhoodStructure;
   }
 
-  public NeighborhoodGenerator getNeighborgoodGenerator() {
-    return neighborgoodGenerator;
-  }
-
-  public void setNeighborgoodGenerator(NeighborhoodGenerator neighborgoodGenerator) {
-    this.neighborgoodGenerator = neighborgoodGenerator;
-  }
 
     public String getNEIGHBOR_SELECTOR() {
         return NEIGHBOR_SELECTOR;

@@ -4,15 +4,13 @@
  */
 package cvrp.classes;
 
-import cvrp.abstracts.Move;
+import cvrp.interfaces.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Tabu;
 import cvrp.exceptions.NoSuchTabuTypeException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,16 +25,17 @@ public class Neighbor {
             throws MaxCapacityExceededException, MaxDurationExceededException {
         this.neighbor = s;
         this.move = move;
-        int customer = move.getCustomer();
-        int customerPos = neighbor.getCustomerPosition(customer);
-        this.duration = neighbor.getDuration();
-        Route originRoute = neighbor.getRoute(neighbor.getRouteNumber(customer));
-        Route targetRoute = neighbor.getRoute(move.getTargetRoute());
-        Instance i = neighbor.getInstance();
-        this.duration += originRoute.remove(customerPos, s.getInstance(), false);
-        this.duration += targetRoute.add(customer, move.getTargetPosition(), s.getInstance(), false);
-          
+        this.duration = move.applyMoves(neighbor, false);
         
+        
+//        int customer = move.getCustomer();
+//        int customerPos = neighbor.getCustomerPosition(customer);
+//        this.duration = neighbor.getDuration();
+//        Route originRoute = neighbor.getRoute(neighbor.getRouteNumber(customer));
+//        Route targetRoute = neighbor.getRoute(move.getTargetRoute());
+//        Instance i = neighbor.getInstance();
+//        this.duration += originRoute.remove(customerPos, s.getInstance(), false);
+//        this.duration += targetRoute.add(customer, move.getTargetPosition(), s.getInstance(), false);
     }
 
     public int getDuration() {
@@ -70,7 +69,7 @@ public class Neighbor {
 
     public List<Tabu> getTabus() {
         List<Tabu> l = new ArrayList<Tabu>(1);
-        l.add(move.generateTabu());
+        l.addAll(move.generateTabu());
         return l;
     }
 

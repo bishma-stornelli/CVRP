@@ -38,8 +38,6 @@ import java.util.List;
 public interface NeighborhoodStructure {
     
     
-    public int getNumberOfCustomerRequired();
-
-    public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) throws
-            UnexpectedAmountOfCustomersException, TabuListFullException;
+    public List<Neighbor> generateNeighborhood(Solution s , List<Tabu> tabuList)
+            throws TabuListFullException;
 }

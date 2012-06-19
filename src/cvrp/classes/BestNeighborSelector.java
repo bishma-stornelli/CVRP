@@ -14,7 +14,9 @@ import java.util.List;
 public class BestNeighborSelector implements NeighborSelector {
 
     @Override
-    public Neighbor selectNeighbor(List<Neighbor> neighbors, Solution bestFound) {
+    public Neighbor selectNeighbor(List<Neighbor> neighbors, Solution bestFound) 
+            throws IndexOutOfBoundsException
+    {
         Neighbor best = neighbors.get(0);
         for (Neighbor n: neighbors){
             if( n.getDuration() < best.getDuration() ){
