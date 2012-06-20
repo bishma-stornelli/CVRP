@@ -64,8 +64,17 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
           ++iterationsWithoutMove;
           continue;
         }
-        Neighbor n = new Neighbor(s, m);
-        return n;
+
+        try {
+          Neighbor n = new Neighbor(s, m);
+          return n;
+          
+        } catch (MaxCapacityExceededException ex) {
+          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MaxDurationExceededException ex) {
+          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
 
     }       
   }
