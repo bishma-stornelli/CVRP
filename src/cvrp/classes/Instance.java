@@ -149,7 +149,7 @@ public class Instance {
 
   private void assignNeighborhoodStructure() {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
-      this.neighborhoodStructure = new NeighborhoodStructure1();
+      this.neighborhoodStructure = new NeighborhoodStructureClassic();
     // Colocar las demas opciones aqui
   }
   

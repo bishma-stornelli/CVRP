@@ -4,10 +4,13 @@
  */
 package cvrp.interfaces;
 
+import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
 import cvrp.classes.Solution;
 import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
+import cvrp.interfaces.Tabu;
+import cvrp.interfaces.Tabu;
 import java.util.List;
 
 /** A neighborhood structure is the set of neighbors that can be obtained by
@@ -36,8 +39,8 @@ import java.util.List;
  * @author tamerdark
  */
 public interface NeighborhoodStructure {
-    
-    
-    public List<Neighbor> generateNeighborhood(Solution s , List<Tabu> tabuList)
+
+    List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
             throws TabuListFullException;
+    
 }

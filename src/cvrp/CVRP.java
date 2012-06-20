@@ -4,10 +4,10 @@
  */
 package cvrp;
 
-import cvrp.classes.PrintableSolution;
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.classes.Instance;
 import cvrp.classes.Neighbor;
+import cvrp.classes.PrintableSolution;
 import cvrp.classes.Solution;
 import cvrp.exceptions.*;
 import cvrp.interfaces.Tabu;
@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  *
  * @author tamerdark
  */
+
 public class CVRP {
 
     /**

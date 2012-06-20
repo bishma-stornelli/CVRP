@@ -61,7 +61,7 @@ public class SingleMove implements Move {
     }
 
   @Override
-  public int applyMoves(Solution solution) throws MaxCapacityExceededException, MaxDurationExceededException {
+  public void applyMoves(Solution solution) throws MaxCapacityExceededException, MaxDurationExceededException {
     
     try {
       int customerPos = solution.getCustomerPosition(this.customer);
@@ -93,9 +93,7 @@ public class SingleMove implements Move {
     } catch (MaxDurationExceededException ex) {
             Logger.getLogger(Neighbor.class.getName()).log(Level.SEVERE, null, ex);
     }
-    
-    throw new UnsupportedOperationException("Not supported yet.");
+
   } 
       
-    
 }
