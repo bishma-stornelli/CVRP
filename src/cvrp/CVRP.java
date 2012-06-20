@@ -31,7 +31,7 @@ public class CVRP {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, NoSuchTabuTypeException, 
-            TerminationCriteriaNotStartedException {
+            TerminationCriteriaNotStartedException, MaxCapacityExceededException, MaxDurationExceededException {
         // TODO code application logic here
         // Instance instance = new Instance(args[0],args[1]);
         Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
@@ -44,7 +44,7 @@ public class CVRP {
      * @param i
      * @throws NoSuchTabuTypeException 
      */
-    private static void run(Instance i) throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException {
+    private static void run(Instance i) throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException, MaxCapacityExceededException, MaxDurationExceededException {
         List<Tabu> tabuList = new ArrayList<Tabu>();
         Solution current = generateFirstSolution(i);
         PrintableSolution best = current.getPrintableSolution();
@@ -55,7 +55,7 @@ public class CVRP {
                 List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
                 Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
                 tabuList.addAll(neighbor.getTabus());
-                current.applyMoves(neighbor.getMove());
+                neighbor.getMove().applyMoves(current, true);
                 if( current.getDuration() < best.getDuration() ){
                     best = current.getPrintableSolution();
                     tc.recordBest(current);                

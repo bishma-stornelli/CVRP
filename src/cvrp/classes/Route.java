@@ -4,8 +4,8 @@
  */
 package cvrp.classes;
 
-import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.MaxCapacityExceededException;
+import cvrp.exceptions.MaxDurationExceededException;
 import java.util.ArrayList;
 import java.util.List;
 

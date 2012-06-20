@@ -4,13 +4,15 @@
  */
 package cvrp.classes;
 
+import cvrp.exceptions.MaxCapacityExceededException;
+import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.TabuListFullException;
-import cvrp.exceptions.*;
-import cvrp.interfaces.Move;
+import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.interfaces.Tabu;
-import cvrp.interfaces.NeighborhoodStructure;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,21 +25,8 @@ import java.util.logging.Logger;
  *
  * @author tamerdark
  */
-public class NeighborhoodStructureClassic implements NeighborhoodStructure {
+public class NeighborhoodStructureClassic extends NeighborhoodStructure {
 
-  @Override
-  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) throws TabuListFullException {
-    Instance instance = s.getInstance();
-    
-    if(instance.getNEIGHBORHOOD_GENERATOR().equals("F"))
-      return this.generateFullNeighborhood(s, tabuList);
-    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("R"))
-      return this.generateRandomNeighborhood(s, tabuList);
-    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("G"))
-      return this.generateGranularNeighborhood(s, tabuList); 
-    return null;
-  }
-  
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
             throws UnexpectedAmountOfCustomersException , TabuListFullException {
     if( customers.size() != 1 ) {
@@ -74,8 +63,6 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
         } catch (MaxDurationExceededException ex) {
           Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }       
   }
     
@@ -102,18 +89,24 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
     Instance instance = s.getInstance();
     int customerNumber = instance.getCustomersNumber();
     int randomCustomers = (int)Math.ceil(Math.random()*customerNumber);
+    int randomCustomer = 0;
     List<Neighbor> neighbors = new ArrayList<Neighbor>();
     List<Integer> customer = new ArrayList<Integer>(1);
+    Set<Integer> customerSet = new LinkedHashSet<Integer>(randomCustomers/2);
     for(int i = 1; i <= randomCustomers; i++) {
-      customer.add((int)Math.ceil(Math.random()*customerNumber));
-      try {
-        neighbors.add(this.generateNeighbor(s, tabuList, customer));
-      } catch (UnexpectedAmountOfCustomersException ex) {
-        Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (TabuListFullException t){
-        throw t;
-      }
-      customer.clear();
+        randomCustomer = (int)Math.ceil(Math.random()*customerNumber);
+        if(customerSet.contains(i)) {
+          customerSet.add(randomCustomer);
+          customer.add(randomCustomer);
+          try {
+            neighbors.add(this.generateNeighbor(s, tabuList, customer));
+          } catch (UnexpectedAmountOfCustomersException ex) {
+            Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (TabuListFullException t){
+            throw t;
+          }
+          customer.clear();
+        }
     }
     return neighbors;
   }

@@ -6,7 +6,6 @@ package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.interfaces.NeighborSelector;
-import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -130,6 +129,8 @@ public class Instance {
           this.NEIGHBORHOOD_STRUCTURE = scanner.next();
         else if("NEIGHBOR_SELECTOR".equals(option))
           this.NEIGHBOR_SELECTOR = scanner.next();
+        else if("NEIGHBORHOOD_GENERATOR".equals(option))
+          this.NEIGHBORHOOD_GENERATOR = scanner.next();
       }
         
     } catch(FileNotFoundException e) {

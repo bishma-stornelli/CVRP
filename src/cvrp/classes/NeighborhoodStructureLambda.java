@@ -6,7 +6,6 @@ package cvrp.classes;
 
 import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
-import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.List;
 
@@ -14,12 +13,8 @@ import java.util.List;
  *
  * @author vicente
  */
-public class NeighborhoodStructureLambda implements NeighborhoodStructure {
+public class NeighborhoodStructureLambda extends NeighborhoodStructure {
 
-  @Override
-  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) throws TabuListFullException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
   
 /*
   public int getNumberOfCustomerRequired() {

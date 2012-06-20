@@ -4,9 +4,10 @@
  */
 package cvrp.classes;
 
+import cvrp.exceptions.MaxCapacityExceededException;
+import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
-import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,41 +18,53 @@ import java.util.logging.Logger;
  *
  * @author vicente
  */
-public class NeighborhoodStructureSwap implements NeighborhoodStructure {
+public class NeighborhoodStructureSwap extends NeighborhoodStructure {
   
-  @Override
-  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) throws TabuListFullException {
-    Instance instance = s.getInstance();
+  public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
+          throws UnexpectedAmountOfCustomersException {
+  
+    if(customers.size() != 2)
+      throw new UnexpectedAmountOfCustomersException();
+    int customerA = customers.get(0);
+    int customerB = customers.get(1);
+    int targetRouteA = s.getRouteNumber(customerB);
+    int targetRouteB = s.getRouteNumber(customerA);
+    int targetRoutePosA = s.getCustomerPosition(customerB);
+    int targetRoutePosB = s.getCustomerPosition(customerA);
     
-    if(instance.getNEIGHBORHOOD_GENERATOR().equals("F"))
-      return this.generateFullNeighborhood(s, tabuList);
-    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("R"))
-      return this.generateRandomNeighborhood(s, tabuList);
-    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("G"))
-      return this.generateGranularNeighborhood(s, tabuList); 
+    SwapMove m = new SwapMove(customerA, customerB, targetRouteB, targetRouteA, 
+            targetRoutePosB, targetRoutePosA);
+    
+    if(tabuList.contains(m.generateTabu()))
+      return null;
+    
+    try {
+      Neighbor n = new Neighbor(s, m);
+      return n;
+      
+    } catch (MaxCapacityExceededException ex) {
+      Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (MaxDurationExceededException ex) {
+      Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
+    }
     return null;
   }
 
-  @Override
-  public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) throws UnexpectedAmountOfCustomersException, TabuListFullException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  
   private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
     Instance instance = s.getInstance();
     int customersNumber = instance.getCustomersNumber();
     List<Neighbor> neighbors = new ArrayList<Neighbor>();
     List<Integer> customer = new ArrayList<Integer>(2);
-    for(int i = 1; i <= customersNumber; i++) {
+    for(int i = 1; i < customersNumber; i++) {
       customer.add(i);
-      customer.add(i+1);
-      try {
-        neighbors.add(this.generateNeighbor(s, tabuList, customer));
-      } catch (UnexpectedAmountOfCustomersException ex) {
-        Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
-      } catch (TabuListFullException t){
-        throw t;
+      for(int j = i+1; j <= customersNumber; j++) {
+        customer.add(i+1);
+        try {
+          neighbors.add(this.generateNeighbor(s, tabuList, customer));
+        } catch (UnexpectedAmountOfCustomersException ex) {
+          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        customer.get(1);
       }
       customer.clear();
     }
@@ -61,7 +74,7 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
   private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-  
+
   private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }

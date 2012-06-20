@@ -93,13 +93,10 @@ public class SwapMove implements Move {
   }
 
   @Override
-  public void applyMoves(Solution solution) 
+  public int applyMoves(Solution solution, boolean commit) 
           throws MaxCapacityExceededException, MaxDurationExceededException {
     
-    SingleMove singleMoveA = new SingleMove(this.customerA,this.targetRouteA,this.targetPositionA);
-    SingleMove singleMoveB = new SingleMove(this.customerB,this.targetRouteB,this.targetPositionB);
-    singleMoveA.applyMoves(solution);
-    singleMoveB.applyMoves(solution);
+    throw new UnsupportedOperationException("Not supported yet.");
 
   }
     

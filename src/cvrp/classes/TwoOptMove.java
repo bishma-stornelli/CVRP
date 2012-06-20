@@ -4,8 +4,8 @@
  */
 package cvrp.classes;
 
-import cvrp.interfaces.Move;
 import cvrp.exceptions.MaxDurationExceededException;
+import cvrp.interfaces.Move;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author tamerdark
  */
-class TwoOptMove implements Move {
+public class TwoOptMove implements Move {
     
     private int route;
     private int customer1;
@@ -40,7 +40,7 @@ class TwoOptMove implements Move {
         if(newDuration > i.getMaximumRouteTime()){
             throw new MaxDurationExceededException();
         }
-        if( commit ){
+        if( commit ) {
             List<Integer> l = r.getRoute();
             List<Integer> reverse = new ArrayList<Integer>(customer2 - customer1);
             for(int index = customer1 ; index < customer2 + 1 ; ++index){
