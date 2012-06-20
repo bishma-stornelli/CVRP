@@ -4,7 +4,7 @@
  */
 package cvrp.classes;
 
-import cvrp.interfaces.Move;
+import cvrp.abstracts.Move;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Tabu;

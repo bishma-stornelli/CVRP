@@ -2,32 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cvrp.classes;
+package cvrp.abstracts;
 
-
-import cvrp.exceptions.MaxCapacityExceededException;
-import cvrp.exceptions.MaxDurationExceededException;
-import cvrp.interfaces.Move;
+import cvrp.classes.CustomerRouteTabu;
 import cvrp.interfaces.Tabu;
-import java.util.ArrayList;
-import java.util.List;
-
-import cvrp.abstracts.Move;
-
 
 /**
- *
+ * 
  * @author tamerdark
  */
-
-public class SingleMove implements Move {
+public abstract class Move {
 
     protected int customer; // The customer to be moved
     protected int targetPosition; // The position in the origin_route from where the customer is going to be inserted
     protected int targetRoute; // The route where the customer is going to be moved
 
-    public SingleMove(int customer, int targetRoute, int targetPosition) {
-        super(customer, targetRoute, targetPosition);
+    public Move(int customer, int targetRoute, int targetPosition) {
+        this.customer = customer;
+        this.targetPosition = targetPosition;
+        this.targetRoute = targetRoute;
+    }    
+
+    public int getCustomer() {
+        return customer;
     }
 
     public void setCustomer(int customer) {
@@ -49,18 +46,9 @@ public class SingleMove implements Move {
         return this.targetRoute;
     }
 
-    @Override
-    public List<Tabu> generateTabu() {
-        List<Tabu> l = new ArrayList<Tabu>();
-        l.add(new CustomerRouteTabu(customer, targetRoute));
-        return l;
+    public Tabu generateTabu() {
+        return new CustomerRouteTabu(customer, targetRoute);
     }
-
-    @Override
-    public int applyMoves(Solution aThis, boolean commit) throws MaxCapacityExceededException, MaxDurationExceededException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     
     
 }
