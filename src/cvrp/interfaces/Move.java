@@ -10,16 +10,15 @@ import cvrp.exceptions.MaxDurationExceededException;
 import java.util.List;
 
 /**
- * 
- * @author tamerdark
+ *
+ * @author vicente
  */
 public interface Move {
+  
+  public List<Tabu> generateTabu();
+          
+  public int applyMoves(Solution solution) throws MaxCapacityExceededException, MaxDurationExceededException;
 
-    public int applyMoves(Solution aThis, boolean commit) throws 
-            MaxCapacityExceededException, MaxDurationExceededException;
-
-    public List<Tabu> generateTabu();
-    
-    
-    
+  
 }
+
