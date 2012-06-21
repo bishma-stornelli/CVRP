@@ -17,59 +17,36 @@ import java.util.logging.Logger;
  * 
  * @author tamerdark
  */
-public class SingleMove implements Move {
+public class MoveSingle implements Move {
 
-    private int customer; // The customer to be moved
-    private int targetPosition; // The position in the origin_route from where the customer is going to be inserted
-    private int targetRoute; // The route where the customer is going to be moved
+  private int customer; // The customer to be moved
+  private int targetPosition; // The position in the origin_route from where the customer is going to be inserted
+  private int targetRoute; // The route where the customer is going to be moved
 
-    public SingleMove(int customer, int targetRoute, int targetPosition) {
-        this.customer = customer;
-        this.targetPosition = targetPosition;
-        this.targetRoute = targetRoute;
-    }    
-
-    public int getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(int customer) {
-        this.customer = customer;
-    }
-
-    public int getTargetPosition() {
-        return targetPosition;
-    }
-
-    public void setTargetPosition(int targetPosition) {
-        this.targetPosition = targetPosition;
-    }
-
-    public void setTargetRoute(int r) {
-        this.targetRoute = r;
-    }
-    public int getTargetRoute(){
-        return this.targetRoute;
-    }
+  public MoveSingle(int customer, int targetRoute, int targetPosition) {
+    this.customer = customer;
+    this.targetPosition = targetPosition;
+    this.targetRoute = targetRoute;
+  }
 
   @Override
   public List<Tabu> generateTabu() {
-      List<Tabu> tabuList = new ArrayList<Tabu>(1);
-      CustomerRouteTabu customerRouteTabu = new CustomerRouteTabu(customer, targetRoute);
-      tabuList.add(customerRouteTabu);
-      return tabuList;
+    List<Tabu> tabuList = new ArrayList<Tabu>(1);
+    CustomerRouteTabu customerRouteTabu = new CustomerRouteTabu(customer, targetRoute);
+    tabuList.add(customerRouteTabu);
+    return tabuList;
   }
 
   @Override
   public int applyMoves(Solution solution, boolean commit) throws MaxCapacityExceededException, MaxDurationExceededException {
-    
+
     try {
       int customerPos = solution.getCustomerPosition(this.customer);
       Route origin_Route = solution.getRoute(solution.getRouteNumber(this.customer));
       Route target_Route = solution.getRoute(this.targetRoute);
       int duration = solution.getDuration();
       duration += origin_Route.remove(customerPos, solution.getInstance(), commit);
-      
+
       // Si la ruta donde lo voy a meter es la misma de donde lo saque
       // y la posicion donde lo iba a meter es superior a donde estaba,
       // debo restarle uno a la posicion de destino para que se actualice.
@@ -97,5 +74,31 @@ public class SingleMove implements Move {
     }
     return 0;
   } 
-      
+  
+  // Getters and Setters
+
+  public int getCustomer() {
+    return customer;
+  }
+
+  public void setCustomer(int customer) {
+    this.customer = customer;
+  }
+
+  public int getTargetPosition() {
+    return targetPosition;
+  }
+
+  public void setTargetPosition(int targetPosition) {
+    this.targetPosition = targetPosition;
+  }
+
+  public int getTargetRoute() {
+    return targetRoute;
+  }
+
+  public void setTargetRoute(int targetRoute) {
+    this.targetRoute = targetRoute;
+  }
+  
 }

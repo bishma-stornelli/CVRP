@@ -4,8 +4,6 @@
  */
 package cvrp.classes;
 
-import cvrp.exceptions.TabuListFullException;
-import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.interfaces.Tabu;
 import java.util.List;
 
@@ -53,6 +51,17 @@ public class NeighborhoodStructureLambda extends NeighborhoodStructure {
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
+  
+  private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+  
+  private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
+  private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
 }

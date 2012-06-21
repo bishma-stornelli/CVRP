@@ -54,17 +54,18 @@ public class NeighborhoodStructure {
     return null;
   }
   
-  private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
+  private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) 
+          throws TabuListFullException {
     return null;
   }
 
-    
-  private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
+  private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) 
+          throws TabuListFullException {
     return null;
   }
-  
-  
-  private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
+ 
+  private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) 
+          throws TabuListFullException {
     return null;
   }
 

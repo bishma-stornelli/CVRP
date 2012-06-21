@@ -17,7 +17,4 @@ package cvrp.interfaces;
  */
 public interface Tabu {
     
-    
-    
-    
 }

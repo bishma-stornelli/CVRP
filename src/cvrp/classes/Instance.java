@@ -49,6 +49,16 @@ public class Instance {
     this.neighborSelector = null;
   }
   
+  public void loadEverything() {     
+    try {
+        this.loadInstance();
+        this.loadDistance();   
+        this.loadSettings();
+    } catch (FileNotFoundException ex) {
+        Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+  
   public void loadInstance() throws FileNotFoundException {
     
     File file = new File(this.instanceName);
@@ -143,22 +153,29 @@ public class Instance {
   
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new IterationTerminationCriteria(this.customersNumber*1000);
+      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*1000);
     else if(this.TERMINATION_CRITERIA.equals("B"))
-        this.terminationCriteria = new ImprovingTerminationCriteria(this.customersNumber*100);
+        this.terminationCriteria = new TerminationCriteriaImproving(this.customersNumber*100);
   }
 
   private void assignNeighborhoodStructure() {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
       this.neighborhoodStructure = new NeighborhoodStructureClassic();
-    // Colocar las demas opciones aqui
+    else if(this.NEIGHBORHOOD_STRUCTURE.equals("S"))
+      this.neighborhoodStructure = new NeighborhoodStructureSwap();
+    else if(this.NEIGHBORHOOD_STRUCTURE.equals("L"))
+      this.neighborhoodStructure = new NeighborhoodStructureLambda();
+    else if(this.NEIGHBORHOOD_STRUCTURE.equals("2OPT"))
+      this.neighborhoodStructure = new NeighborhoodStructureTwoOpt();
+    //  else if(this.NEIGHBORHOOD_STRUCTURE.equals("3OPT"))
+    //  this.neighborhoodStructure = new NeighborhoodStructureThreeOpt();
   }
   
   private void assignNeighborSelector() {
     if(this.NEIGHBOR_SELECTOR.equals("F"))
-      this.neighborSelector = new FirstNeighborSelector();
+      this.neighborSelector = new NeighborSelectorFirst();
     else if(this.NEIGHBOR_SELECTOR.equals("B"))
-      this.neighborSelector = new BestNeighborSelector();
+      this.neighborSelector = new NeighborSelectorBest();
   }
   
   public void printDistances() {
@@ -190,12 +207,42 @@ public class Instance {
     return 0;
   }
   
+  public int getDistance(int customerA, int customerB){
+    return this.distances[customerA][customerB];
+  }
+
+  // Getters and Setters
+  
   public String getMULTI_THREAD() {
     return MULTI_THREAD;
   }
 
   public void setMULTI_THREAD(String MULTI_THREAD) {
     this.MULTI_THREAD = MULTI_THREAD;
+  }
+
+  public String getNEIGHBORHOOD_GENERATOR() {
+    return NEIGHBORHOOD_GENERATOR;
+  }
+
+  public void setNEIGHBORHOOD_GENERATOR(String NEIGHBORHOOD_GENERATOR) {
+    this.NEIGHBORHOOD_GENERATOR = NEIGHBORHOOD_GENERATOR;
+  }
+
+  public String getNEIGHBORHOOD_STRUCTURE() {
+    return NEIGHBORHOOD_STRUCTURE;
+  }
+
+  public void setNEIGHBORHOOD_STRUCTURE(String NEIGHBORHOOD_STRUCTURE) {
+    this.NEIGHBORHOOD_STRUCTURE = NEIGHBORHOOD_STRUCTURE;
+  }
+
+  public String getNEIGHBOR_SELECTOR() {
+    return NEIGHBOR_SELECTOR;
+  }
+
+  public void setNEIGHBOR_SELECTOR(String NEIGHBOR_SELECTOR) {
+    this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
   }
 
   public String getSELECT_CLIENT() {
@@ -237,14 +284,6 @@ public class Instance {
   public void setTABU_RESTRICTION(String TABU_RESTRICTION) {
     this.TABU_RESTRICTION = TABU_RESTRICTION;
   }
-  
-    public String getNEIGHBORHOOD_STRUCTURE() {
-    return NEIGHBORHOOD_STRUCTURE;
-  }
-
-  public void setNEIGHBORHOOD_STRUCTURE(String NEIGHBORHOOD_STRUCTURE) {
-    this.NEIGHBORHOOD_STRUCTURE = NEIGHBORHOOD_STRUCTURE;
-  }
 
   public String getTERMINATION_CRITERIA() {
     return TERMINATION_CRITERIA;
@@ -254,12 +293,12 @@ public class Instance {
     this.TERMINATION_CRITERIA = TERMINATION_CRITERIA;
   }
 
-  public String getNEIGHBORHOOD_GENERATOR() {
-    return NEIGHBORHOOD_GENERATOR;
+  public int[][] getCoordinates() {
+    return coordinates;
   }
 
-  public void setNEIGHBORHOOD_GENERATOR(String NEIGHBORHOOD_GENERATOR) {
-    this.NEIGHBORHOOD_GENERATOR = NEIGHBORHOOD_GENERATOR;
+  public void setCoordinates(int[][] coordinates) {
+    this.coordinates = coordinates;
   }
 
   public int getCustomersNumber() {
@@ -302,6 +341,22 @@ public class Instance {
     this.maximumRouteTime = maximumRouteTime;
   }
 
+  public NeighborSelector getNeighborSelector() {
+    return neighborSelector;
+  }
+
+  public void setNeighborSelector(NeighborSelector neighborSelector) {
+    this.neighborSelector = neighborSelector;
+  }
+
+  public NeighborhoodStructure getNeighborhoodStructure() {
+    return neighborhoodStructure;
+  }
+
+  public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
+    this.neighborhoodStructure = neighborhoodStructure;
+  }
+
   public int[] getQuantity() {
     return quantity;
   }
@@ -318,18 +373,6 @@ public class Instance {
     this.settingsName = settingsName;
   }
 
-  public int getVehicleCapacity() {
-    return vehicleCapacity;
-  }
-
-  public void setVehicleCapacity(int vehicleCapacity) {
-    this.vehicleCapacity = vehicleCapacity;
-  }
-  
-  public int getDistance(int customerA, int customerB){
-      return this.distances[customerA][customerB];
-  }
-
   public TerminationCriteria getTerminationCriteria() {
     return terminationCriteria;
   }
@@ -337,49 +380,13 @@ public class Instance {
   public void setTerminationCriteria(TerminationCriteria terminationCriteria) {
     this.terminationCriteria = terminationCriteria;
   }
-  
-  public int[][] getCoordinates() {
-    return coordinates;
+
+  public int getVehicleCapacity() {
+    return vehicleCapacity;
   }
 
-  public void setCoordinates(int[][] coordinates) {
-    this.coordinates = coordinates;
+  public void setVehicleCapacity(int vehicleCapacity) {
+    this.vehicleCapacity = vehicleCapacity;
   }
-
-  public NeighborhoodStructure getNeighborhoodStructure() {
-    return neighborhoodStructure;
-  }
-
-  public void setNeighborhoodStructure(NeighborhoodStructure neighborhoodStructure) {
-    this.neighborhoodStructure = neighborhoodStructure;
-  }
-
-
-    public String getNEIGHBOR_SELECTOR() {
-        return NEIGHBOR_SELECTOR;
-    }
-
-    public void setNEIGHBOR_SELECTOR(String NEIGHBOR_SELECTOR) {
-        this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
-    }
-
-    public NeighborSelector getNeighborSelector() {
-        return neighborSelector;
-    }
-
-    public void setNeighborSelector(NeighborSelector neighborSelector) {
-        this.neighborSelector = neighborSelector;
-    }
-
-    public void loadEverything() {     
-        try {
-            this.loadInstance();
-            this.loadDistance();   
-            this.loadSettings();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-   
-  
+       
 }

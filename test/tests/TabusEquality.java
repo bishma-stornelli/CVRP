@@ -4,7 +4,7 @@
  */
 package tests;
 
-import cvrp.classes.CustomerRoutePositionTabu;
+import cvrp.classes.CustomerRouteTabuPosition;
 import cvrp.classes.CustomerRouteTabu;
 import cvrp.classes.CustomerTabu;
 import cvrp.interfaces.Tabu;
@@ -43,7 +43,7 @@ public class TabusEquality {
     public void equality() {
         Tabu ct = new CustomerTabu(1);
         Tabu crt = new CustomerRouteTabu(2, 1);
-        Tabu crpt = new CustomerRoutePositionTabu(1, 2, 2, 1);
+        Tabu crpt = new CustomerRouteTabuPosition(1, 2, 2, 1);
         assert ct.equals(crt);
         assert crt.equals(ct);
         assert crpt.equals(ct);
@@ -57,7 +57,7 @@ public class TabusEquality {
     public void disequality() {
         Tabu ct = new CustomerTabu(1);
         Tabu crt = new CustomerRouteTabu(3, 2);
-        Tabu crpt = new CustomerRoutePositionTabu(1, 2, 2, 2);
+        Tabu crpt = new CustomerRouteTabuPosition(1, 2, 2, 2);
         assert !ct.equals(crt);
         assert !crt.equals(ct);
         assert !crpt.equals(ct);

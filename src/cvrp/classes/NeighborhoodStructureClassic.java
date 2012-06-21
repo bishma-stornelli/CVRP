@@ -28,36 +28,34 @@ import java.util.logging.Logger;
 public class NeighborhoodStructureClassic extends NeighborhoodStructure {
 
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
-            throws UnexpectedAmountOfCustomersException , TabuListFullException {
-    if( customers.size() != 1 ) {
-        throw new UnexpectedAmountOfCustomersException();
+          throws UnexpectedAmountOfCustomersException , TabuListFullException {
+    if(customers.size() != 1) {
+      throw new UnexpectedAmountOfCustomersException();
     }
     int customer = customers.get(0);
     int customersSize = s.getInstance().getCustomersNumber();
     int iterationsWithoutMove = 0;
     while(true) {
-        int targetRoute = (int)(Math.random()*customersSize);
-        Route r = s.getRoute(targetRoute);
-        int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
-        SingleMove m = new SingleMove(customer, targetRoute, positionInsideRoute);
-        // If the route is the same, try to generate another number until
-        // it has tried 2* tabulist.size() times.
-        if((targetRoute == s.getRouteNumber(customer) && 
-            (positionInsideRoute == s.getCustomerPosition(customer) 
-          || positionInsideRoute == s.getCustomerPosition(customer) + 1)
-           ) || tabuList.contains(m.generateTabu())
-          ) {
+      int targetRoute = (int)(Math.random()*customersSize);
+      Route r = s.getRoute(targetRoute);
+      int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
+      MoveSingle m = new MoveSingle(customer, targetRoute, positionInsideRoute);
+      // If the route is the same, try to generate another number until
+      // it has tried 2* tabulist.size() times.
+      if((targetRoute == s.getRouteNumber(customer) && 
+          (positionInsideRoute == s.getCustomerPosition(customer) 
+        || positionInsideRoute == s.getCustomerPosition(customer) + 1)
+          ) || tabuList.contains(m.generateTabu())
+        ) {
           if( iterationsWithoutMove > 2*tabuList.size()){
-              throw new TabuListFullException();
+            throw new TabuListFullException();
           }
           ++iterationsWithoutMove;
           continue;
         }
-
         try {
           Neighbor n = new Neighbor(s, m);
-          return n;
-          
+          return n; 
         } catch (MaxCapacityExceededException ex) {
           Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MaxDurationExceededException ex) {
@@ -94,19 +92,19 @@ public class NeighborhoodStructureClassic extends NeighborhoodStructure {
     List<Integer> customer = new ArrayList<Integer>(1);
     Set<Integer> customerSet = new LinkedHashSet<Integer>(randomCustomers/2);
     for(int i = 1; i <= randomCustomers; i++) {
-        randomCustomer = (int)Math.ceil(Math.random()*customerNumber);
-        if(customerSet.contains(i)) {
-          customerSet.add(randomCustomer);
-          customer.add(randomCustomer);
-          try {
-            neighbors.add(this.generateNeighbor(s, tabuList, customer));
-          } catch (UnexpectedAmountOfCustomersException ex) {
-            Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
-          } catch (TabuListFullException t){
-            throw t;
-          }
-          customer.clear();
+      randomCustomer = (int)Math.ceil(Math.random()*customerNumber);
+      if(customerSet.contains(i)) {
+        customerSet.add(randomCustomer);
+        customer.add(randomCustomer);
+        try {
+          neighbors.add(this.generateNeighbor(s, tabuList, customer));
+        } catch (UnexpectedAmountOfCustomersException ex) {
+          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TabuListFullException t){
+          throw t;
         }
+        customer.clear();
+      }
     }
     return neighbors;
   }
@@ -114,6 +112,5 @@ public class NeighborhoodStructureClassic extends NeighborhoodStructure {
   private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-
 
 }

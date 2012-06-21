@@ -12,37 +12,36 @@ import cvrp.interfaces.Tabu;
  */
 public class CustomerTabu implements Tabu {
     
-    private int customer;
+  private int customer;
 
-    public CustomerTabu(int customer) {
-        this.customer = customer;
-    }
+  public CustomerTabu(int customer) {
+      this.customer = customer;
+  }
 
-    public int getCustomer() {
-        return customer;
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
     }
+    try {
+      final CustomerTabu other = (CustomerTabu) obj;
+      if (this.customer != other.customer) {
+        return false;
+      }
+      return true;
+    } catch(ClassCastException cce) {
+        return false;
+    }        
+  }
 
-    public void setCustomer(int customer) {
-        this.customer = customer;
-    }
-    
-    
+  // Getters and Setters
+  
+  public int getCustomer() {
+    return customer;
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        try{
-            final CustomerTabu other = (CustomerTabu) obj;
-            if (this.customer != other.customer) {
-                return false;
-            }
-            return true;
-        }catch(ClassCastException cce){
-            return false;
-        }        
-    }
-    
-    
+  public void setCustomer(int customer) {
+    this.customer = customer;
+  }
+       
 }

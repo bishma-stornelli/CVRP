@@ -32,7 +32,7 @@ public class NeighborhoodStructureSwap extends NeighborhoodStructure {
     int targetRoutePosA = s.getCustomerPosition(customerB);
     int targetRoutePosB = s.getCustomerPosition(customerA);
     
-    SwapMove m = new SwapMove(customerA, customerB, targetRouteB, targetRouteA, 
+    MoveSwap m = new MoveSwap(customerA, customerB, targetRouteB, targetRouteA, 
             targetRoutePosB, targetRoutePosA);
     
     if(tabuList.contains(m.generateTabu()))
