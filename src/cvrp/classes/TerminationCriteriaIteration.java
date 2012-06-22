@@ -23,6 +23,7 @@ public class TerminationCriteriaIteration extends TerminationCriteria {
   @Override
   public boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException {   
     ++this.currentIteration;
+    System.out.println(this.currentIteration);
     return (this.currentIteration == this.endIteration);
   }
 

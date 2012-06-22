@@ -60,11 +60,13 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
       if((targetRoute == s.getRouteNumber(customer) && 
           (positionInsideRoute == s.getCustomerPosition(customer) 
         || positionInsideRoute == s.getCustomerPosition(customer) + 1)
-          ) || tabuList.contains(m.generateTabu())
+          ) || tabuList.contains(m.generateTabu().get(0))
         ) {
+          
           if(iterationsWithoutMove > 2*tabuList.size()){
             throw new TabuListFullException();
           }
+         
           ++iterationsWithoutMove;
           continue;
         }

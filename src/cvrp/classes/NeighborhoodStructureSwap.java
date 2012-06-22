@@ -37,7 +37,7 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
   
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
           throws UnexpectedAmountOfCustomersException {
-  
+    
     if(customers.size() != 2)
       throw new UnexpectedAmountOfCustomersException();
     
@@ -45,11 +45,11 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     int customerB = customers.get(1);
     int targetRouteA = s.getRouteNumber(customerB);
     int targetRouteB = s.getRouteNumber(customerA);
-    int targetRoutePosA = s.getCustomerPosition(customerB);
-    int targetRoutePosB = s.getCustomerPosition(customerA);
+    int targetRoutePositionA = s.getCustomerPosition(customerB);
+    int targetRoutePositionB = s.getCustomerPosition(customerA);
     
-    MoveSwap m = new MoveSwap(customerA, customerB, targetRouteB, targetRouteA, 
-            targetRoutePosB, targetRoutePosA);
+    MoveSwap m = new MoveSwap(customerA, customerB, targetRouteA, targetRouteB, 
+            targetRoutePositionA, targetRoutePositionB);
     
     if(tabuList.contains(m.generateTabu()))
       return null;
@@ -83,7 +83,7 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
         } catch (UnexpectedAmountOfCustomersException ex) {
           Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         }
-        customer.get(1);
+        customer.remove(1);
       }
       customer.clear();
     }

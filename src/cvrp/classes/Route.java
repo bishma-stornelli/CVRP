@@ -57,7 +57,8 @@ public class Route {
     return changeOnDuration;
   }
 
-  public int remove(int index, Instance instance) {
+  public int remove(int index, Instance instance) 
+          throws MaxDurationExceededException {
 
     int previous = this.route.get(index - 1);
     int customer = this.route.get(index);
@@ -66,6 +67,10 @@ public class Route {
                          - instance.getDistance(previous, customer)
                          - instance.getDistance(customer, next)
                          - instance.getDropTime();
+    if (this.duration + changeOnDuration > instance.getMaximumRouteTime()) {
+      throw new MaxDurationExceededException();
+    }
+    
     this.route.remove(index);
     this.duration += changeOnDuration;
     this.capacity -= instance.getDemand(customer);

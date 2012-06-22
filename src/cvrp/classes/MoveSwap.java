@@ -47,12 +47,29 @@ public class MoveSwap implements Move {
   @Override
   public void applyMove(Solution solution) 
           throws MaxCapacityExceededException, MaxDurationExceededException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    
+    MoveSingle singleMoveA = 
+            new MoveSingle(this.customerA, this.targetRouteA, this.targetPositionA);
+    singleMoveA.applyMove(solution);
+    MoveSingle singleMoveB =
+            new MoveSingle(this.customerB, this.targetRouteB, this.targetPositionB);
+    singleMoveB.applyMove(solution); 
   }
 
   @Override
-  public int applyMoveDuration(Solution solution) {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public int applyMoveDuration(Solution solution) 
+          throws MaxCapacityExceededException, MaxDurationExceededException{
+    MoveSingle singleMoveA = 
+            new MoveSingle(this.customerA, this.targetRouteA, this.targetPositionA);
+    int durationA = singleMoveA.applyMoveDuration(solution);
+    int duration = solution.getDuration();
+    solution.setDuration(durationA);
+    MoveSingle singleMoveB =
+            new MoveSingle(this.customerB, this.targetRouteB, this.targetPositionB);
+    int durationB = singleMoveB.applyMoveDuration(solution);
+    solution.setDuration(duration);
+    return durationB;
+    
   }
   
   // Getters and Setters
