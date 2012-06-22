@@ -68,6 +68,14 @@ public class Solution {
   public int getCustomerPosition(int customer) {
     return customerPosition[customer];
   }
+  
+  public void setCustomerPosition(int customer, int position) {
+    this.customerPosition[customer] = position;
+  }
+  
+  public void setCustomerRoute(int customer, int route) {
+    this.customerRoute[customer] = route;
+  }
 
   public Route getRoute(int targetRoute) {
     return this.routes.get(targetRoute);

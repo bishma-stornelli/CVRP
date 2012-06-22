@@ -4,6 +4,8 @@
  */
 package cvrp.classes;
 
+import cvrp.interfaces.NeighborhoodStructure;
+import cvrp.exceptions.TabuListFullException;
 import cvrp.interfaces.Tabu;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
  *
  * @author vicente
  */
-public class NeighborhoodStructureLambda extends NeighborhoodStructure {
+public class NeighborhoodStructureLambda implements NeighborhoodStructure {
 
   
 /*
@@ -48,6 +50,20 @@ public class NeighborhoodStructureLambda extends NeighborhoodStructure {
   }
   */
 
+  @Override
+  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
+          throws TabuListFullException {
+    Instance instance = s.getInstance();
+    
+    if(instance.getNEIGHBORHOOD_GENERATOR().equals("F"))
+      return this.generateFullNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("R"))
+      return this.generateRandomNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("G"))
+      return this.generateGranularNeighborhood(s, tabuList); 
+    return null;
+  }
+  
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }

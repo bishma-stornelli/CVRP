@@ -34,7 +34,7 @@ public class CVRP {
           TerminationCriteriaNotStartedException, MaxCapacityExceededException, MaxDurationExceededException {
       // TODO code application logic here
       // Instance instance = new Instance(args[0],args[1]);
-    Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
+    Instance instance = new Instance("instanciasCVRP/vrpnc2.txt","settings"); 
     instance.loadEverything();
     run(instance);
   }
@@ -57,7 +57,7 @@ public class CVRP {
         List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
         Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
         tabuList.addAll(neighbor.getTabus());
-        neighbor.getMove().applyMoves(current, true);
+        neighbor.getMove().applyMove(current);
         if(current.getDuration() < best.getDuration()) {
           best = current.getPrintableSolution();
           tc.recordBest(current);                

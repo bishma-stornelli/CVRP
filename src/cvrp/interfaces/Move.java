@@ -17,7 +17,10 @@ public interface Move {
   
   public List<Tabu> generateTabu();
           
-  public int applyMoves(Solution solution, boolean commit) 
+  public void applyMove(Solution solution) 
+          throws MaxCapacityExceededException, MaxDurationExceededException;
+  
+  public int applyMoveDuration(Solution solution)
           throws MaxCapacityExceededException, MaxDurationExceededException;
 
 }

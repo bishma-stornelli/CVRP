@@ -4,10 +4,10 @@
  */
 package cvrp.classes;
 
+import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Move;
 import cvrp.interfaces.Tabu;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +25,18 @@ public class MoveTwoOpt implements Move {
     this.customer1 = edge1;
     this.customer2 = edge2;
   }
+  
+  @Override
+  public void applyMove(Solution solution) 
+          throws MaxCapacityExceededException, MaxDurationExceededException {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
+  @Override
+  public int applyMoveDuration(Solution solution) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
+/*
   @Override
   public int applyMoves(Solution s, boolean commit) throws MaxDurationExceededException{
     Route r = s.getRoute(route);
@@ -51,7 +62,9 @@ public class MoveTwoOpt implements Move {
     }
     return newDuration;
 
-  }
+  }*/
+  
+  
 
   @Override
   public List<Tabu> generateTabu() {
@@ -83,5 +96,5 @@ public class MoveTwoOpt implements Move {
   public void setRoute(int route) {
     this.route = route;
   }
-  
+ 
 }

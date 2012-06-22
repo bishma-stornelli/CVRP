@@ -8,6 +8,7 @@ import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
+import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,28 @@ import java.util.logging.Logger;
  *
  * @author vicente
  */
-public class NeighborhoodStructureSwap extends NeighborhoodStructure {
+public class NeighborhoodStructureSwap implements NeighborhoodStructure {
+  
+  @Override
+  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
+          throws TabuListFullException {
+    Instance instance = s.getInstance();
+    
+    if(instance.getNEIGHBORHOOD_GENERATOR().equals("F"))
+      return this.generateFullNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("R"))
+      return this.generateRandomNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("G"))
+      return this.generateGranularNeighborhood(s, tabuList); 
+    return null;
+  }
   
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
           throws UnexpectedAmountOfCustomersException {
   
     if(customers.size() != 2)
       throw new UnexpectedAmountOfCustomersException();
+    
     int customerA = customers.get(0);
     int customerB = customers.get(1);
     int targetRouteA = s.getRouteNumber(customerB);
@@ -43,9 +59,9 @@ public class NeighborhoodStructureSwap extends NeighborhoodStructure {
       return n;
       
     } catch (MaxCapacityExceededException ex) {
-      Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
+      // Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
     } catch (MaxDurationExceededException ex) {
-      Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
+      // Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
     }
     return null;
   }
@@ -60,7 +76,10 @@ public class NeighborhoodStructureSwap extends NeighborhoodStructure {
       for(int j = i+1; j <= customersNumber; j++) {
         customer.add(i+1);
         try {
-          neighbors.add(this.generateNeighbor(s, tabuList, customer));
+          
+          Neighbor neighbor = this.generateNeighbor(s, tabuList, customer);
+          if (neighbor != null)
+            neighbors.add(neighbor);
         } catch (UnexpectedAmountOfCustomersException ex) {
           Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -43,10 +43,15 @@ public class MoveSwap implements Move {
     tabuList.add(customerRouteTabuB);
     return tabuList;
   }
+  
+  @Override
+  public void applyMove(Solution solution) 
+          throws MaxCapacityExceededException, MaxDurationExceededException {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
   @Override
-  public int applyMoves(Solution solution, boolean commit) 
-          throws MaxCapacityExceededException, MaxDurationExceededException {
+  public int applyMoveDuration(Solution solution) {
     throw new UnsupportedOperationException("Not supported yet.");
   }
   
@@ -99,5 +104,7 @@ public class MoveSwap implements Move {
   public void setTargetRouteB(int targetRouteB) {
     this.targetRouteB = targetRouteB;
   }
+
+
     
 }

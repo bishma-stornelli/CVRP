@@ -8,6 +8,7 @@ import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.TabuListFullException;
 import cvrp.exceptions.UnexpectedAmountOfCustomersException;
+import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -25,20 +26,34 @@ import java.util.logging.Logger;
  *
  * @author tamerdark
  */
-public class NeighborhoodStructureClassic extends NeighborhoodStructure {
+public class NeighborhoodStructureClassic implements NeighborhoodStructure {
+  
+  @Override
+  public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
+          throws TabuListFullException {
+    Instance instance = s.getInstance();
+    
+    if(instance.getNEIGHBORHOOD_GENERATOR().equals("F"))
+      return this.generateFullNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("R"))
+      return this.generateRandomNeighborhood(s, tabuList);
+    else if(instance.getNEIGHBORHOOD_GENERATOR().equals("G"))
+      return this.generateGranularNeighborhood(s, tabuList); 
+    return null;
+  }
 
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
           throws UnexpectedAmountOfCustomersException , TabuListFullException {
-    if(customers.size() != 1) {
+    if(customers.size() != 1)
       throw new UnexpectedAmountOfCustomersException();
-    }
+    
     int customer = customers.get(0);
     int customersSize = s.getInstance().getCustomersNumber();
     int iterationsWithoutMove = 0;
     while(true) {
       int targetRoute = (int)(Math.random()*customersSize);
       Route r = s.getRoute(targetRoute);
-      int positionInsideRoute = (int)(Math.random()*(r.size() - 1)) + 1;
+      int positionInsideRoute = (int)(Math.random()*(r.size() - 2)) + 1;
       MoveSingle m = new MoveSingle(customer, targetRoute, positionInsideRoute);
       // If the route is the same, try to generate another number until
       // it has tried 2* tabulist.size() times.
@@ -47,7 +62,7 @@ public class NeighborhoodStructureClassic extends NeighborhoodStructure {
         || positionInsideRoute == s.getCustomerPosition(customer) + 1)
           ) || tabuList.contains(m.generateTabu())
         ) {
-          if( iterationsWithoutMove > 2*tabuList.size()){
+          if(iterationsWithoutMove > 2*tabuList.size()){
             throw new TabuListFullException();
           }
           ++iterationsWithoutMove;
@@ -57,9 +72,9 @@ public class NeighborhoodStructureClassic extends NeighborhoodStructure {
           Neighbor n = new Neighbor(s, m);
           return n; 
         } catch (MaxCapacityExceededException ex) {
-          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+          // Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MaxDurationExceededException ex) {
-          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+          // Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
         }
     }       
   }

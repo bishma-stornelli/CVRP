@@ -4,6 +4,7 @@
  */
 package cvrp.classes;
 
+import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.TabuListFullException;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author tamerdark
  */
-public class NeighborhoodStructureTwoOpt extends NeighborhoodStructure {
+public class NeighborhoodStructureTwoOpt implements NeighborhoodStructure {
 
   private int edge1; // Last edge removed #1
   private int edge2; // Last edge removed #2

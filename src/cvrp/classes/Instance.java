@@ -4,6 +4,7 @@
  */
 package cvrp.classes;
 
+import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.interfaces.NeighborSelector;
 import java.io.File;
@@ -153,13 +154,13 @@ public class Instance {
   
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*1000);
+      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*100);
     else if(this.TERMINATION_CRITERIA.equals("B"))
         this.terminationCriteria = new TerminationCriteriaImproving(this.customersNumber*100);
   }
 
   private void assignNeighborhoodStructure() {
-    if(this.NEIGHBORHOOD_STRUCTURE.equals("M"))
+    if(this.NEIGHBORHOOD_STRUCTURE.equals("C"))
       this.neighborhoodStructure = new NeighborhoodStructureClassic();
     else if(this.NEIGHBORHOOD_STRUCTURE.equals("S"))
       this.neighborhoodStructure = new NeighborhoodStructureSwap();
