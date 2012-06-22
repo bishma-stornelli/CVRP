@@ -63,7 +63,7 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
           ) || tabuList.contains(m.generateTabu().get(0))
         ) {
           
-          if(iterationsWithoutMove > 2*tabuList.size()){
+          if(iterationsWithoutMove > 2*tabuList.size()) {
             throw new TabuListFullException();
           }
          
@@ -103,25 +103,33 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
   private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
     Instance instance = s.getInstance();
     int customerNumber = instance.getCustomersNumber();
-    int randomCustomers = (int)Math.ceil(Math.random()*customerNumber);
+    int randomCustomers = (int)(Math.random()*customerNumber)+1;
     int randomCustomer = 0;
     List<Neighbor> neighbors = new ArrayList<Neighbor>();
     List<Integer> customer = new ArrayList<Integer>(1);
-    Set<Integer> customerSet = new LinkedHashSet<Integer>(randomCustomers/2);
-    for(int i = 1; i <= randomCustomers; i++) {
-      randomCustomer = (int)Math.ceil(Math.random()*customerNumber);
-      if(customerSet.contains(i)) {
+    Set<Integer> customerSet = new LinkedHashSet<Integer>(randomCustomers);
+    int i = 0;
+    
+    while(i != randomCustomers) {
+      randomCustomer = (int)(Math.random()*customerNumber) + 1;
+      if(!customerSet.contains(randomCustomer)) {
         customerSet.add(randomCustomer);
         customer.add(randomCustomer);
         try {
           neighbors.add(this.generateNeighbor(s, tabuList, customer));
         } catch (UnexpectedAmountOfCustomersException ex) {
           Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TabuListFullException t){
+        } catch (TabuListFullException t) {
           throw t;
         }
         customer.clear();
+        ++i;
       }
+    }
+
+    if(neighbors.isEmpty()) {
+      System.out.println("hola");
+      System.out.println("hola");
     }
     return neighbors;
   }

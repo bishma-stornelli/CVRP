@@ -42,9 +42,7 @@ public class Neighbor {
   }
 
   public List<Tabu> getTabus() {
-      List<Tabu> l = new ArrayList<Tabu>(1);
-      l.addAll(move.generateTabu());
-      return l;
+    return move.generateTabu();
   }
   
   // Getters and Setters

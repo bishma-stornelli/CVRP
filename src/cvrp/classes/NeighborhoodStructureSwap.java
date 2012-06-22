@@ -11,7 +11,9 @@ import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,9 +53,12 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     MoveSwap m = new MoveSwap(customerA, customerB, targetRouteA, targetRouteB, 
             targetRoutePositionA, targetRoutePositionB);
     
-    if(tabuList.contains(m.generateTabu()))
-      return null;
-    
+    List<Tabu> generateTabus = m.generateTabu();
+    for(Tabu tabu: generateTabus) {
+      if(tabuList.contains(tabu))
+        return null;
+    }
+
     try {
       Neighbor n = new Neighbor(s, m);
       return n;
@@ -87,11 +92,42 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
       }
       customer.clear();
     }
+
     return neighbors;
   }
   
   private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    
+    Instance instance = s.getInstance();
+    int customerNumber = instance.getCustomersNumber();
+    int randomCustomers = (int)(Math.random()*customerNumber)+1;
+    List<Neighbor> neighbors = new ArrayList<Neighbor>();
+    List<Integer> customer = new ArrayList<Integer>(2);
+    int i = 0;
+    
+    while(i != randomCustomers) {
+      
+      int customerA = (int)(Math.random()*customerNumber) + 1;
+      int customerB = (int)(Math.random()*customerNumber) + 1;
+      if(customerA == customerB)
+        continue;
+      else {
+        customer.add(customerA);
+        customer.add(customerB);
+        try {
+          Neighbor neighbor = this.generateNeighbor(s, tabuList, customer);
+          if (neighbor != null)
+            neighbors.add(neighbor);
+        } catch (UnexpectedAmountOfCustomersException ex) {
+          Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);        
+        }
+        
+        customer.clear();
+        ++i;
+      }    
+    }
+    
+    return neighbors;
   }
 
   private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) {

@@ -55,16 +55,24 @@ public class CVRP {
     while(!tc.timeToFinish(current)) {
       try {
         List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
-        Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
-        tabuList.addAll(neighbor.getTabus());
-        neighbor.getMove().applyMove(current);
-        if(current.getDuration() < best.getDuration()) {
-          best = current.getPrintableSolution();
-          tc.recordBest(current);                
+        
+        if(!neighbors.isEmpty()) {
+          Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
+          tabuList.addAll(neighbor.getTabus());
+          neighbor.getMove().applyMove(current);
+
+          if(current.getDuration() < best.getDuration()) {
+            best = current.getPrintableSolution();
+            tc.recordBest(current);                
+          }
         }
       } catch (TabuListFullException ex) {
           try {
-            tabuList.remove(tabuList.size() - 1);
+            int elementsToRemove = (int) (tabuList.size()*.1);
+            //int elementsToRemove = tabuList.size()/2;
+            for(int k = 0; k < elementsToRemove; k++)
+              tabuList.remove(tabuList.size() - 1);
+            // tabuList.clear();
           } catch (ArrayIndexOutOfBoundsException a ) {
             break;
           }

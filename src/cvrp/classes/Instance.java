@@ -154,11 +154,15 @@ public class Instance {
   
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*10);
+      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*100);
     else if(this.TERMINATION_CRITERIA.equals("B"))
         this.terminationCriteria = new TerminationCriteriaImproving(this.customersNumber*100);
   }
 
+
+  
+  
+  
   private void assignNeighborhoodStructure() {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("C"))
       this.neighborhoodStructure = new NeighborhoodStructureClassic();
