@@ -114,6 +114,7 @@ public class MoveSingle implements Move {
     }
     int duration = solution.getDuration();
     duration += totalChangeOnDuration;
+    
     return duration;
   }
   

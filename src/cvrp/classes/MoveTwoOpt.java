@@ -8,7 +8,10 @@ import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.interfaces.Move;
 import cvrp.interfaces.Tabu;
+import java.util.ArrayList;
 import java.util.List;
+
+  
 
 /**
  *
@@ -17,76 +20,113 @@ import java.util.List;
 public class MoveTwoOpt implements Move {
     
   private int route;
-  private int customer1;
-  private int customer2;
+  private int customerPositionA;
+  private int customerPositionB;
 
   public MoveTwoOpt(int route, int edge1, int edge2) {
     this.route = route;
-    this.customer1 = edge1;
-    this.customer2 = edge2;
+    this.customerPositionA = edge1;
+    this.customerPositionB = edge2;
   }
+  
   
   @Override
   public void applyMove(Solution solution) 
           throws MaxCapacityExceededException, MaxDurationExceededException {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public int applyMoveDuration(Solution solution) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-/*
-  @Override
-  public int applyMoves(Solution s, boolean commit) throws MaxDurationExceededException{
-    Route r = s.getRoute(route);
-    Instance i = s.getInstance();
-    int preCustomer1, postCustomer2;
-    preCustomer1 = r.getCustomerAt(s.getCustomerPosition(customer1) - 1);
-    postCustomer2 = r.getCustomerAt(s.getCustomerPosition(customer2) + 1);
-    int newDuration = i.getDistance(customer1, postCustomer2)
-            + i.getDistance(preCustomer1, customer2)
-            - i.getDistance(preCustomer1, customer1)
-            - i.getDistance(customer2, postCustomer2);
-    if(newDuration > i.getMaximumRouteTime()) {
+    Route r = solution.getRoute(route);
+    int routeDuration = r.getDuration();
+    Instance instance = solution.getInstance();
+    int customerA = r.getCustomerAt(customerPositionA);
+    int customerB = r.getCustomerAt(customerPositionB); 
+    int preCustomerA  = r.getCustomerAt(customerPositionA - 1);
+    int postCustomerB = r.getCustomerAt(customerPositionB + 1);
+    int ChangeOnDuration = instance.getDistance(customerPositionA, postCustomerB)
+                         + instance.getDistance(preCustomerA, customerPositionB)
+                         - instance.getDistance(preCustomerA, customerPositionA)
+                         - instance.getDistance(customerPositionB, postCustomerB);
+    if(routeDuration + ChangeOnDuration > instance.getMaximumRouteTime())
       throw new MaxDurationExceededException();
-    }
-    if(commit) {
-      List<Integer> l = r.getRoute();
-      List<Integer> reverse = new ArrayList<Integer>(customer2 - customer1);
-      for(int index = customer1 ; index < customer2 + 1 ; ++index){
-        reverse.add(l.get(index));
-      }
-      l.removeAll(reverse);
-      l.addAll(customer1, reverse);
-    }
-    return newDuration;
+    
+    List<Integer> routeList = r.getRoute();
+    
+    List<Integer> reverse = routeList.subList(customerPositionA, customerPositionB + 1);
 
-  }*/
-  
-  
+    int end = reverse.size()/2;
+    for(int k = 0; k < end; ++k) {
+      int aux = reverse.get(k);
+      reverse.set(k, reverse.get(reverse.size() - k - 1));
+      reverse.set(reverse.size() - k - 1, aux);     
+    }
+    
+    for(int k = customerPositionA; k <= customerPositionB; ++k)
+      solution.setCustomerPosition(routeList.get(k), k);
+    
+    int duration = solution.getDuration();
+    duration += ChangeOnDuration; 
+    solution.setDuration(duration);
+    r.setDuration(r.getDuration() + ChangeOnDuration);
+    /*
+    List<Integer> l = r.getRoute();
+    List<Integer> reverse = new ArrayList<Integer>(customerPositionB - customerPositionA);
+    for(int index = customerPositionA ; index < customerPositionB + 1 ; ++index) {
+        reverse.add(l.get(index));
+    }
+    l.removeAll(reverse);
+    l.addAll(customerPositionA, reverse);
+    solution.getDuration();*/
+  }
 
   @Override
   public List<Tabu> generateTabu() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    List<Tabu> tabuList = new ArrayList<Tabu>(2);
+    CustomerRouteTabu customerRouteTabuA = new CustomerRouteTabu(1, 1);
+    CustomerRouteTabu customerRouteTabuB = new CustomerRouteTabu(1, 1);
+    tabuList.add(customerRouteTabuA);
+    tabuList.add(customerRouteTabuB);
+    return tabuList;
   }
-  
+
+  @Override
+  public int applyMoveDuration(Solution solution) throws MaxCapacityExceededException, MaxDurationExceededException {
+    Route r = solution.getRoute(route);
+    int routeDuration = r.getDuration();
+    Instance instance = solution.getInstance();
+    int customerA = r.getCustomerAt(customerPositionA);
+    int customerB = r.getCustomerAt(customerPositionB); 
+    int preCustomerA  = r.getCustomerAt(customerPositionA - 1);
+    int postCustomerB = r.getCustomerAt(customerPositionB + 1);
+    
+    int ChangeOnDuration = instance.getDistance(customerPositionA, postCustomerB)
+                         + instance.getDistance(preCustomerA, customerPositionB)
+                         - instance.getDistance(preCustomerA, customerPositionA)
+                         - instance.getDistance(customerPositionB, postCustomerB);
+    if(routeDuration + ChangeOnDuration > instance.getMaximumRouteTime())
+      throw new MaxDurationExceededException();
+    
+    int duration = solution.getDuration();
+    duration += ChangeOnDuration; 
+    if(duration < 0) {
+      System.out.println("hola");
+    }
+    return duration;
+  }
+ 
   // Getters and Setters
 
-  public int getCustomer1() {
-    return customer1;
+  public int getCustomerPositionA() {
+    return customerPositionA;
   }
 
-  public void setCustomer1(int customer1) {
-    this.customer1 = customer1;
+  public void setCustomerPositionA(int customerPositionA) {
+    this.customerPositionA = customerPositionA;
   }
 
-  public int getCustomer2() {
-    return customer2;
+  public int getCustomerPositionB() {
+    return customerPositionB;
   }
 
-  public void setCustomer2(int customer2) {
-    this.customer2 = customer2;
+  public void setCustomerPositionB(int customerPositionB) {
+    this.customerPositionB = customerPositionB;
   }
 
   public int getRoute() {

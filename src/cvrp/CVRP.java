@@ -32,8 +32,8 @@ public class CVRP {
     */
   public static void main(String[] args) throws IOException, NoSuchTabuTypeException, 
           TerminationCriteriaNotStartedException, MaxCapacityExceededException, MaxDurationExceededException {
-      // TODO code application logic here
-      // Instance instance = new Instance(args[0],args[1]);
+    // TODO code application logic here
+    // Instance instance = new Instance(args[0],args[1]);
     Instance instance = new Instance("instanciasCVRP/vrpnc1.txt","settings"); 
     instance.loadEverything();
     run(instance);

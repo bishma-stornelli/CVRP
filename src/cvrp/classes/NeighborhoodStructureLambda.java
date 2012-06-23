@@ -18,6 +18,7 @@ public class NeighborhoodStructureLambda implements NeighborhoodStructure {
   
   private NeighborhoodStructure classic = new NeighborhoodStructureClassic();
   private NeighborhoodStructure swap = new NeighborhoodStructureSwap();
+  private NeighborhoodStructure twoOpt = new NeighborhoodStructureTwoOpt();
   private int changeStructure = 0;
  
   @Override
