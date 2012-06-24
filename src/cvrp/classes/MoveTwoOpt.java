@@ -40,10 +40,10 @@ public class MoveTwoOpt implements Move {
     int customerB = r.getCustomerAt(customerPositionB); 
     int preCustomerA  = r.getCustomerAt(customerPositionA - 1);
     int postCustomerB = r.getCustomerAt(customerPositionB + 1);
-    int ChangeOnDuration = instance.getDistance(customerPositionA, postCustomerB)
-                         + instance.getDistance(preCustomerA, customerPositionB)
-                         - instance.getDistance(preCustomerA, customerPositionA)
-                         - instance.getDistance(customerPositionB, postCustomerB);
+    int ChangeOnDuration = instance.getDistance(preCustomerA, customerB)
+                         + instance.getDistance(customerA, postCustomerB)
+                         - instance.getDistance(preCustomerA, customerA)
+                         - instance.getDistance(customerB, postCustomerB);
     if(routeDuration + ChangeOnDuration > instance.getMaximumRouteTime())
       throw new MaxDurationExceededException();
     
@@ -78,11 +78,7 @@ public class MoveTwoOpt implements Move {
 
   @Override
   public List<Tabu> generateTabu() {
-    List<Tabu> tabuList = new ArrayList<Tabu>(2);
-    CustomerRouteTabu customerRouteTabuA = new CustomerRouteTabu(1, 1);
-    CustomerRouteTabu customerRouteTabuB = new CustomerRouteTabu(1, 1);
-    tabuList.add(customerRouteTabuA);
-    tabuList.add(customerRouteTabuB);
+    List<Tabu> tabuList = new ArrayList<Tabu>();
     return tabuList;
   }
 
@@ -96,18 +92,14 @@ public class MoveTwoOpt implements Move {
     int preCustomerA  = r.getCustomerAt(customerPositionA - 1);
     int postCustomerB = r.getCustomerAt(customerPositionB + 1);
     
-    int ChangeOnDuration = instance.getDistance(customerPositionA, postCustomerB)
-                         + instance.getDistance(preCustomerA, customerPositionB)
-                         - instance.getDistance(preCustomerA, customerPositionA)
-                         - instance.getDistance(customerPositionB, postCustomerB);
+    int ChangeOnDuration = instance.getDistance(preCustomerA, customerB)
+                         + instance.getDistance(customerA, postCustomerB)
+                         - instance.getDistance(preCustomerA, customerA)
+                         - instance.getDistance(customerB, postCustomerB);
     if(routeDuration + ChangeOnDuration > instance.getMaximumRouteTime())
       throw new MaxDurationExceededException();
-    
     int duration = solution.getDuration();
     duration += ChangeOnDuration; 
-    if(duration < 0) {
-      System.out.println("hola");
-    }
     return duration;
   }
  

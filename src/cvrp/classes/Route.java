@@ -120,5 +120,16 @@ public class Route {
   public void setRoute(List<Integer> route) {
     this.route = route;
   }
+
+    void calculateDuration(Instance ins) {
+        int newDuration = 0;
+        for(int i = 0 ; i < route.size() - 1 ; ++i){
+            newDuration += ins.getDistance(route.get(i), route.get(i+1));
+        }
+        newDuration += ins.getDropTime() * (route.size() - 2);
+        if (newDuration != this.duration){
+            System.out.println("Error con la duracion de la ruta");
+        }
+    }
   
 }

@@ -61,7 +61,8 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
           (positionInsideRoute == s.getCustomerPosition(customer) 
         || positionInsideRoute == s.getCustomerPosition(customer) + 1)
           ) || tabuList.contains(m.generateTabu().get(0))
-        ) {
+              || (r.size() == 2 && Math.random() < 0.1)) // PROHIBIR MOVER A RUTAS VACIAS
+         {
           
           if(iterationsWithoutMove > 2*tabuList.size()) {
             throw new TabuListFullException();

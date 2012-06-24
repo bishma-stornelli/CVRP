@@ -114,5 +114,9 @@ public abstract class TerminationCriteria {
   public void setStarted(boolean started) {
     this.started = started;
   }
+
+    public int iterationsWithoutImproving() {
+        return currentIteration - bestFoundIteration;
+    }
   
 }
