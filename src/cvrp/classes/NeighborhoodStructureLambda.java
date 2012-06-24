@@ -26,12 +26,18 @@ public class NeighborhoodStructureLambda implements NeighborhoodStructure {
           throws TabuListFullException {
     List<Neighbor> l = new ArrayList<Neighbor>();
         
-    if(this.changeStructure == 10) {
-      l.addAll(swap.generateNeighborhood(s, tabuList));
-      this.changeStructure = 0;
-    } else
-      l.addAll(classic.generateNeighborhood(s, tabuList));
-    this.changeStructure++;
+    //if(this.changeStructure == 10) {
+      //l.addAll(swap.generateNeighborhood(s, tabuList));
+      //this.changeStructure = 0;
+    //} else
+    //  if (s.getInstance().getTerminationCriteria().iterationsWithoutImproving() >
+            //  s.getInstance().getCustomersNumber() * 5){
+      //l.addAll(swap.generateNeighborhood(s, tabuList)); // Esta muy lento
+      l.addAll(twoOpt.generateNeighborhood(s, tabuList)); // Mejora
+      //}
+      l.addAll(classic.generateNeighborhood(s, tabuList)); // Mejora 
+      
+    //this.changeStructure++;
     return l;
   }
    

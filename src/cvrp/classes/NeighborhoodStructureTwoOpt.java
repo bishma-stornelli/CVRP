@@ -29,14 +29,14 @@ public class NeighborhoodStructureTwoOpt implements NeighborhoodStructure {
   @Override
   public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
           throws TabuListFullException {
-    int customersNumber = s.getInstance().getCustomersNumber();
-    List<Neighbor> neighbors = new ArrayList<Neighbor>(customersNumber);
-    for(int i = 0 ; i < customersNumber ; ++i) {
+    int routesNumber = s.getInstance().getCustomersNumber();
+    List<Neighbor> neighbors = new ArrayList<Neighbor>(routesNumber);
+    for(int i = 0 ; i < routesNumber ; ++i) {
       if(s.getRoute(i).size() > 4) {
         try {
           neighbors.add(this.generateNeighbor(s, tabuList, i, -1, -1));
         } catch (UnexpectedAmountOfCustomersException ex) {
-            Logger.getLogger(NeighborhoodStructureTwoOpt.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(NeighborhoodStructureTwoOpt.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MaxCapacityExceededException ex) {
             // Logger.getLogger(NeighborhoodStructureTwoOpt.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MaxDurationExceededException ex) {
@@ -50,12 +50,11 @@ public class NeighborhoodStructureTwoOpt implements NeighborhoodStructure {
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, int route, 
           int pos1, int pos2) throws UnexpectedAmountOfCustomersException, 
           TabuListFullException, MaxCapacityExceededException, MaxDurationExceededException {
-    Neighbor neighbor = null;
     Route r = s.getRoute(route);
-    Random random = new Random();  
+    Random random = new Random();
     
     edge1 = pos1 < 0 ? random.nextInt(r.size() - 3) + 1 : pos1;
-    edge2 = pos2 < 0 ? random.nextInt(r.size() - 2 - edge1) + edge1 + 1 : pos2;
+    edge2 = pos2 < 0 ? random.nextInt(r.size() - (edge1 + 2)) + (edge1 + 1) : pos2;
     Move m = new MoveTwoOpt(route, edge1, edge2);
     return new Neighbor(s,m);
   }

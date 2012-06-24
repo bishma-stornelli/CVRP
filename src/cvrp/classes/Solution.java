@@ -122,5 +122,40 @@ public class Solution {
   public void setRoutes(List<Route> routes) {
     this.routes = routes;
   }
+
+    public boolean correct() {
+        int ri = 0;
+        int totalDuration = 0;
+        for (Route r: this.routes){
+            int rp = 0;
+            int capacity = 0 , duration = 0;
+            List<Integer> route = r.getRoute();
+            for (int i = 0 ; i < route.size() - 1; ++i){
+                Integer c = route.get(i);
+                Integer c2 = route.get(i+1);
+                duration += instance.getDistance(c, c2);
+                duration += ( c2 != 0 ? instance.getDropTime() : 0);
+                capacity += (c2 != 0 ? instance.getDemand(c2) : 0);
+                if (c != 0 && (customerPosition[c] != rp || customerRoute[c] != ri))
+                    return false;                    
+                ++rp;
+            }
+            if (capacity > instance.getVehicleCapacity()){
+                System.out.println("Violacion de capacidad");
+                return false;
+            }
+            if (duration > instance.getMaximumRouteTime()){
+                System.out.println("Violacion de duracion");
+                return false;
+            }
+            totalDuration += duration;
+            ++ri;
+        }
+        if(totalDuration != this.duration){
+            System.out.println("Violacion de duracion total");
+            return false;
+        }
+        return true;
+    }
   
 }
