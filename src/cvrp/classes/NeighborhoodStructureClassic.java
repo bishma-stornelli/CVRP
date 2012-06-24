@@ -81,7 +81,61 @@ public class NeighborhoodStructureClassic implements NeighborhoodStructure {
         }
     }       
   }
+  /*
+  public Neighbor generateCompleteNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
+          throws UnexpectedAmountOfCustomersException , TabuListFullException {
     
+    if(customers.size() != 1)
+      throw new UnexpectedAmountOfCustomersException();
+    
+    int customer = customers.get(0);
+    int customersSize = s.getInstance().getCustomersNumber();
+    Instance instance = s.getInstance();
+    int routeNumber = 
+    
+    
+    int iterationsWithoutMove = 0;
+    while(true) {
+      int targetRoute = (int)(Math.random()*customersSize);
+      Route r = s.getRoute(targetRoute);
+      int positionInsideRoute = (int)(Math.random()*(r.size() - 2)) + 1;
+      MoveSingle m = new MoveSingle(customer, targetRoute, positionInsideRoute);
+      // If the route is the same, try to generate another number until
+      // it has tried 2* tabulist.size() times.
+      if((targetRoute == s.getRouteNumber(customer) && 
+          (positionInsideRoute == s.getCustomerPosition(customer) 
+        || positionInsideRoute == s.getCustomerPosition(customer) + 1)
+          ) || tabuList.contains(m.generateTabu().get(0))
+              || (r.size() == 2 && Math.random() < 0.1)) // PROHIBIR MOVER A RUTAS VACIAS
+         {
+          
+          if(iterationsWithoutMove > 2*tabuList.size()) {
+            throw new TabuListFullException();
+          }
+         
+          ++iterationsWithoutMove;
+          continue;
+        }
+        try {
+          Neighbor n = new Neighbor(s, m);
+          return n; 
+        } catch (MaxCapacityExceededException ex) {
+          // Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MaxDurationExceededException ex) {
+          // Logger.getLogger(NeighborhoodStructureClassic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }       
+    
+    
+    
+    
+    
+    
+    
+  }
+  */
+  
+  
   private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
     Instance instance = s.getInstance();
     int customersNumber = instance.getCustomersNumber();

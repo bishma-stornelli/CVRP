@@ -4,9 +4,9 @@
  */
 package cvrp.classes;
 
-import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.interfaces.NeighborSelector;
+import cvrp.interfaces.NeighborhoodStructure;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

@@ -126,7 +126,7 @@ public class Solution {
     public boolean correct() {
         int ri = 0;
         int totalDuration = 0;
-        for (Route r: this.routes){
+        for (Route r: this.routes) {
             int rp = 0;
             int capacity = 0 , duration = 0;
             List<Integer> route = r.getRoute();
@@ -140,13 +140,18 @@ public class Solution {
                     return false;                    
                 ++rp;
             }
-            if (capacity > instance.getVehicleCapacity()){
+            if (capacity > instance.getVehicleCapacity()) {
                 System.out.println("Violacion de capacidad");
                 return false;
             }
-            if (duration > instance.getMaximumRouteTime()){
+            if (duration > instance.getMaximumRouteTime()) {
                 System.out.println("Violacion de duracion");
                 return false;
+            }
+            
+            if(duration != r.getDuration()) {
+              System.out.println("Violacion de duracion en la ruta");
+              return false;
             }
             totalDuration += duration;
             ++ri;

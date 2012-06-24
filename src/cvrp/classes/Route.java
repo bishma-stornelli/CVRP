@@ -18,6 +18,7 @@ public class Route {
   private List<Integer> route;
   private int capacity;
   private int duration;
+  private int dropTime;
 
   public Route() {
     this.route = new ArrayList<Integer>();
@@ -25,6 +26,7 @@ public class Route {
     this.route.add(0);
     this.capacity = 0;
     this.duration = 0;
+    this.dropTime = 0;
   }
   
   public void push(int customer, Instance instance) throws 
@@ -44,15 +46,15 @@ public class Route {
     int next = this.route.get(index);
     int changeOnDuration = instance.getDistance(previous, customer)
                          + instance.getDistance(customer, next)
-                         + instance.getDropTime()
                          - instance.getDistance(previous, next);
     
-    if (this.duration + changeOnDuration > instance.getMaximumRouteTime()) {
+    if (this.duration + instance.getDropTime() +changeOnDuration > instance.getMaximumRouteTime()) {
       throw new MaxDurationExceededException();
     }
     this.route.add(index, customer);
     this.capacity += demand;
     this.duration += changeOnDuration;
+    this.dropTime += instance.getDropTime();
     
     return changeOnDuration;
   }
@@ -65,15 +67,16 @@ public class Route {
     int next = this.route.get(index + 1);
     int changeOnDuration = instance.getDistance(previous, next) 
                          - instance.getDistance(previous, customer)
-                         - instance.getDistance(customer, next)
-                         - instance.getDropTime();
-    if (this.duration + changeOnDuration > instance.getMaximumRouteTime()) {
+                         - instance.getDistance(customer, next);
+    
+    if (this.duration - instance.getDropTime() + changeOnDuration > instance.getMaximumRouteTime()) {
       throw new MaxDurationExceededException();
     }
     
     this.route.remove(index);
     this.duration += changeOnDuration;
     this.capacity -= instance.getDemand(customer);
+    this.dropTime -= instance.getDropTime();
    
     return changeOnDuration;
   }
@@ -121,15 +124,15 @@ public class Route {
     this.route = route;
   }
 
-    void calculateDuration(Instance ins) {
-        int newDuration = 0;
-        for(int i = 0 ; i < route.size() - 1 ; ++i){
-            newDuration += ins.getDistance(route.get(i), route.get(i+1));
-        }
-        newDuration += ins.getDropTime() * (route.size() - 2);
-        if (newDuration != this.duration){
-            System.out.println("Error con la duracion de la ruta");
-        }
+  void calculateDuration(Instance ins) {
+    int newDuration = 0;
+    for(int i = 0 ; i < route.size() - 1 ; ++i){
+        newDuration += ins.getDistance(route.get(i), route.get(i+1));
     }
+    newDuration += ins.getDropTime() * (route.size() - 2);
+    if (newDuration != this.duration){
+        System.out.println("Error con la duracion de la ruta");
+    }
+  }
   
 }
