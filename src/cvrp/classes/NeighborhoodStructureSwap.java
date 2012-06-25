@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -11,18 +7,25 @@ import cvrp.exceptions.UnexpectedAmountOfCustomersException;
 import cvrp.interfaces.NeighborhoodStructure;
 import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class NeighborhoodStructureSwap implements NeighborhoodStructure {
-  
+
+  /**
+   * Return the neighborhood by applying the swap structure generator.
+   * 
+   * @param s a solution
+   * @param tabuList a tabu list
+   * @return the swap neighborhood
+   * @throws TabuListFullException 
+   */
   @Override
   public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
           throws TabuListFullException {
@@ -36,7 +39,16 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
       return this.generateGranularNeighborhood(s, tabuList); 
     return null;
   }
-  
+
+  /**
+   * Return a neighbor by applying the swap structure generator.
+   * 
+   * @param s a solution
+   * @param tabuList a tabu list
+   * @param customers the customer list
+   * @return the neighbor
+   * @throws UnexpectedAmountOfCustomersException
+   */
   public Neighbor generateNeighbor(Solution s, List<Tabu> tabuList, List<Integer> customers) 
           throws UnexpectedAmountOfCustomersException {
     
@@ -52,7 +64,6 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     
     MoveSwap m = new MoveSwap(customerA, customerB, targetRouteA, targetRouteB, 
             targetRoutePositionA, targetRoutePositionB);
-    
     List<Tabu> generateTabus = m.generateTabu();
     for(Tabu tabu: generateTabus) {
       if(tabuList.contains(tabu))
@@ -61,8 +72,7 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
 
     try {
       Neighbor n = new Neighbor(s, m);
-      return n;
-      
+      return n;   
     } catch (MaxCapacityExceededException ex) {
       // Logger.getLogger(NeighborhoodStructureSwap.class.getName()).log(Level.SEVERE, null, ex);
     } catch (MaxDurationExceededException ex) {
@@ -71,6 +81,14 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     return null;
   }
 
+  /**
+   * Return the full neighborhood by applying the swap structure generator.
+   * 
+   * @param s a solution
+   * @param tabuList the tabu list
+   * @return the full neighborhood
+   * @throws TabuListFullException 
+   */
   private List<Neighbor> generateFullNeighborhood(Solution s , List<Tabu> tabuList) throws TabuListFullException {
     Instance instance = s.getInstance();
     int customersNumber = instance.getCustomersNumber();
@@ -96,6 +114,13 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     return neighbors;
   }
   
+  /**
+   * Return the random neighborhood by applying the swap structure generator.
+   * 
+   * @param s a solution
+   * @param tabuList the tabu list
+   * @return the random neighborhood
+   */
   private List<Neighbor> generateRandomNeighborhood(Solution s , List<Tabu> tabuList) {
     
     Instance instance = s.getInstance();
@@ -130,6 +155,15 @@ public class NeighborhoodStructureSwap implements NeighborhoodStructure {
     return neighbors;
   }
 
+  /**
+   * Return the granular neighborhood by applying the swap structure generator.
+   * Not implement yet.
+   * 
+   * @param s a solution
+   * @param tabuList the tabu list
+   * @return the granular neighborhood
+   * @throws TabuListFullException 
+   */
   private List<Neighbor> generateGranularNeighborhood(Solution s , List<Tabu> tabuList) {
     throw new UnsupportedOperationException("Not supported yet.");
   }

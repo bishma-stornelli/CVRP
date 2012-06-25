@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -10,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class Solution {
   
@@ -40,10 +37,65 @@ public class Solution {
     }
   }
   
+  /**
+   * Return a printable version of the solution.
+   * 
+   * @return the printable solution
+   */
   public PrintableSolution getPrintableSolution() {
     return new PrintableSolution(this);
   }   
-
+ 
+  /**
+   * Check the correctness of the solution for the attributes that composes.
+   * 
+   * @return true if this solution is correct
+   *         false if it is incorrect
+   */
+  public boolean correct() {
+    int ri = 0;
+    int totalDuration = 0;
+    for (Route r: this.routes) {
+      int rp = 0;
+      int capacity = 0 , duration = 0;
+      List<Integer> route = r.getRoute();
+      for (int i = 0 ; i < route.size() - 1; ++i) {
+        Integer c = route.get(i);
+        Integer c2 = route.get(i+1);
+        duration += instance.getDistance(c, c2);
+        duration += ( c2 != 0 ? instance.getDropTime() : 0);
+        capacity += (c2 != 0 ? instance.getDemand(c2) : 0);
+        if (c != 0 && (customerPosition[c] != rp || customerRoute[c] != ri))
+          return false;                    
+        ++rp;
+      }
+      if (capacity > instance.getVehicleCapacity()) {
+        System.out.println("Capacity Violation");
+        return false;
+      }
+      if (duration > instance.getMaximumRouteTime()) {
+        System.out.println("Duration Violation");
+        return false;
+      }
+      if(duration != r.getDuration()) {
+        System.out.println("Route Duration Violation");
+        return false;
+      }
+      totalDuration += duration;
+      ++ri;
+    }
+    if(totalDuration != this.duration) {
+      System.out.println("Total Duration Violation");
+      return false;
+    }
+    return true;
+  }
+  
+  /**
+   * Generate the string representation of the solution.
+   * 
+   * @return the solution as a string
+   */
   @Override
   public String toString() {
     String r = "";
@@ -57,26 +109,52 @@ public class Solution {
     return totalRoutes + "\n" + r;
   }
 
-  /** Returns the route where the customer belongs.
-    * 
-    * @param customer 
-    */
+  /**
+   * Returns the route where the customer belongs.
+   * 
+   * @param customer a customer
+   * @return the customer route
+   */
   public int getRouteNumber(int customer) {
     return customerRoute[customer];
   }
-
-  public int getCustomerPosition(int customer) {
-    return customerPosition[customer];
-  }
   
-  public void setCustomerPosition(int customer, int position) {
-    this.customerPosition[customer] = position;
-  }
-  
+  /**
+   * Set a new route for the customer.
+   * 
+   * @param customer a customer
+   * @param route the new route
+   */
   public void setCustomerRoute(int customer, int route) {
     this.customerRoute[customer] = route;
   }
 
+  /**
+   * Return the position where the customer is.
+   * 
+   * @param customer a customer
+   * @return the customer position
+   */
+  public int getCustomerPosition(int customer) {
+    return customerPosition[customer];
+  }
+ 
+  /**
+   * Set a new position for the customer.
+   * 
+   * @param customer a customer
+   * @param position the new position
+   */
+  public void setCustomerPosition(int customer, int position) {
+    this.customerPosition[customer] = position;
+  }
+  
+  /**
+   * Return the list of a specific route.
+   * 
+   * @param targetRoute a route
+   * @return the route list
+   */
   public Route getRoute(int targetRoute) {
     return this.routes.get(targetRoute);
   }
@@ -122,45 +200,5 @@ public class Solution {
   public void setRoutes(List<Route> routes) {
     this.routes = routes;
   }
-
-    public boolean correct() {
-        int ri = 0;
-        int totalDuration = 0;
-        for (Route r: this.routes) {
-            int rp = 0;
-            int capacity = 0 , duration = 0;
-            List<Integer> route = r.getRoute();
-            for (int i = 0 ; i < route.size() - 1; ++i){
-                Integer c = route.get(i);
-                Integer c2 = route.get(i+1);
-                duration += instance.getDistance(c, c2);
-                duration += ( c2 != 0 ? instance.getDropTime() : 0);
-                capacity += (c2 != 0 ? instance.getDemand(c2) : 0);
-                if (c != 0 && (customerPosition[c] != rp || customerRoute[c] != ri))
-                    return false;                    
-                ++rp;
-            }
-            if (capacity > instance.getVehicleCapacity()) {
-                System.out.println("Violacion de capacidad");
-                return false;
-            }
-            if (duration > instance.getMaximumRouteTime()) {
-                System.out.println("Violacion de duracion");
-                return false;
-            }
-            
-            if(duration != r.getDuration()) {
-              System.out.println("Violacion de duracion en la ruta");
-              return false;
-            }
-            totalDuration += duration;
-            ++ri;
-        }
-        if(totalDuration != this.duration){
-            System.out.println("Violacion de duracion total");
-            return false;
-        }
-        return true;
-    }
   
 }

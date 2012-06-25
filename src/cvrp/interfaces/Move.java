@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.interfaces;
 
 import cvrp.classes.Solution;
@@ -10,8 +6,9 @@ import cvrp.exceptions.MaxDurationExceededException;
 import java.util.List;
 
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public interface Move {
   

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp;
 
 import cvrp.abstracts.TerminationCriteria;
@@ -18,12 +14,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class CVRP {
 
     /**
+     * The main program for the CVRP.
+     * 
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, NoSuchTabuTypeException,
@@ -42,104 +41,120 @@ public class CVRP {
 
       }
       */
-      Instance instance = new Instance("instanciasCVRP/vrpnc14.txt", "settings");
+      Instance instance = new Instance("instanciasCVRP/vrpnc1.txt", "settings");
       instance.loadEverything();
       run(instance);
         
     }
+    
+  /**
+   * The TabuSearch Meta-Heuristic for the CVRP.
+   * 
+   * @param i an instance of the problem
+   * @throws NoSuchTabuTypeException
+   * @throws TerminationCriteriaNotStartedException
+   * @throws MaxCapacityExceededException
+   * @throws MaxDurationExceededException 
+   */
+  private static void run(Instance i) 
+          throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException, 
+          MaxCapacityExceededException, MaxDurationExceededException {
 
-    /**
-     * The TabuSearch Metaheuristic. Implemented.
-     *
-     * @param i
-     * @throws NoSuchTabuTypeException
-     */
-    private static void run(Instance i)
-            throws NoSuchTabuTypeException, TerminationCriteriaNotStartedException,
-            MaxCapacityExceededException, MaxDurationExceededException {
-      
-      List<Tabu> tabuList = new ArrayList<Tabu>();
-      Solution current = generateFirstSolution(i);
-      ClarkeAndWrightAlgorithm CWA = new ClarkeAndWrightAlgorithm(current);
-      CWA.excute();
-      current.correct();
-      PrintableSolution best = current.getPrintableSolution();
-      TerminationCriteria tc = i.getTerminationCriteria();
-      tc.start();
-      while (!tc.timeToFinish(current)) {
-
-          try {
-              List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
-
-              if (!neighbors.isEmpty()) {
-                  Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
-                  tabuList.addAll(neighbor.getTabus());
-                  neighbor.getMove().applyMove(current);
-                  if (!current.correct()) {
-                      break;
-                  }
-                  //assert(current.getDuration() == neighbor.getDuration());
-                  if (current.getDuration() < best.getDuration()) {
-                      best = current.getPrintableSolution();
-                      tc.recordBest(current);
-                  }
-              } else {
-                  // Perturbar??s
-              }
-          } catch (TabuListFullException ex) {
-              try {
-                  int elementsToRemove = (int) (tabuList.size() * .1);
-                  //int elementsToRemove = tabuList.size()/2;
-                  for (int k = 0; k < elementsToRemove; k++) {
-                      tabuList.remove(0); // El add agrega al final, los del principio son los mas viejos
-                  }
-              } catch (ArrayIndexOutOfBoundsException a) {
-                  System.out.println("Se removieron mas elementos de tabuList de los que habia.");
-                  break;
-              }
-          }
-      }
-      tc.finish();
-      printSolution(best, tc);
-    }
-
-    private static void printSolution(PrintableSolution solution, TerminationCriteria tc) {
-      BufferedWriter out = null;
+    List<Tabu> tabuList = new ArrayList<Tabu>();
+    Solution current = generateFirstSolution(i);
+    ClarkeAndWrightAlgorithm CWA = new ClarkeAndWrightAlgorithm(current);
+    // CWA.excute();
+    current.correct();
+    PrintableSolution best = current.getPrintableSolution();
+    TerminationCriteria tc = i.getTerminationCriteria();
+    tc.start();
+    while (!tc.timeToFinish(current)) {
       try {
-          out = new BufferedWriter(new FileWriter(new File("stat.")));
-          out.write("Cost: " + solution.getDuration());
-          out.newLine();
-          out.write("Iteration until best found: " + tc.getBestFoundIteration());
-          out.newLine();
-          out.write("Total iterations: " + tc.getCurrentIteration());
-          out.newLine();
-          out.write("Time until best found: " + tc.getTimeToBest());
-          out.newLine();
-          out.write("Total time elapsed: " + tc.getTotalTime());
-          out.newLine();
-          out.write(solution.toString());
+        List<Neighbor> neighbors = i.getNeighborhoodStructure().generateNeighborhood(current, tabuList);
+        if (!neighbors.isEmpty()) {
+          Neighbor neighbor = i.getNeighborSelector().selectNeighbor(neighbors, current);
+          tabuList.addAll(neighbor.getTabus());
+          neighbor.getMove().applyMove(current);
+          /*
+          if (!current.correct()) {
+              break;
+          }
+          */
+          //assert(current.getDuration() == neighbor.getDuration());
+          if (current.getDuration() < best.getDuration()) {
+            best = current.getPrintableSolution();
+            tc.recordBest(current);
+          }
+        } else {
+          // Intensificator. Was not necessary.
+        }
+      } catch (TabuListFullException ex) {
+        try {
+          int elementsToRemove = (int) (tabuList.size() * .1);
+          // int elementsToRemove = tabuList.size()/2;
+          for (int k = 0; k < elementsToRemove; k++)
+            tabuList.remove(0);        
+        } catch (ArrayIndexOutOfBoundsException a) {
+          System.out.println("Were removed more elements of which had the tabuList");
+          break;
+        }
+      }
+    }
+    tc.finish();
+    printSolution(best, tc);
+  }
+  
+  /**
+   * Write to a file the solution obtained.
+   * 
+   * @param solution a solution
+   * @param tc a termination criteria
+   */
+  private static void printSolution(PrintableSolution solution, TerminationCriteria tc) {
+    BufferedWriter out = null;
+    try {
+      out = new BufferedWriter(new FileWriter(new File("stat.")));
+      out.write("Cost: " + solution.getDurationWithoutDropTime());
+      out.newLine();
+      out.write("Cost with DropTime: " + solution.getDuration());
+      out.newLine();
+      out.write("Iteration until best found: " + tc.getBestFoundIteration());
+      out.newLine();
+      out.write("Total iterations: " + tc.getCurrentIteration());
+      out.newLine();
+      out.write("Time until best found: " + tc.getTimeToBest());
+      out.newLine();
+      out.write("Total time elapsed: " + tc.getTotalTime());
+      out.newLine();
+      out.write(solution.toString());
+    } catch (IOException ex) {
+      Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
+    } finally {
+      try {
+        out.close();
       } catch (IOException ex) {
-          Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
-      } finally {
-          try {
-              out.close();
-          } catch (IOException ex) {
-              Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
-          }
+        Logger.getLogger(CVRP.class.getName()).log(Level.SEVERE, null, ex);
       }
     }
+  }
 
-    private static Solution generateFirstSolution(Instance i) {
-      Solution s = null;
-      try {
-          s = new Solution(i);
-      } catch (MaxCapacityExceededException ex) {
-          System.err.println("La instancia no tiene solución factible.");
-          System.exit(1);
-      } catch (MaxDurationExceededException ex) {
-          System.err.println("La instancia no tiene solución factible.");
-          System.exit(1);
-      }
-      return s;
+  /**
+   * Generates a trivial solution.
+   * 
+   * @param i an instance of the problem
+   * @return a solution of the problem instance
+   */
+  private static Solution generateFirstSolution(Instance i) {
+    Solution s = null;
+    try {
+      s = new Solution(i);
+    } catch (MaxCapacityExceededException ex) {
+      System.err.println("The instance has no feasible solution");
+      System.exit(1);
+    } catch (MaxDurationExceededException ex) {
+      System.err.println("The instance has no feasible solution");
+      System.exit(1);
+    }
+    return s;
   }
 }

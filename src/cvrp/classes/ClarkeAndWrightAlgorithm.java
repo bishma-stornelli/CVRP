@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import java.util.ArrayList;
@@ -10,8 +6,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class ClarkeAndWrightAlgorithm {
   
@@ -81,10 +78,18 @@ public class ClarkeAndWrightAlgorithm {
   }
   
   private class TripletComparator implements Comparator<Triplet> {
-        
+    
+    /**
+     * Compare two triplet according to their saving value.
+     * 
+     * @param t1 a triplet
+     * @param t2 a triplet
+     * @return 1 if t1 is less than t2
+     *        -1 if t2 is less than t1
+     *         0 if t1 is equal to t2
+     */
     @Override
-    public int compare(Triplet t1, Triplet t2) {
-      
+    public int compare(Triplet t1, Triplet t2) {     
       if(t1.getS() < t2.getS())
         return 1;
       else if(t1.getS() > t2.getS())
@@ -93,43 +98,58 @@ public class ClarkeAndWrightAlgorithm {
     }
     
   }
-  
-  public void excute() {
     
+      
+  /**
+   * Execute the Clarke and Wright algorithm.
+   */
+  public void excute() {
     this.fillSaving();
     this.sortSaving();
     this.parallel();
-
   }
   
+  /**
+   * Execute the parallel version of the Clarke and Wright algorithm.
+   */
   private void parallel() {
     
     Triplet t = L.get(0);
     L.remove(0);
     
-    while((!L.isEmpty()) && (t.getS() > 0)) {
-      
+    while((!L.isEmpty()) && (t.getS() > 0)) {     
       int customerA = t.getI();
       int customerB = t.getJ();
       
       if(this.mergeFeasibility(customerA, customerB))
-        this.merge(customerA, customerB);
-      
+        this.merge(customerA, customerB); 
       t = L.get(0);
       L.remove(0);
     }
- 
   }
   
+  /**
+   * Check if a merge for the routes where the two customers belongs can be done.
+   * 
+   * @param customerA a customer
+   * @param customerB a customer
+   * @return true if the merge can be done.
+   *         false if it cannot be done.
+   */
   private boolean mergeFeasibility(int customerA, int customerB) {
   
     Instance instance = solution.getInstance();
     int routeNumberA = solution.getRouteNumber(customerA);
     int routeNumberB = solution.getRouteNumber(customerB);
     
+    // Customers both in the same route.
+    if(routeNumberA == routeNumberB)
+      return false;
+    
     Route routeA = solution.getRoute(routeNumberA);
     Route routeB = solution.getRoute(routeNumberB);
     
+    // Overload of the vehicle capacity.
     if(routeA.getCapacity() + routeB.getCapacity() > instance.getVehicleCapacity())
       return false;
     
@@ -138,15 +158,7 @@ public class ClarkeAndWrightAlgorithm {
     int lastA = routeA.getCustomerAt(routeA.size()-2);
     int lastB = routeB.getCustomerAt(routeB.size()-2);
     
-    if(routeNumberA == routeNumberB) {
-      /*
-      if((firstA == customerA && lastA == customerB) ||
-         (firstA == customerB && lastA == customerA))
-        return false; 
-      */
-      return false;
-    }
-    
+    // Internal customers.
     if((firstA != customerA && lastA != customerA) || 
        (firstB != customerB && lastB != customerB))
       return false;
@@ -156,13 +168,20 @@ public class ClarkeAndWrightAlgorithm {
     int changeOnDuration = instance.getDistance(customerA, customerB)
                          - instance.getDistance(0,customerA)
                          - instance.getDistance(0,customerB);
+    
+    // Overload of the route duration.
     if(durationA + durationB + changeOnDuration > instance.getMaximumRouteTime())
       return false;
     
     return true;
-    
   }
   
+  /**
+   * Merge the routes where the two customers belongs.
+   * 
+   * @param customerA a customer
+   * @param customerB a customer
+   */
   private void merge(int customerA, int customerB) {
     
     Instance instance = solution.getInstance();
@@ -183,21 +202,6 @@ public class ClarkeAndWrightAlgorithm {
     routeListA.remove(routeA.size() - 1);
     for(int i = 1; i < routeB.size(); ++i)
       routeListA.add(routeListB.get(i));
-    /*
-    if(customerPositionA == 1) {
-
-      if(customerPositionB == 1) {
-        
-        for(int i = 1; i < routeB.size() - 1; ++i)
-          routeListA.set(routeA.size() -2 + i , routeListB.get(i));
-        routeListA.
-      }
-      
-    } else {
-      
-    }
-    * 
-    */
     
     int durationA = routeA.getDuration();
     int durationB = routeB.getDuration();
@@ -220,39 +224,34 @@ public class ClarkeAndWrightAlgorithm {
    
   }
   
+  /**
+   * Compute the saving value for the instance a fill the matrix S with them.
+   */
   private void fillSaving() {
     
     Instance instance = solution.getInstance();
     int n = instance.getCustomersNumber();
     
-    for(int i = 1; i < n; ++i) {
-      
+    for(int i = 1; i < n; ++i) {   
       for(int j = i + 1; j <= n; ++j) {
-        
         S[i][j] = instance.getDistance(0, i)
                 + instance.getDistance(j, 0)
                 - instance.getDistance(i, j);
         Triplet t = new Triplet(S[i][j],i,j);
         L.add(t);
-      }
-      
+      } 
     }
   }
   
+  /**
+   * Sort in a nondecreasing order the list L according to the saving.
+   */
   private void sortSaving() {
     TripletComparator tc = new TripletComparator();
     Collections.sort(L, tc);
   }
   
   // Getters and Setters
-
-  public List<Triplet> getL() {
-    return L;
-  }
-
-  public void setL(List<Triplet> L) {
-    this.L = L;
-  }
 
   public int[][] getS() {
     return S;

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
@@ -14,8 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class Instance {
   
@@ -50,47 +47,53 @@ public class Instance {
     this.neighborSelector = null;
   }
   
+  /**
+   * Load the problem instance.
+   */
   public void loadEverything() {     
-    try {
-        this.loadInstance();
-        this.loadDistance();   
-        this.loadSettings();
-    } catch (FileNotFoundException ex) {
-        Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    this.loadInstance();
+    this.loadDistance();   
+    this.loadSettings();
   }
   
-  public void loadInstance() throws FileNotFoundException {
+  /**
+   * Load the instance attributes.
+   * 
+   * @throws FileNotFoundException 
+   */
+  public void loadInstance() {
     
     File file = new File(this.instanceName);
     
+    Scanner scanner = null;
     try {
-      
-      Scanner scanner = new Scanner(file);
-      
-      this.customersNumber = scanner.nextInt();
-      this.vehicleCapacity = scanner.nextInt();
-      this.maximumRouteTime = scanner.nextInt();
-      this.dropTime = scanner.nextInt();
-      this.coordinates = new int [this.customersNumber+1][2];
-      this.quantity = new int [this.customersNumber+1];
-      this.coordinates[0][0] = scanner.nextInt();
-      this.coordinates[0][1] = scanner.nextInt();
-      this.quantity[0] = 0;
-      int c = 1;
-      
-      while(scanner.hasNextInt()) {
-        
-        this.coordinates[c][0] = scanner.nextInt();
-        this.coordinates[c][1] = scanner.nextInt();
-        this.quantity[c] = scanner.nextInt();
-        c++;
-      }
-    } catch(FileNotFoundException e) {
-      
+      scanner = new Scanner(file);
+    } catch (FileNotFoundException ex) {
+      Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    this.customersNumber = scanner.nextInt();
+    this.vehicleCapacity = scanner.nextInt();
+    this.maximumRouteTime = scanner.nextInt();
+    this.dropTime = scanner.nextInt();
+    this.coordinates = new int [this.customersNumber+1][2];
+    this.quantity = new int [this.customersNumber+1];
+    this.coordinates[0][0] = scanner.nextInt();
+    this.coordinates[0][1] = scanner.nextInt();
+    this.quantity[0] = 0;
+    int c = 1;
+
+    while(scanner.hasNextInt()) {      
+      this.coordinates[c][0] = scanner.nextInt();
+      this.coordinates[c][1] = scanner.nextInt();
+      this.quantity[c] = scanner.nextInt();
+      c++;
     }
   }
   
+  /**
+   * Compute the customers and depot distances.
+   */
   public void loadDistance() {
     
     this.distances = new int [this.customersNumber+1][this.customersNumber+1];
@@ -103,7 +106,6 @@ public class Instance {
           distance = (int) Math.round(Math.sqrt(
                   Math.pow(this.coordinates[j][0] - this.coordinates[i][0],2) + 
                   Math.pow(this.coordinates[j][1] - this.coordinates[i][1],2)));
-          
           this.distances[i][j] = distance;
           this.distances[j][i] = distance; 
         }          
@@ -111,54 +113,65 @@ public class Instance {
     }
   }
   
-  public void loadSettings() throws FileNotFoundException {
-    System.out.println(new File(".").getAbsolutePath());
+  /**
+   * Load the instance settings.
+   * 
+   * @throws FileNotFoundException 
+   */
+  public void loadSettings() {
+    // System.out.println(new File(".").getAbsolutePath());
     File file = new File(this.settingsName);
-    
+       
+    Scanner scanner = null;
     try {
-      
-      Scanner scanner = new Scanner(file);
-      String option = "";
-      
-      while(scanner.hasNext()) {
-        option = scanner.next();
-        if("MULTI_THREAD".equals(option))
-          this.MULTI_THREAD = scanner.next();
-        else if("TABU_RESTRICTION".equals(option))
-          this.TABU_RESTRICTION = scanner.next();
-        else if("SELECT_ORIGIN_ROUTE".equals(option))
-          this.SELECT_ORIGIN_ROUTE = scanner.next();
-        else if("SELECT_CLIENT".equals(option))
-          this.SELECT_CLIENT = scanner.next();
-        else if("SELECT_DESTINATION_ROUTE".equals(option))
-          this.SELECT_DESTINATION_ROUTE = scanner.next();
-        else if("SELECT_INSERT_POSITION".equals(option))
-          this.SELECT_INSERT_POSITION = scanner.next();
-        else if("TERMINATION_CRITERIA".equals(option))
-          this.TERMINATION_CRITERIA = scanner.next();
-        else if("NEIGHBORHOOD_STRUCTURE".equals(option))
-          this.NEIGHBORHOOD_STRUCTURE = scanner.next();
-        else if("NEIGHBOR_SELECTOR".equals(option))
-          this.NEIGHBOR_SELECTOR = scanner.next();
-        else if("NEIGHBORHOOD_GENERATOR".equals(option))
-          this.NEIGHBORHOOD_GENERATOR = scanner.next();
-      }
-        
-    } catch(FileNotFoundException e) {
-      System.out.println("FileNotFoundException");
+      scanner = new Scanner(file);
+    } catch (FileNotFoundException ex) {
+      Logger.getLogger(Instance.class.getName()).log(Level.SEVERE, null, ex);
     }
+    String option = "";
+
+    while(scanner.hasNext()) {
+      option = scanner.next();
+      if("MULTI_THREAD".equals(option))
+        this.MULTI_THREAD = scanner.next();
+      else if("TABU_RESTRICTION".equals(option))
+        this.TABU_RESTRICTION = scanner.next();
+      else if("SELECT_ORIGIN_ROUTE".equals(option))
+        this.SELECT_ORIGIN_ROUTE = scanner.next();
+      else if("SELECT_CLIENT".equals(option))
+        this.SELECT_CLIENT = scanner.next();
+      else if("SELECT_DESTINATION_ROUTE".equals(option))
+        this.SELECT_DESTINATION_ROUTE = scanner.next();
+      else if("SELECT_INSERT_POSITION".equals(option))
+        this.SELECT_INSERT_POSITION = scanner.next();
+      else if("TERMINATION_CRITERIA".equals(option))
+        this.TERMINATION_CRITERIA = scanner.next();
+      else if("NEIGHBORHOOD_STRUCTURE".equals(option))
+        this.NEIGHBORHOOD_STRUCTURE = scanner.next();
+      else if("NEIGHBOR_SELECTOR".equals(option))
+        this.NEIGHBOR_SELECTOR = scanner.next();
+      else if("NEIGHBORHOOD_GENERATOR".equals(option))
+        this.NEIGHBORHOOD_GENERATOR = scanner.next();
+    }
+     
     this.assignNeighborSelector();
     this.assignNeighborhoodStructure();
     this.assignTerminationCriteria();
   }
   
+  /**
+   * Assign the termination criteria according to the settings parameters.
+   */
   private void assignTerminationCriteria() {
     if(this.TERMINATION_CRITERIA.equals("I"))
-      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*10);
+      this.terminationCriteria = new TerminationCriteriaIteration(this.customersNumber*100);
     else if(this.TERMINATION_CRITERIA.equals("B"))
-        this.terminationCriteria = new TerminationCriteriaImproving(this.customersNumber*100);
+      this.terminationCriteria = new TerminationCriteriaImproving(this.customersNumber*100);
   }
 
+  /**
+   * Assign the neighborhood structure according to the settings parameters.
+   */
   private void assignNeighborhoodStructure() {
     if(this.NEIGHBORHOOD_STRUCTURE.equals("C"))
       this.neighborhoodStructure = new NeighborhoodStructureClassic();
@@ -168,10 +181,13 @@ public class Instance {
       this.neighborhoodStructure = new NeighborhoodStructureLambda();
     else if(this.NEIGHBORHOOD_STRUCTURE.equals("2OPT"))
       this.neighborhoodStructure = new NeighborhoodStructureTwoOpt();
-    //  else if(this.NEIGHBORHOOD_STRUCTURE.equals("3OPT"))
-    //  this.neighborhoodStructure = new NeighborhoodStructureThreeOpt();
+//  else if(this.NEIGHBORHOOD_STRUCTURE.equals("3OPT"))
+//  this.neighborhoodStructure = new NeighborhoodStructureThreeOpt();
   }
   
+  /**
+   * Assign the neighbor selector according to the settings parameters.
+   */
   private void assignNeighborSelector() {
     if(this.NEIGHBOR_SELECTOR.equals("F"))
       this.neighborSelector = new NeighborSelectorFirst();
@@ -179,6 +195,9 @@ public class Instance {
       this.neighborSelector = new NeighborSelectorBest();
   }
   
+  /**
+   * Print the matrix distances.
+   */
   public void printDistances() {
     for(int i = 0; i <= this.customersNumber; i++) {
       for(int j = 0; j <= this.customersNumber; j++)
@@ -187,12 +206,18 @@ public class Instance {
     } 
   }
   
+  /**
+   * Print all the coordinates of the customers and the depot.
+   */
   public void printCoordinates() {
     for(int i = 0; i <= this.customersNumber; i++)
       System.out.println(this.coordinates[i][0] + " " + this.coordinates[i][1] 
                          + " " + this.quantity[i]);
   }
   
+  /**
+   * Print the settings load from the settings file.
+   */
   public void printSettings() {
     System.out.println("MULTI_THREAD: " + MULTI_THREAD);
     System.out.println("TABU_RESTRICTION: " + TABU_RESTRICTION);
@@ -202,12 +227,25 @@ public class Instance {
     System.out.println("SELECT_INSERT_POSITION: " + SELECT_INSERT_POSITION);    
   }
   
+  /**
+   * Return the demand of a customer.
+   * 
+   * @param customer a customer
+   * @return the demand of the customer
+   */
   public int getDemand(int customer) {
     if(0 <= customer && customer < quantity.length)
       return quantity[customer];
     return 0;
   }
   
+  /**
+   * Return the distance between two customers.
+   * 
+   * @param customerA a customer
+   * @param customerB a customer
+   * @return the distance between the two customer
+   */
   public int getDistance(int customerA, int customerB){
     return this.distances[customerA][customerB];
   }
@@ -388,6 +426,6 @@ public class Instance {
 
   public void setVehicleCapacity(int vehicleCapacity) {
     this.vehicleCapacity = vehicleCapacity;
-  }
-       
+  }  
+  
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.TabuListFullException;
@@ -11,33 +7,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class NeighborhoodStructureLambda implements NeighborhoodStructure {
   
   private NeighborhoodStructure classic = new NeighborhoodStructureClassic();
   private NeighborhoodStructure swap = new NeighborhoodStructureSwap();
   private NeighborhoodStructure twoOpt = new NeighborhoodStructureTwoOpt();
-  private int changeStructure = 0;
  
+  
+  /**
+   * Return the neighborhood by applying the lambda structure generator.
+   * 
+   * @param s a solution
+   * @param tabuList a tabu list
+   * @return the lambda neighborhood
+   * @throws TabuListFullException 
+   */  
   @Override
   public List<Neighbor> generateNeighborhood(Solution s, List<Tabu> tabuList) 
           throws TabuListFullException {
     List<Neighbor> l = new ArrayList<Neighbor>();
         
-    //if(this.changeStructure == 10) {
-      //l.addAll(swap.generateNeighborhood(s, tabuList));
-      //this.changeStructure = 0;
-    //} else
-    //  if (s.getInstance().getTerminationCriteria().iterationsWithoutImproving() >
-            //  s.getInstance().getCustomersNumber() * 5){
-      //l.addAll(swap.generateNeighborhood(s, tabuList)); // Esta muy lento
-      l.addAll(twoOpt.generateNeighborhood(s, tabuList)); // Mejora
-      //}
-      l.addAll(classic.generateNeighborhood(s, tabuList)); // Mejora 
+    // l.addAll(swap.generateNeighborhood(s, tabuList));
+    l.addAll(twoOpt.generateNeighborhood(s, tabuList));
+    l.addAll(classic.generateNeighborhood(s, tabuList)); 
       
-    //this.changeStructure++;
     return l;
   }
    

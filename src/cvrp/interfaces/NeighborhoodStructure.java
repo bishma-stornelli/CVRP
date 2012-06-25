@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.interfaces;
 
 import cvrp.classes.Neighbor;
@@ -31,8 +27,12 @@ import java.util.List;
  * Random
  * Best place
  * Generalized Insertion: tries to improve the route as the same time that it inserts the customer.
- *
- * @author tamerdark
+ */
+
+/**
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public interface NeighborhoodStructure {
  

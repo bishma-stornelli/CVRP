@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -10,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class Route {
 
   private List<Integer> route;
   private int capacity;
   private int duration;
-  private int dropTime;
 
   public Route() {
     this.route = new ArrayList<Integer>();
@@ -26,39 +22,64 @@ public class Route {
     this.route.add(0);
     this.capacity = 0;
     this.duration = 0;
-    this.dropTime = 0;
   }
   
-  public void push(int customer, Instance instance) throws 
+  /**
+   * Adds a customer at the end of a route.
+   * 
+   * @param customer a customer
+   * @param instance an instance of the problem
+   * @return the change on duration for the route
+   * @throws MaxCapacityExceededException
+   * @throws MaxDurationExceededException 
+   */
+  public int push(int customer, Instance instance) throws 
           MaxCapacityExceededException, MaxDurationExceededException {
-    this.add(customer, this.size() - 1, instance);
+    return this.add(customer, this.size() - 1, instance);
   }
   
+  /**
+   * Adds a customer to a route in a specific position.
+   * 
+   * @param customer a customer
+   * @param index the position to add the customer
+   * @param instance an instance of the problem
+   * @return the change on duration for the route
+   * @throws MaxCapacityExceededException
+   * @throws MaxDurationExceededException 
+   */
   public int add(int customer, int index, Instance instance) 
           throws MaxCapacityExceededException, MaxDurationExceededException {
     
     int demand = instance.getDemand(customer);
-    if (demand + this.capacity > instance.getVehicleCapacity()) {
+    if (demand + this.capacity > instance.getVehicleCapacity())
       throw new MaxCapacityExceededException();
-    }
     
     int previous = this.route.get(index - 1);
     int next = this.route.get(index);
     int changeOnDuration = instance.getDistance(previous, customer)
                          + instance.getDistance(customer, next)
+                         + instance.getDropTime()
                          - instance.getDistance(previous, next);
     
-    if (this.duration + instance.getDropTime() +changeOnDuration > instance.getMaximumRouteTime()) {
+    if (this.duration + changeOnDuration > instance.getMaximumRouteTime())
       throw new MaxDurationExceededException();
-    }
+    
     this.route.add(index, customer);
     this.capacity += demand;
     this.duration += changeOnDuration;
-    this.dropTime += instance.getDropTime();
     
     return changeOnDuration;
   }
 
+  /**
+   * Removes a customer to a route in a specific position.
+   * 
+   * @param index the position to remove the customer
+   * @param instance an instance of the problem
+   * @return the change on duration for the route
+   * @throws MaxDurationExceededException 
+   */
   public int remove(int index, Instance instance) 
           throws MaxDurationExceededException {
 
@@ -67,35 +88,66 @@ public class Route {
     int next = this.route.get(index + 1);
     int changeOnDuration = instance.getDistance(previous, next) 
                          - instance.getDistance(previous, customer)
-                         - instance.getDistance(customer, next);
+                         - instance.getDistance(customer, next)
+                         - instance.getDropTime();
     
-    if (this.duration - instance.getDropTime() + changeOnDuration > instance.getMaximumRouteTime()) {
+    if (this.duration + changeOnDuration > instance.getMaximumRouteTime())
       throw new MaxDurationExceededException();
-    }
-    
+        
     this.route.remove(index);
     this.duration += changeOnDuration;
     this.capacity -= instance.getDemand(customer);
-    this.dropTime -= instance.getDropTime();
    
     return changeOnDuration;
   }
+  
+  /**
+   * Check the correctness of the route duration.
+   * 
+   * @param ins an instance of the problem
+   */
+  void calculateDuration(Instance ins) {
+      int newDuration = 0;
+      for(int i = 0 ; i < route.size() - 1 ; ++i)
+        newDuration += ins.getDistance(route.get(i), route.get(i+1));
+      
+      newDuration += ins.getDropTime() * (route.size() - 2);
+      if (newDuration != this.duration)
+        System.out.println("Route Duration Violation");
+      
+  }
 
+  /**
+   * Generate the string representation of the route.
+   * 
+   * @return the route as a string
+   */
   @Override
   public String toString() {
     String r = "";
     for (Integer i : route) {
-        r += i + " ";
+      r += i + " ";
     }
     return r;
   }
 
+  /**
+   * The size of the route.
+   * 
+   * @return the route size
+   */
   public int size() {
-      return route.size();
+    return route.size();
   }
 
+  /**
+   * Return the customer at the specific position.
+   * 
+   * @param index a position inside the route
+   * @return the customer
+   */
   public int getCustomerAt(int index) {
-      return this.route.get(index);
+    return this.route.get(index);
   }
   
   // Getters and Setters
@@ -122,17 +174,6 @@ public class Route {
 
   public void setRoute(List<Integer> route) {
     this.route = route;
-  }
-
-  void calculateDuration(Instance ins) {
-    int newDuration = 0;
-    for(int i = 0 ; i < route.size() - 1 ; ++i){
-        newDuration += ins.getDistance(route.get(i), route.get(i+1));
-    }
-    newDuration += ins.getDropTime() * (route.size() - 2);
-    if (newDuration != this.duration){
-        System.out.println("Error con la duracion de la ruta");
-    }
   }
   
 }

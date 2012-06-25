@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.interfaces;
 
 /** An intensificator try to improve a solution by exploring portions of the
@@ -13,8 +9,12 @@ package cvrp.interfaces;
  * and perform a restricted search on the remaining arcs.
  * 
  * Change the Neighborhood Structure to allow more complex movements.
- *
- * @author tamerdark
+ */
+
+/**
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public interface Intensificator {
     

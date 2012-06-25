@@ -1,22 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.abstracts;
 
 import cvrp.classes.Solution;
 import cvrp.exceptions.TerminationCriteriaNotStartedException;
 
+/**
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
+ */
+
 /** A termination criteria specify when to stop the search.
  * 
  * Usually, the termination criteria used are:
  * 
- * After a fixed number of iterations. Option T
- * After a fixed number of iterations without improvement. Option I
- * When an specific threshold value is reached. Option V
- * After a fixed time. Option T
- *
- * @author tamerdark
+ * After a fixed number of iterations. Option I
+ * After a fixed number of iterations without improvement. Option B
+ * When an specific threshold value is reached. Option V. Not implemented.
+ * After a fixed time. Option T. Not implemented.
  */
 public abstract class TerminationCriteria {
     
@@ -27,7 +27,10 @@ public abstract class TerminationCriteria {
   protected long bestFoundTime;
   protected Solution best;
   protected boolean started = false;
-    
+  
+  /**
+   * Start the termination criteria.
+   */
   public void start() {
     currentIteration = 0;
     bestFoundIteration = 0;
@@ -36,25 +39,54 @@ public abstract class TerminationCriteria {
     bestFoundTime = startTime;
     started = true;
   }
-
+  
+  /**
+   * Record a solution.
+   * 
+   * @param s a solution
+   * @throws TerminationCriteriaNotStartedException 
+   */
   public void recordBest(Solution s) throws TerminationCriteriaNotStartedException {
     if (!started) throw new TerminationCriteriaNotStartedException();
     best = s;
     bestFoundTime = System.currentTimeMillis();
     bestFoundIteration = currentIteration;
   }
-    
+  
   public abstract boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException;
-
+  
+  /**
+   * Finish the time counter.
+   */
   public void finish(){
-      endTime = System.currentTimeMillis();
+    endTime = System.currentTimeMillis();
   }
-
+ 
+  /**
+   * Return the time to found the best solution in seconds.
+   * 
+   * @return the best found time
+   */
   public long getTimeToBest(){
-      return (bestFoundTime - startTime)/1000;
+    return (bestFoundTime - startTime)/1000;
   }
+  
+  /**
+   * Return the total execute time.
+   * 
+   * @return the total execute time
+   */
   public long getTotalTime(){
-      return (endTime - startTime)/1000;
+    return (endTime - startTime)/1000;
+  }
+  
+  /**
+   * Return the iterations number without improving the solution.
+   * 
+   * @return iterations without improving
+   */
+  public int iterationsWithoutImproving() {
+    return currentIteration - bestFoundIteration;
   }
 
   // Getters and Setters
@@ -114,9 +146,5 @@ public abstract class TerminationCriteria {
   public void setStarted(boolean started) {
     this.started = started;
   }
-
-    public int iterationsWithoutImproving() {
-        return currentIteration - bestFoundIteration;
-    }
   
 }

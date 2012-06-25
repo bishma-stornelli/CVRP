@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -11,11 +7,10 @@ import cvrp.interfaces.Tabu;
 import java.util.ArrayList;
 import java.util.List;
 
-  
-
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class MoveTwoOpt implements Move {
     
@@ -29,7 +24,25 @@ public class MoveTwoOpt implements Move {
     this.customerPositionB = edge2;
   }
   
+  /**
+  * Return a tabu list for this move.
+  * 
+  * @return the tabu list
+  */
+  @Override
+  public List<Tabu> generateTabu() {
+    //return null;
+    List<Tabu> tabuList = new ArrayList<Tabu>();
+    return tabuList;
+  }
   
+  /**
+    * Apply this move to a solution.
+    * 
+    * @param solution a solution
+    * @throws MaxCapacityExceededException
+    * @throws MaxDurationExceededException 
+    */
   @Override
   public void applyMove(Solution solution) 
           throws MaxCapacityExceededException, MaxDurationExceededException {
@@ -76,12 +89,15 @@ public class MoveTwoOpt implements Move {
     solution.getDuration();*/
   }
 
-  @Override
-  public List<Tabu> generateTabu() {
-    List<Tabu> tabuList = new ArrayList<Tabu>();
-    return tabuList;
-  }
-
+  
+  /**
+    * Return the solution duration that would result if we apply this move.
+    * 
+    * @param s a solution
+    * @return the solution duration after apply this move
+    * @throws MaxCapacityExceededException
+    * @throws MaxDurationExceededException 
+    */ 
   @Override
   public int applyMoveDuration(Solution solution) throws MaxCapacityExceededException, MaxDurationExceededException {
     Route r = solution.getRoute(route);

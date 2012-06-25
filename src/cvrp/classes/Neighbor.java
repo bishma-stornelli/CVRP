@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
@@ -9,12 +5,12 @@ import cvrp.exceptions.MaxDurationExceededException;
 import cvrp.exceptions.NoSuchTabuTypeException;
 import cvrp.interfaces.Move;
 import cvrp.interfaces.Tabu;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class Neighbor {
   
@@ -30,17 +26,22 @@ public class Neighbor {
   }
 
   public Tabu getTabu(char tabuType) throws NoSuchTabuTypeException { 
-      /*switch(tabuType){
-          case ROUTE_POSITION_TABU:
-              return new RoutePositionTabu();
-          case ROUTE_TABU:
-              return new RouteTabu();
-          default:
-              throw new NoSuchTabuTypeException();
-      }*/
-      return null;
+    /*switch(tabuType){
+        case ROUTE_POSITION_TABU:
+            return new RoutePositionTabu();
+        case ROUTE_TABU:
+            return new RouteTabu();
+        default:
+            throw new NoSuchTabuTypeException();
+    }*/
+    return null;
   }
 
+  /**
+   * Return the tabu for this neighbor.
+   * 
+   * @return the neighbor's tabu
+   */
   public List<Tabu> getTabus() {
     return move.generateTabu();
   }

@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class CustomerRouteTabu extends CustomerTabu {
 
@@ -17,27 +14,34 @@ public class CustomerRouteTabu extends CustomerTabu {
     this.route = route;
   }
   
+  /**
+   * Equal method for the CustomerRouteTabu.
+   * 
+   * @param obj an object
+   * @return true if the two tabus are equals
+   *         false if not
+   */
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
+    
     try {
       final CustomerTabu other = (CustomerTabu) obj;
-      if (this.getCustomer() != other.getCustomer()) {
+      if (this.getCustomer() != other.getCustomer()) 
         return false;
-      }
+      
       try {
         final CustomerRouteTabu other2 = (CustomerRouteTabu) obj;
-        if (this.route != other2.route) {
+        if (this.route != other2.route) 
           return false;
-        }
+        
         return true;
       } catch (ClassCastException cce) {
-          return true;
+        return true;
       }
     } catch (ClassCastException cce) {
-        return false;
+      return false;
     }
   }
   

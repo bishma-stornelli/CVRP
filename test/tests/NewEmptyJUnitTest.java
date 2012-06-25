@@ -1,17 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tests;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
- *
- * @author vicente
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class NewEmptyJUnitTest {
   
@@ -38,4 +30,5 @@ public class NewEmptyJUnitTest {
   //
   // @Test
   // public void hello() {}
+  
 }

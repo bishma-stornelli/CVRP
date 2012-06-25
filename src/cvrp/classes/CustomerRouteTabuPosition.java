@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
-import cvrp.interfaces.Tabu;
-
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class CustomerRouteTabuPosition extends CustomerRouteTabu {
 
@@ -16,11 +11,18 @@ public class CustomerRouteTabuPosition extends CustomerRouteTabu {
   private int laterCustomer;
 
   public CustomerRouteTabuPosition(int previousCustomer, int laterCustomer, int route, int customer) {
-      super(route, customer);
-      this.previousCustomer = previousCustomer;
-      this.laterCustomer = laterCustomer;
+    super(route, customer);
+    this.previousCustomer = previousCustomer;
+    this.laterCustomer = laterCustomer;
   }
 
+  /**
+   * Equal method for the CustomerRouteTabuPosition.
+   * 
+   * @param obj an object
+   * @return true if the two tabus are equals
+   *         false if not
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj == null) {

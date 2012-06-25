@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cvrp.classes;
 
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.exceptions.TerminationCriteriaNotStartedException;
 
 /**
- *
- * @author tamerdark
+ * @version 1.0
+ * @author Bishma Stornelli
+ * @author Vicente Santacoloma
  */
 public class TerminationCriteriaImproving extends TerminationCriteria {
     
@@ -18,7 +15,15 @@ public class TerminationCriteriaImproving extends TerminationCriteria {
   public TerminationCriteriaImproving(int i) {
     this.threshold = i;
   }
-
+  
+  /**
+   * Evaluates the improving termination criteria.
+   * 
+   * @param s a solution
+   * @return true if it has completed the execution time for the current solution
+   *         false if not
+   * @throws TerminationCriteriaNotStartedException
+   */
   @Override
   public boolean timeToFinish(Solution s) throws TerminationCriteriaNotStartedException {
     if (!started) throw new TerminationCriteriaNotStartedException();
