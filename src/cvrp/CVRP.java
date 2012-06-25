@@ -20,6 +20,8 @@ import java.util.logging.Logger;
  */
 public class CVRP {
 
+    private static int run = 0;
+  
     /**
      * The main program for the CVRP.
      * 
@@ -30,20 +32,23 @@ public class CVRP {
       // TODO code application logic here
       // Instance instance = new Instance(args[0],args[1]);
       
-      /*
-      for(int i = 12 ; i <= 14 ; ++i){
-          for(int j = 0 ; j <= 1 ; ++j ){
-              Instance instance = new Instance("instanciasCVRP/vrpnc" + i +".txt", "settings");
-              instance.loadEverything();
-              run(instance);
-              Thread.sleep(2000);
-          }
-
+      /**
+      for(int i = 1 ; i <= 14 ; ++i) {
+        for(int j = 0 ; j <= 4 ; ++j) {
+          Instance instance = new Instance("instanciasCVRP/vrpnc" + i +".txt", "settings");
+          instance.loadEverything();
+          run(instance);
+          //Thread.sleep(2000);
+          ++run;
+        }
+        run = 0;
       }
       */
-      Instance instance = new Instance("instanciasCVRP/vrpnc14.txt", "settings");
+      
+      Instance instance = new Instance("instanciasCVRP/vrpnc1.txt", "settings");
       instance.loadEverything();
       run(instance);
+      
         
     }
     
@@ -101,6 +106,7 @@ public class CVRP {
       }
     }
     tc.finish();
+    current.correct();
     printSolution(best, tc);
   }
   
@@ -113,7 +119,9 @@ public class CVRP {
   private static void printSolution(PrintableSolution solution, TerminationCriteria tc) {
     BufferedWriter out = null;
     try {
-      out = new BufferedWriter(new FileWriter(new File("stat."+solution.getInstanceName())));
+      String [] tokens = solution.getInstanceName().split("/");
+      String statName = "stat."+tokens[tokens.length - 1] + "_" + run;
+      out = new BufferedWriter(new FileWriter(new File(statName)));
       out.write("Cost: " + solution.getDurationWithoutDropTime());
       out.newLine();
       out.write("Cost with drop time: " + solution.getDuration());

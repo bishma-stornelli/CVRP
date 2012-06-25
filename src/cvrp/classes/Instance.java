@@ -18,12 +18,12 @@ public class Instance {
   
   private String instanceName;
   private String settingsName;
-  private String MULTI_THREAD;
-  private String TABU_RESTRICTION;
-  private String SELECT_ORIGIN_ROUTE;
-  private String SELECT_CLIENT;
-  private String SELECT_DESTINATION_ROUTE;
-  private String SELECT_INSERT_POSITION;
+  // private String MULTI_THREAD;
+  // private String TABU_RESTRICTION;
+  // private String SELECT_ORIGIN_ROUTE;
+  // private String SELECT_CLIENT;
+  // private String SELECT_DESTINATION_ROUTE;
+  // private String SELECT_INSERT_POSITION;
   private String TERMINATION_CRITERIA;
   private String NEIGHBORHOOD_STRUCTURE;
   private String NEIGHBORHOOD_GENERATOR;
@@ -132,6 +132,7 @@ public class Instance {
 
     while(scanner.hasNext()) {
       option = scanner.next();
+      /**
       if("MULTI_THREAD".equals(option))
         this.MULTI_THREAD = scanner.next();
       else if("TABU_RESTRICTION".equals(option))
@@ -144,7 +145,8 @@ public class Instance {
         this.SELECT_DESTINATION_ROUTE = scanner.next();
       else if("SELECT_INSERT_POSITION".equals(option))
         this.SELECT_INSERT_POSITION = scanner.next();
-      else if("TERMINATION_CRITERIA".equals(option))
+      */
+      if("TERMINATION_CRITERIA".equals(option))
         this.TERMINATION_CRITERIA = scanner.next();
       else if("NEIGHBORHOOD_STRUCTURE".equals(option))
         this.NEIGHBORHOOD_STRUCTURE = scanner.next();
@@ -219,12 +221,16 @@ public class Instance {
    * Print the settings load from the settings file.
    */
   public void printSettings() {
-    System.out.println("MULTI_THREAD: " + MULTI_THREAD);
-    System.out.println("TABU_RESTRICTION: " + TABU_RESTRICTION);
-    System.out.println("SELECT_ORIGIN_ROUTE: " + SELECT_ORIGIN_ROUTE);
-    System.out.println("SELECT_CLIENT: " + SELECT_CLIENT);
-    System.out.println("SELECT_DESTINATION_ROUTE: " + SELECT_DESTINATION_ROUTE);
-    System.out.println("SELECT_INSERT_POSITION: " + SELECT_INSERT_POSITION);    
+    //System.out.println("MULTI_THREAD: " + MULTI_THREAD);
+    //System.out.println("TABU_RESTRICTION: " + TABU_RESTRICTION);
+    //System.out.println("SELECT_ORIGIN_ROUTE: " + SELECT_ORIGIN_ROUTE);
+    //System.out.println("SELECT_CLIENT: " + SELECT_CLIENT);
+    //System.out.println("SELECT_DESTINATION_ROUTE: " + SELECT_DESTINATION_ROUTE);
+    //System.out.println("SELECT_INSERT_POSITION: " + SELECT_INSERT_POSITION);
+    System.out.println("TERMINATION_CRITERIA: " + TERMINATION_CRITERIA);   
+    System.out.println("NEIGHBORHOOD_STRUCTURE: " + NEIGHBORHOOD_STRUCTURE);   
+    System.out.println("NEIGHBORHOOD_GENERATOR: " + NEIGHBORHOOD_GENERATOR);   
+    System.out.println("NEIGHBOR_SELECTOR: " + NEIGHBOR_SELECTOR);     
   }
   
   /**
@@ -252,6 +258,7 @@ public class Instance {
 
   // Getters and Setters
   
+  /**
   public String getMULTI_THREAD() {
     return MULTI_THREAD;
   }
@@ -259,6 +266,7 @@ public class Instance {
   public void setMULTI_THREAD(String MULTI_THREAD) {
     this.MULTI_THREAD = MULTI_THREAD;
   }
+  */
 
   public String getNEIGHBORHOOD_GENERATOR() {
     return NEIGHBORHOOD_GENERATOR;
@@ -284,6 +292,7 @@ public class Instance {
     this.NEIGHBOR_SELECTOR = NEIGHBOR_SELECTOR;
   }
 
+  /**
   public String getSELECT_CLIENT() {
     return SELECT_CLIENT;
   }
@@ -323,7 +332,8 @@ public class Instance {
   public void setTABU_RESTRICTION(String TABU_RESTRICTION) {
     this.TABU_RESTRICTION = TABU_RESTRICTION;
   }
-
+ */
+  
   public String getTERMINATION_CRITERIA() {
     return TERMINATION_CRITERIA;
   }
