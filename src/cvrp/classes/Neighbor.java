@@ -2,7 +2,6 @@ package cvrp.classes;
 
 import cvrp.exceptions.MaxCapacityExceededException;
 import cvrp.exceptions.MaxDurationExceededException;
-import cvrp.exceptions.NoSuchTabuTypeException;
 import cvrp.interfaces.Move;
 import cvrp.interfaces.Tabu;
 import java.util.List;
@@ -23,18 +22,6 @@ public class Neighbor {
     this.neighbor = s;
     this.move = move;
     this.duration = move.applyMoveDuration(neighbor);
-  }
-
-  public Tabu getTabu(char tabuType) throws NoSuchTabuTypeException { 
-    /*switch(tabuType){
-        case ROUTE_POSITION_TABU:
-            return new RoutePositionTabu();
-        case ROUTE_TABU:
-            return new RouteTabu();
-        default:
-            throw new NoSuchTabuTypeException();
-    }*/
-    return null;
   }
 
   /**
