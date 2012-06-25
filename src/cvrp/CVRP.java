@@ -2,7 +2,10 @@ package cvrp;
 
 import cvrp.abstracts.TerminationCriteria;
 import cvrp.classes.*;
-import cvrp.exceptions.*;
+import cvrp.exceptions.MaxCapacityExceededException;
+import cvrp.exceptions.MaxDurationExceededException;
+import cvrp.exceptions.TabuListFullException;
+import cvrp.exceptions.TerminationCriteriaNotStartedException;
 import cvrp.interfaces.Tabu;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,8 +22,6 @@ import java.util.logging.Logger;
  * @author Vicente Santacoloma
  */
 public class CVRP {
-
-    private static int run = 0;
   
     /**
      * The main program for the CVRP.
@@ -120,7 +121,7 @@ public class CVRP {
     BufferedWriter out = null;
     try {
       String [] tokens = solution.getInstanceName().split("/");
-      String statName = "stat."+tokens[tokens.length - 1] + "_" + run;
+      String statName = "stat."+tokens[tokens.length - 1];
       out = new BufferedWriter(new FileWriter(new File(statName)));
       out.write("Cost: " + solution.getDurationWithoutDropTime());
       out.newLine();
