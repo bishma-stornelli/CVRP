@@ -14,6 +14,7 @@ public class PrintableSolution {
   private int duration;
   private int durationWithoutDropTime;
   private int dropTime;
+  private String instanceName;
 
   public PrintableSolution(Solution s) {
     this.routes = new ArrayList< List<Integer> >();
@@ -29,6 +30,7 @@ public class PrintableSolution {
     Instance i = s.getInstance();
     this.dropTime = i.getCustomersNumber()*i.getDropTime();
     this.durationWithoutDropTime = this.duration - this.dropTime;
+    this.instanceName = i.getInstanceName();
   }
 
   /**
@@ -79,6 +81,14 @@ public class PrintableSolution {
 
   public void setRoutes(List<List<Integer>> routes) {
     this.routes = routes;
+  }
+
+  public String getInstanceName() {
+    return instanceName;
+  }
+
+  public void setInstanceName(String instanceName) {
+    this.instanceName = instanceName;
   }
  
 }

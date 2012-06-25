@@ -41,7 +41,7 @@ public class CVRP {
 
       }
       */
-      Instance instance = new Instance("instanciasCVRP/vrpnc1.txt", "settings");
+      Instance instance = new Instance("instanciasCVRP/vrpnc14.txt", "settings");
       instance.loadEverything();
       run(instance);
         
@@ -63,7 +63,7 @@ public class CVRP {
     List<Tabu> tabuList = new ArrayList<Tabu>();
     Solution current = generateFirstSolution(i);
     ClarkeAndWrightAlgorithm CWA = new ClarkeAndWrightAlgorithm(current);
-    // CWA.excute();
+    CWA.excute();
     current.correct();
     PrintableSolution best = current.getPrintableSolution();
     TerminationCriteria tc = i.getTerminationCriteria();
@@ -113,10 +113,10 @@ public class CVRP {
   private static void printSolution(PrintableSolution solution, TerminationCriteria tc) {
     BufferedWriter out = null;
     try {
-      out = new BufferedWriter(new FileWriter(new File("stat.")));
+      out = new BufferedWriter(new FileWriter(new File("stat."+solution.getInstanceName())));
       out.write("Cost: " + solution.getDurationWithoutDropTime());
       out.newLine();
-      out.write("Cost with DropTime: " + solution.getDuration());
+      out.write("Cost with drop time: " + solution.getDuration());
       out.newLine();
       out.write("Iteration until best found: " + tc.getBestFoundIteration());
       out.newLine();

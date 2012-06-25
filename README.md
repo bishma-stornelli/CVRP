@@ -1,4 +1,4 @@
 CVRP
 ====
 
-Classic Vehicle Routing Problem
+Capacited Vehicle Routing Problem
